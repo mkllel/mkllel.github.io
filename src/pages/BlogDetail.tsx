@@ -5,6 +5,8 @@ import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { BlogPost } from '../utils/firebase';
 import { formatDateKorean } from '../utils/dateUtils';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface BlogDetailParams {
   id: string;
@@ -80,45 +82,6 @@ const BlogDetail = () => {
     const wordCount = content.split(/\s+/).length;
     const readTime = Math.ceil(wordCount / 200);
     return `${readTime}분 읽기`;
-  };
-
-  // 마크다운 형식 텍스트를 HTML로 간단하게 변환
-  const renderMarkdown = (markdown: string): string => {
-    if (!markdown) return '';
-    
-    // <hr> 태그가 그대로 표시되는 문제 해결
-    let processedMarkdown = markdown.replace(/<hr>/g, '---');
-    
-    // 기본적인 마크다운 포맷팅을 HTML로 변환
-    let html = processedMarkdown
-      // 이미지 마크다운 변환 (가장 먼저!)
-      .replace(/!\[([^\]]*)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width:100%;margin:1rem 0;" />')
-      // h3 처리
-      .replace(/###\s+(.*?)$/gm, '<h3>$1</h3>')
-      // h2 처리
-      .replace(/##\s+(.*?)$/gm, '<h2>$1</h2>')
-      // h1 처리
-      .replace(/#\s+(.*?)$/gm, '<h1>$1</h1>')
-      // 굵은 글씨
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      // 기울임꼴
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      // 코드 블록
-      .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>')
-      // 인라인 코드
-      .replace(/`(.*?)`/g, '<code>$1</code>')
-      // 링크
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
-      // 순서 없는 목록
-      .replace(/^\s*-\s+(.*?)$/gm, '<li>$1</li>')
-      // 수평선
-      .replace(/^---$/gm, '<hr/>')
-      // 단락
-      .replace(/\n\n/g, '</p><p>')
-      // 줄바꿈
-      .replace(/\n/g, '<br/>');
-      
-    return '<p>' + html + '</p>';
   };
 
   // 관리자 페이지로 이동 - 편집 기능
@@ -208,7 +171,13 @@ const BlogDetail = () => {
       </div>
       <div className="blog-details-content">
         <div className="markdown-preview">
-          <div dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }} />
+          <div className="mt-8">
+            <div className="prose prose-lg prose-indigo max-w-none text-black">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {post.content}
+              </ReactMarkdown>
+            </div>
+          </div>
         </div>
       </div>
       {relatedProject && (

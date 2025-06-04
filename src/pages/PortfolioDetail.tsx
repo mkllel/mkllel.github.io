@@ -5,6 +5,9 @@ import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { PortfolioProject } from '../utils/firebase';
 import { formatDateKorean } from '../utils/dateUtils';
+import LoadingSpinner from '../components/LoadingSpinner';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface PortfolioDetailParams {
   id: string;
@@ -173,7 +176,14 @@ const PortfolioDetail = () => {
       </div>
       <div className="portfolio-details-content">
         <div className="portfolio-description">
-          <div dangerouslySetInnerHTML={{ __html: renderMarkdown(project.description) }} />
+          <div className="mt-8">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">프로젝트 설명</h2>
+            <div className="prose prose-indigo max-w-none text-black">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {project.description}
+              </ReactMarkdown>
+            </div>
+          </div>
         </div>
         
         {project.technologies && project.technologies.length > 0 && (
