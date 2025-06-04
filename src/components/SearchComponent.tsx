@@ -117,7 +117,7 @@ const SearchComponent: React.FC = () => {
 
       {/* 검색창 */}
       {isSearchOpen && (
-        <div className="absolute right-0 mt-2 w-80 md:w-96 bg-white dark:bg-gray-800 rounded-md shadow-xl z-20 overflow-hidden">
+        <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-80 md:w-96 bg-white dark:bg-gray-800 rounded-md shadow-xl z-20 overflow-hidden">
           <div className="p-3 flex">
             <input
               ref={inputRef}
