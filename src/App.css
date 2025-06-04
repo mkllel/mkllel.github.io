@@ -1,0 +1,396 @@
+/* Main App Styles */
+/* Most styling is handled by Tailwind CSS */
+
+/* Any global app-specific styles can be added here */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Ensure full width for main sections */
+main {
+  width: 100%;
+}
+
+/* Animation for page transitions */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+/* 블로그 카드와 포트폴리오 카드 마우스 오버 효과 */
+.bg-white.rounded-lg {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.bg-white.rounded-lg:hover {
+  border-color: #7853a9;
+  transform: translateY(-3px);
+}
+
+/* 관리자 버튼 마우스 오버 효과 */
+.edit-button, .delete-button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.edit-button {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.delete-button {
+  background-color: #ef4444;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* 블로그 상세 페이지 스타일 */
+.blog-details {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.blog-details-header {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.admin-controls {
+  display: flex;
+  gap: 0.5rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  /* z-index: 10; */
+}
+
+.blog-details-cover-container {
+  position: relative;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.blog-details-cover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+  z-index: 1;
+}
+
+.blog-details-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-details-title-container {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  z-index: 2;
+  color: white;
+}
+
+.blog-details-title-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.blog-details-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.blog-details-content {
+  line-height: 1.7;
+  color: #374151;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.markdown-preview h1 {
+  font-size: 2rem;
+  margin: 1.5rem 0;
+  color: #111827;
+}
+
+.markdown-preview h2 {
+  font-size: 1.5rem;
+  margin: 1.25rem 0;
+  color: #111827;
+}
+
+.markdown-preview h3 {
+  font-size: 1.25rem;
+  margin: 1rem 0;
+  color: #111827;
+}
+
+.markdown-preview p {
+  margin-bottom: 1rem;
+}
+
+.markdown-preview pre {
+  background-color: #f3f4f6;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.markdown-preview code {
+  font-family: monospace;
+  background-color: #f3f4f6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.markdown-preview pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.markdown-preview ul, .markdown-preview ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.markdown-preview li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-preview a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.markdown-preview a:hover {
+  text-decoration: underline;
+}
+
+.markdown-preview hr {
+  border: 0;
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 2rem 0;
+}
+
+.blog-details-related-project,
+.portfolio-related-blogs {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+.blog-details-related-project h3,
+.portfolio-related-blogs h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.related-project-link,
+.related-blog-link {
+  display: block;
+  padding: 0.75rem;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+}
+
+.related-project-link:hover,
+.related-blog-link:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* 포트폴리오 상세 페이지 스타일 */
+.portfolio-details {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.portfolio-details-header {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.portfolio-details-cover-container {
+  position: relative;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.portfolio-details-cover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+  z-index: 1;
+}
+
+.portfolio-details-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portfolio-details-title-container {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  z-index: 2;
+  color: white;
+}
+
+.portfolio-details-title-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.portfolio-details-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.portfolio-details-content {
+  line-height: 1.7;
+  color: #374151;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.portfolio-description {
+  margin-bottom: 2rem;
+}
+
+.portfolio-technologies {
+  margin-bottom: 2rem;
+}
+
+.portfolio-technologies h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-tag {
+  background-color: #e5e7eb;
+  color: #4b5563;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+.portfolio-links h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.project-link:hover {
+  background-color: #2563eb;
+}
+
+.related-blogs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* 모바일 반응형 스타일 */
+@media (max-width: 640px) {
+  .blog-details-title-container h1,
+  .portfolio-details-title-container h1 {
+    font-size: 1.75rem;
+  }
+  
+  .blog-details-cover-container,
+  .portfolio-details-cover-container {
+    height: 200px;
+  }
+  
+  .blog-details-content,
+  .portfolio-details-content {
+    padding: 1.5rem;
+  }
+}

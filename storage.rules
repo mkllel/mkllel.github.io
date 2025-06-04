@@ -1,0 +1,55 @@
+rules_version = '2';
+
+// service firebase.storage { // 이전 버전 (프로젝트 ID 기반 버킷)
+service firebase.storage { // 새 버전 (gs:// 버킷 경로 사용)
+  match /b/{bucket}/o { // {bucket}은 실제 버킷 이름으로 자동 대체됩니다.
+
+    // 이미지 파일 경로 규칙
+    // 예: images/blog/{postId}/{filename}.jpg, images/portfolio/{projectId}/{filename}.png
+
+    // 모든 이미지 파일에 대한 기본 읽기 규칙 (공개 접근 허용)
+    match /images/{allPaths=**} {
+      // 모든 사용자가 이미지 파일을 읽을 수 있도록 허용
+      allow read: if true;
+      
+      // 인증된 사용자만 이미지 업로드 가능 (테스트용)
+      allow write: if request.auth != null;
+    }
+
+    // 블로그 이미지 업로드 경로 규칙
+    match /images/blog/{postId}/{fileName} {
+      // 쓰기(업로드, 수정, 삭제) 권한: 인증된 사용자만 허용
+      allow write: if request.auth != null
+                     && request.resource.size < 10 * 1024 * 1024; // 10MB 제한
+    }
+
+    // 포트폴리오 이미지 업로드 경로 규칙
+    match /images/portfolio/{projectId}/{fileName} {
+      // 쓰기(업로드, 수정, 삭제) 권한: 인증된 사용자만 허용
+      allow write: if request.auth != null
+                     && request.resource.size < 10 * 1024 * 1024; // 10MB 제한
+    }
+
+    // --- Helper Functions (Storage Rules 내에서는 Firestore 함수 직접 호출 불가, Firestore 데이터 조회 필요) ---
+
+    // Storage 규칙 내에서 관리자 여부를 확인하는 로직
+    // Firestore의 /admins/{uid} 문서 존재 여부 또는 특정 UID 일치 여부 확인
+    // 참고: get() 함수는 Firestore 읽기 비용을 발생시킬 수 있습니다.
+    function isAdmin(uid) {
+      // Firestore의 admins 컬렉션에 해당 uid 문서가 존재하는지 확인
+      let isAdminInFirestore = exists(/databases/(default)/documents/admins/$(uid));
+      // 하드코딩된 관리자 UID와 일치하는지 확인
+      let isHardcodedAdmin = uid == 'KtZLKuzl56QzPLiFVRVfovWVapz2';
+
+      return isAdminInFirestore || isHardcodedAdmin;
+    }
+
+    // 참고: Firestore 접근 함수 사용 시
+    // function isAdminFirestoreCheck(uid) {
+    //   return get(/databases/(default)/documents/admins/$(uid)).data != null;
+    // }
+    // allow write: if request.auth != null && (isAdminFirestoreCheck(request.auth.uid) || request.auth.uid == 'KtZLKuzl56QzPLiFVRVfovWVapz2');
+    // exists()가 일반적으로 더 효율적입니다.
+
+  }
+} 

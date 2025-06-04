@@ -1,0 +1,43 @@
+// Firebase Firestore 보안 규칙 참조 파일
+// Firebase 콘솔 > Firestore Database > 규칙 탭에 이 내용을 복사하여 붙여넣고 게시하세요.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 관리자 확인 함수
+    function isAdmin() {
+      return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    
+    // 로그인한 본인 확인 함수
+    function isCurrentUser(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    
+    // 블로그 글 컬렉션
+    match /blogPosts/{postId} {
+      // 모든 사용자가 읽기 가능, 관리자만 쓰기 가능
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // 포트폴리오 프로젝트 컬렉션
+    match /portfolioProjects/{projectId} {
+      // 모든 사용자가 읽기 가능, 관리자만 쓰기 가능
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // 관리자 컬렉션
+    match /admins/{adminId} {
+      // 자신의 문서만 읽기 가능, 쓰기는 관리자만 가능
+      allow read: if isCurrentUser(adminId) || isAdmin();
+      allow write: if isAdmin();
+    }
+    
+    // 다른 모든 컬렉션에 대한 기본 규칙
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+} 
