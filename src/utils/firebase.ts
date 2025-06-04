@@ -62,7 +62,7 @@ export interface PortfolioProject {
 // 환경 변수에서 Firebase 설정 불러오기 (Vite 방식, 실제값 그대로)
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyBD7_roMn5sLR-yyyDYQLjEUw5gCRQS9yc",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "my-portfolio-2ea55.firebaseapp.com",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "mkllel.github.io",
   databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || "https://my-portfolio-2ea55-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "my-portfolio-2ea55",
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "my-portfolio-2ea55.firebasestorage.app",

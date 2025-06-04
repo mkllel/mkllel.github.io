@@ -19,12 +19,12 @@ const Home = () => {
                 >
                   포트폴리오 보기
                 </Link>
-                <Link
-                  to="/contact"
+                <a
+                  href="tel:010-4157-9597"
                   className="px-6 py-3 text-base md:text-lg font-medium rounded-md border-2 border-white hover:bg-white hover:text-indigo-600 transition duration-300"
                 >
                   연락하기
-                </Link>
+                </a>
               </div>
             </div>
             <div className="md:w-1/2 mb-6 md:mb-0">
