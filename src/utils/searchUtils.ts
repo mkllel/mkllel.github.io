@@ -1,5 +1,7 @@
 import { collection, query, getDocs, getFirestore } from 'firebase/firestore';
 import { BlogPost, PortfolioProject } from './firebase';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface SearchResult {
   id: string;
@@ -9,15 +11,24 @@ interface SearchResult {
   link: string;
 }
 
-// HTML 태그를 제거하는 함수
-function stripHtmlTags(html: string): string {
-  if (!html) return '';
-  // HTML 태그 제거 (여러 스페이스는 하나로 변환)
-  return html
-    .replace(/<[^>]*>/g, '') // HTML 태그 제거
-    .replace(/&nbsp;/g, ' ') // &nbsp; 문자를 일반 공백으로 변환
-    .replace(/\s+/g, ' ')    // 여러 개의 공백을 하나로 통합
-    .trim();                 // 앞뒤 공백 제거
+// 마크다운 텍스트를 일반 텍스트로 변환하는 함수
+function stripMarkdown(markdown: string): string {
+  if (!markdown) return '';
+  
+  // 마크다운 문법 제거
+  return markdown
+    .replace(/#{1,6}\s+/g, '') // 제목 제거
+    .replace(/\*\*(.*?)\*\*/g, '$1') // 볼드체 제거
+    .replace(/\*(.*?)\*/g, '$1') // 이탤릭체 제거
+    .replace(/~~(.*?)~~/g, '$1') // 취소선 제거
+    .replace(/\[(.*?)\]\(.*?\)/g, '$1') // 링크 제거
+    .replace(/!\[.*?\]\(.*?\)/g, '') // 이미지 제거
+    .replace(/`{3}[\s\S]*?`{3}/g, '') // 코드 블록 제거
+    .replace(/`(.*?)`/g, '$1') // 인라인 코드 제거
+    .replace(/^\s*[-*+]\s+/gm, '') // 목록 기호 제거
+    .replace(/^\s*\d+\.\s+/gm, '') // 번호 목록 제거
+    .replace(/\n{2,}/g, '\n') // 여러 줄바꿈을 하나로 통합
+    .trim();
 }
 
 export async function searchContent(searchTerm: string): Promise<SearchResult[]> {
@@ -37,8 +48,8 @@ export async function searchContent(searchTerm: string): Promise<SearchResult[]>
       const post = { id: doc.id, ...doc.data() } as BlogPost;
       const title = post.title.toLowerCase();
       
-      // HTML 태그를 제거한 콘텐츠
-      const cleanContent = stripHtmlTags(post.content).toLowerCase();
+      // 마크다운 문법을 제거한 콘텐츠
+      const cleanContent = stripMarkdown(post.content).toLowerCase();
       
       if (
         title.includes(term) || 
@@ -46,8 +57,8 @@ export async function searchContent(searchTerm: string): Promise<SearchResult[]>
         post.tags?.some(tag => tag.toLowerCase().includes(term)) ||
         (post.category && post.category.toLowerCase().includes(term))
       ) {
-        // HTML 태그가 제거된 설명 생성
-        const cleanDescription = stripHtmlTags(post.content);
+        // 마크다운 문법을 제거한 설명 생성
+        const cleanDescription = stripMarkdown(post.content);
         const shortDescription = cleanDescription.length > 100 
           ? cleanDescription.substring(0, 100) + '...' 
           : cleanDescription;
@@ -73,8 +84,8 @@ export async function searchContent(searchTerm: string): Promise<SearchResult[]>
       const project = { id: doc.id, ...doc.data() } as PortfolioProject;
       const title = project.title.toLowerCase();
       
-      // HTML 태그를 제거한 설명
-      const cleanDescription = stripHtmlTags(project.description).toLowerCase();
+      // 마크다운 문법을 제거한 설명
+      const cleanDescription = stripMarkdown(project.description).toLowerCase();
       
       if (
         title.includes(term) || 
@@ -85,7 +96,7 @@ export async function searchContent(searchTerm: string): Promise<SearchResult[]>
         results.push({
           id: project.id || doc.id,
           title: project.title,
-          description: stripHtmlTags(project.description),
+          description: stripMarkdown(project.description),
           type: 'portfolio',
           link: `/portfolio/${project.id || doc.id}`
         });
