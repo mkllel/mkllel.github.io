@@ -22,7 +22,7 @@ const Footer = () => {
           {/* Section 2: Quick Links */}
           <div>
             <h3 className="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3 md:mb-4">
-              페이지
+              Pages
             </h3>
             <ul className="space-y-2">
               <li>
@@ -46,7 +46,7 @@ const Footer = () => {
           {/* Section 3: Contact & Social */}
           <div>
             <h3 className="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3 md:mb-4 mt-6 md:mt-0">
-              연락처 및 소셜
+            Contact & Links
             </h3>
             <ul className="space-y-3">
               <li className="flex items-center">
