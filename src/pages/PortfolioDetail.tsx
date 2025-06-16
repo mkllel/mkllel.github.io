@@ -168,7 +168,7 @@ const PortfolioDetail = () => {
           <div className="portfolio-details-title-container">
             <h1>{project.title}</h1>
             <div className="portfolio-details-meta">
-              <span className="date-time">{formatDateKorean(project.createdAt)}</span>
+              {/* <span className="date-time">{formatDateKorean(project.createdAt)}</span> */}
               <span className="portfolio-category">{project.category || '일반'}</span>
             </div>
           </div>

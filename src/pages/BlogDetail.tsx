@@ -77,13 +77,6 @@ const BlogDetail = () => {
     return () => unsubscribe();
   }, [id, navigate]);
 
-  // 읽는 시간 계산 (대략적으로 200단어당 1분으로 가정)
-  const calculateReadTime = (content: string): string => {
-    const wordCount = content.split(/\s+/).length;
-    const readTime = Math.ceil(wordCount / 200);
-    return `${readTime}분 읽기`;
-  };
-
   // 관리자 페이지로 이동 - 편집 기능
   const handleEdit = () => {
     navigate(`/admin`);
@@ -162,9 +155,8 @@ const BlogDetail = () => {
           )}
           <div className="blog-details-title-container">
             <h1>{post.title}</h1>
-            <div className="blog-details-meta">
-              <span className="date-time">{formatDateKorean(post.createdAt)}</span>
-              <span>{calculateReadTime(post.content)}</span>
+            <div className="mt-2 text-sm text-gray-500">
+              {formatDateKorean(post.createdAt)}
             </div>
           </div>
         </div>
