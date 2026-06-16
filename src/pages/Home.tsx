@@ -4,15 +4,15 @@ const Home = () => {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="py-16 md:py-32 bg-gradient-to-r from-indigo-500 to-purple-600 text-white min-h-[80vh] flex items-center">
+      <section className="py-16 lg:py-32 bg-gradient-to-r from-indigo-500 to-purple-600 text-white min-h-[80vh] flex items-center">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col-reverse md:flex-row items-center md:space-x-8">
-            <div className="md:w-1/2 text-center md:text-left space-y-4 md:space-y-6 mt-8 md:mt-0">
-              <h1 className="text-3xl md:text-5xl font-bold leading-tight">안녕하세요, 웹 개발자 이민규입니다.</h1>
-              <p className="text-lg md:text-2xl opacity-90">
-                창의적이고 기능적인 웹 솔루션을 만드는 열정적인 웹 개발자입니다
+          <div className="flex flex-col-reverse lg:flex-row items-center lg:space-x-8">
+            <div className="lg:w-1/2 text-center lg:text-left space-y-4 lg:space-y-6 mt-8 lg:mt-0">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">안녕하세요, 웹 개발자 이민규입니다.</h1>
+              <p className="text-lg md:text-xl lg:text-2xl opacity-90">
+                프론트엔드의 흐름을 이해하며, 탄탄한 백엔드 아키텍처를 구축하는 실전형 개발자입니다.
               </p>
-              <div className="flex flex-col sm:flex-row justify-center md:justify-start space-y-3 sm:space-y-0 sm:space-x-4 mt-4 md:mt-6">
+              <div className="flex flex-col sm:flex-row justify-center lg:justify-start space-y-3 sm:space-y-0 sm:space-x-4 mt-4 lg:mt-6">
                 <Link
                   to="/portfolio"
                   className="px-6 py-3 text-base md:text-lg font-medium rounded-md bg-white text-indigo-600 hover:bg-gray-100 transition duration-300"
@@ -27,10 +27,16 @@ const Home = () => {
                 </a>
               </div>
             </div>
-            <div className="md:w-1/2 mb-6 md:mb-0">
-              <div className="bg-gray-200 w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full overflow-hidden shadow-lg">
+            <div className="lg:w-1/2 mb-6 lg:mb-0">
+              {/* w-56 h-64 md:w-64 md:h-80 */}
+              <div className="w-52 md:w-60 lg:w-72 aspect-[4/5] mx-auto">
                 {/* public 폴더 기준 절대 경로 사용 */}
-                <img src="/picture/myProfile.png" alt="myProfile" className="w-full h-full object-cover" />
+                <img
+                  src="/picture/myProfile_New.png"
+                  alt="이민규 프로필 사진"
+                  className="w-full h-full object-cover shadow-lg"
+                  style={{ borderRadius: '50%' }}
+                />
               </div>
             </div>
           </div>
@@ -82,7 +88,7 @@ const Home = () => {
                   <span className="text-gray-500">$</span>
                   <span className="text-white ml-2">whoami</span>
                 </div>
-                <p className="text-gray-300 mb-4 ml-1">Lee Min-Kyu // Passionate Frontend Developer</p>
+                <p className="text-gray-300 mb-4 ml-1">Lee Min-Kyu // Backend & Full-Stack Developer</p>
 
                 {/* Command 2: cat bio.md */}
                 <div className="mb-1 flex items-baseline">
@@ -94,18 +100,18 @@ const Home = () => {
                 </div>
                 <div className="text-gray-300 mb-4 ml-1 whitespace-pre-line">
 {`
-# 안녕하세요! 👋
+# 안녕하세요!
 
-저는 **사용자 중심의 웹 경험**을 추구하는 프론트엔드 개발자 이민규입니다.
-주로 **React, JavaScript, HTML/CSS**를 사용하여 직관적이고 반응성이 뛰어난 웹 애플리케이션을 구현하는 데 집중하고 있습니다.
+반복적인 비효율을 자동화로 줄이고 문제를 끝까지 추적해 해결하는 개발자 이민규입니다.
+Python과 FastAPI로 서버를 구축하고 Selenium 자동화 파이프라인을 설계하는 데 강점이 있습니다.
 
-- 💡 새로운 기술 스택에 대한 학습을 즐기며, 때로는 **Python**을 활용하여 개발 생산성을 높이는 스크립트를 작성하기도 합니다.
-- 🧹 **Git**을 통한 효율적인 버전 관리와 협업을 중요시하며, **Docker**를 이용한 일관된 개발 및 배포 환경 구축 경험이 있습니다.
-- ☁️ **AWS**의 기본적인 서비스들을 활용하여 애플리케이션을 배포하고 관리하는 경험을 통해, 서비스의 안정적인 운영에도 기여하고자 합니다.
-- 🎨 프론트엔드 개발뿐만 아니라, **Photoshop**을 활용하여 사용자의 시각적 만족도와 경험을 고려한 UI/UX 설계에도 깊은 관심을 가지고 있습니다.
+- 웹 크롤링과 API 연동, Selenium 자동화로 수작업을 줄여 실제 업무 효율을 높인 경험이 있습니다.
+- 새로운 기술(TypeScript, Firebase 등)도 주저하지 않고 학습해 프로젝트에 직접 적용하며 성장하는 과정을 즐깁니다.
+- 프론트엔드(React) 생태계를 이해하고 있어 서버 배포 시 발생하는 이슈(라우팅 404 등)를 직접 디버깅하고 해결합니다.
+- 주어진 업무에 그치지 않고 개발 과정에서 마주한 에러의 원인을 분석하고 해결해 나가는 과정을 꼼꼼히 기록합니다.
 
-이 포트폴리오에는 제가 진행한 프로젝트와 개발 경험을 담았습니다.
-관심 있게 봐주셔서 감사드리며, 언제든지 편하게 연락 부탁드립니다!
+이 포트폴리오에는 제가 문제를 추적하고 해결해 온 기술 경험과 기록을 담았습니다.
+관심 있게 봐주셔서 감사합니다. 편하게 연락 부탁드립니다.
 `}
                 </div>
 
@@ -120,7 +126,7 @@ const Home = () => {
                 <p className="text-blue-400 mb-4 ml-1">
                   <span className="text-gray-300">.</span>    
                   <span className="text-gray-300">..</span>    
-                  UI_UX_Design    Clean_Code    Continuous_Learning    Problem_Solving    Collaboration
+                  Backend_Architecture   Data_Automation   Cloud_Infra   FullStack_Dev   Clean_Code
                 </p>
                 
                 {/* Command 4: echo "Stay Curious, Build Awesome." */}
@@ -152,14 +158,14 @@ const Home = () => {
 };
 
 const skills = [
-  { name: 'HTML/CSS', icon: '/skills/htmlcss.png' }, 
+  { name: 'Python', icon: '/skills/python.png' },
+  { name: 'FastAPI', icon: '/skills/fastapi.png' },
+  { name: 'AWS', icon: '/skills/aws.png' },
+  { name: 'Docker', icon: '/skills/docker.png' },
+  { name: 'MySQL', icon: '/skills/mysql.png' },
   { name: 'JavaScript', icon: '/skills/javascript.png' },
   { name: 'React', icon: '/skills/react.png' },
-  { name: 'Python', icon: '/skills/python.png' },
-  { name: 'AWS', icon: '/skills/aws.png' },
   { name: 'Git', icon: '/skills/git.png' },
-  { name: 'Docker', icon: '/skills/docker.png' },
-  { name: 'Photoshop', icon: '/skills/photoshop.png' },
 ];
 
 export default Home;
