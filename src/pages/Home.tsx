@@ -66,7 +66,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             {/* Terminal Window */}
-            <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden font-mono">
+            <div className="terminal-section bg-gray-800 rounded-lg shadow-xl overflow-hidden">
               {/* Terminal Header */}
               <div className="bg-gray-700 px-4 py-3 flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
