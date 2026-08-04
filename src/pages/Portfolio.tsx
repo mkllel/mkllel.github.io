@@ -114,7 +114,7 @@ const Portfolio = () => {
                 setActiveFilter('all');
               }}
             >
-              Filter by Category
+              카테고리
             </button>
             <button
               type="button"
@@ -128,7 +128,7 @@ const Portfolio = () => {
                 setActiveFilter('all');
               }}
             >
-              Filter by Technology
+              기술
             </button>
           </div>
         </div>
@@ -139,7 +139,7 @@ const Portfolio = () => {
             active={activeFilter === 'all'} 
             onClick={() => filterProjects('all', filterType)}
           >
-            All Projects
+            전체 프로젝트
           </FilterButton>
           
           {filterType === 'category' ? (
