@@ -30,10 +30,15 @@ const Portfolio = () => {
           
           // Handle different timestamp types
           const getTimeValue = (timestamp: any) => {
-            if (timestamp instanceof Timestamp) {
+            if (timestamp instanceof Timestamp || (typeof timestamp === 'object' && timestamp?.seconds !== undefined)) {
               return timestamp.seconds;
             } else if (timestamp instanceof Date) {
               return timestamp.getTime() / 1000;
+            } else if (typeof timestamp === 'string') {
+              const parsedTime = Date.parse(timestamp);
+              return Number.isNaN(parsedTime) ? 0 : parsedTime / 1000;
+            } else if (typeof timestamp === 'number') {
+              return timestamp > 9999999999 ? timestamp / 1000 : timestamp;
             }
             return 0;
           };
