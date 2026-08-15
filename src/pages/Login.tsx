@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   signInWithEmailAndPassword, 
@@ -6,10 +6,17 @@ import {
   GithubAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
-  onAuthStateChanged
+  onAuthStateChanged,
+  User
 } from 'firebase/auth';
 import { auth, isAdmin, db } from '../utils/firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+
+const BOOTSTRAP_ADMIN_UID = 'KtZLKuzl56QzPLiFVRVfovWVapz2';
+
+const getErrorMessage = (error: unknown, fallback: string) => {
+  return error instanceof Error ? error.message : fallback;
+};
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,45 +24,16 @@ const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isUserAdmin, setIsUserAdmin] = useState(false);
   
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
-
-  // 사용자가 관리자인지 확인하는 함수
-  const checkAndSetupAdmin = async (user: any) => {
-    if (!user) return false;
-    
-    try {
-      console.log('Checking if user is admin:', user.email, user.uid);
-      
-      // vavfapi032@gmail.com 계정은 자동으로 관리자로 설정
-      if (user.email === import.meta.env.VITE_ADMIN_EMAIL) {
-        console.log('관리자 계정 감지 - admin 페이지로 이동');
-        await ensureAdminInFirestore(user);
-        return true;
-      }
-      
-      // 하드코딩된 UID가 관리자인지 확인
-      if (user.uid === 'KtZLKuzl56QzPLiFVRVfovWVapz2') {
-        console.log('Admin UID detected');
-        await ensureAdminInFirestore(user);
-        return true;
-      }
-      
-      // Firestore에서 관리자 상태 확인
-      const adminStatus = await isAdmin(user.uid);
-      console.log('Admin status from Firestore:', adminStatus);
-      return adminStatus;
-    } catch (error) {
-      console.error('Error checking admin status:', error);
+  // 부트스트랩 관리자만 자신의 관리자 문서를 생성할 수 있음
+  const ensureAdminInFirestore = useCallback(async (user: User) => {
+    if (user.uid !== BOOTSTRAP_ADMIN_UID) {
       return false;
     }
-  };
-  
-  // Firestore에 관리자 문서가 있는지 확인하고 없으면 생성
-  const ensureAdminInFirestore = async (user: any) => {
+
     try {
       const adminDocRef = doc(db, "admins", user.uid);
       const adminDoc = await getDoc(adminDocRef);
@@ -80,7 +58,27 @@ const Login = () => {
       console.error('Error ensuring admin in Firestore:', error);
       return false;
     }
-  };
+  }, []);
+
+  // 사용자가 관리자인지 확인하는 함수
+  const checkAndSetupAdmin = useCallback(async (user: User) => {
+    try {
+      console.log('Checking if user is admin:', user.email, user.uid);
+
+      if (user.uid === BOOTSTRAP_ADMIN_UID) {
+        console.log('부트스트랩 관리자 계정 감지');
+        await ensureAdminInFirestore(user);
+        return true;
+      }
+
+      const adminStatus = await isAdmin(user.uid);
+      console.log('Admin status from Firestore:', adminStatus);
+      return adminStatus;
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      return false;
+    }
+  }, [ensureAdminInFirestore]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -88,7 +86,6 @@ const Login = () => {
         console.log("로그인 상태 감지됨:", user.email, user.uid);
         const adminStatus = await checkAndSetupAdmin(user);
         console.log("관리자 상태:", adminStatus);
-        setIsUserAdmin(adminStatus);
         
         if (adminStatus) {
           console.log('Redirecting to admin page...');
@@ -98,7 +95,7 @@ const Login = () => {
     });
     
     return () => unsubscribe();
-  }, [navigate]);
+  }, [checkAndSetupAdmin, navigate]);
 
   const handleEmailPasswordAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,28 +104,27 @@ const Login = () => {
     
     try {
       if (isSignUp) {
-        await createUserWithEmailAndPassword(auth, email, password);
-        // 회원가입 후 바로 로그인되므로, 관리자 체크 후 분기
-        const user = auth.currentUser;
-        if (user && user.email === import.meta.env.VITE_ADMIN_EMAIL) {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const adminStatus = await checkAndSetupAdmin(userCredential.user);
+        if (adminStatus) {
           navigate('/admin');
         } else {
-        navigate('/');
+          navigate('/');
         }
       } else {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         console.log('로그인 성공:', user.email, user.uid);
-        // 관리자 체크 후 분기
-        if (user.email === import.meta.env.VITE_ADMIN_EMAIL) {
+        const adminStatus = await checkAndSetupAdmin(user);
+        if (adminStatus) {
           navigate('/admin');
         } else {
           navigate('/');
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Authentication error:', error);
-      setError(error.message || '인증 오류가 발생했습니다.');
+      setError(getErrorMessage(error, '인증 오류가 발생했습니다.'));
     } finally {
       setLoading(false);
     }
@@ -142,17 +138,8 @@ const Login = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       console.log("구글 로그인 성공:", user.email, user.uid);
-      
-      // 관리자 이메일 환경 변수 체크 (Vite 방식)
-      if (user.email === import.meta.env.VITE_ADMIN_EMAIL) {
-        console.log('관리자 계정 감지 - admin 페이지로 이동');
-        await ensureAdminInFirestore(user);
-          navigate('/admin');
-          return;
-      }
-      
-      // 백그라운드에서 관리자 권한 확인
-      const adminStatus = await isAdmin(user.uid);
+
+      const adminStatus = await checkAndSetupAdmin(user);
       console.log("관리자 상태 확인:", adminStatus);
       
       if (adminStatus) {
@@ -160,9 +147,9 @@ const Login = () => {
       } else {
         navigate('/');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Google sign-in error:', error);
-      setError(error.message || 'Google 로그인 중 오류가 발생했습니다.');
+      setError(getErrorMessage(error, 'Google 로그인 중 오류가 발생했습니다.'));
     } finally {
       setLoading(false);
     }
@@ -177,8 +164,7 @@ const Login = () => {
       const user = result.user;
       console.log("깃허브 로그인 성공:", user.email, user.uid);
       
-      // 백그라운드에서 관리자 권한 확인
-      const adminStatus = await isAdmin(user.uid);
+      const adminStatus = await checkAndSetupAdmin(user);
       console.log("관리자 상태 확인:", adminStatus);
       
       if (adminStatus) {
@@ -186,9 +172,9 @@ const Login = () => {
       } else {
         navigate('/');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('GitHub sign-in error:', error);
-      setError(error.message || 'GitHub 로그인 중 오류가 발생했습니다.');
+      setError(getErrorMessage(error, 'GitHub 로그인 중 오류가 발생했습니다.'));
     } finally {
       setLoading(false);
     }
@@ -317,4 +303,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

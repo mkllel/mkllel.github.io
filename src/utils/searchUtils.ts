@@ -1,7 +1,5 @@
-import { collection, query, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import { BlogPost, PortfolioProject } from './firebase';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 
 interface SearchResult {
   id: string;
@@ -107,4 +105,4 @@ export async function searchContent(searchTerm: string): Promise<SearchResult[]>
   }
 
   return results;
-} 
+}

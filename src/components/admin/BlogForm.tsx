@@ -9,7 +9,6 @@ const BlogForm: React.FC<BlogFormProps> = ({
   setActiveTab,
   onSubmit,
   isLoading,
-  error,
   setError
 }) => {
   // 블로그 포스트 폼 상태
@@ -91,7 +90,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
       });
       setContent(newContent);
       setContentImages([]);
-    } catch (err) {
+    } catch {
       setError('본문 이미지 업로드 중 오류가 발생했습니다.');
     } finally {
       setIsUploadingContentImages(false);
@@ -357,4 +356,4 @@ console.log(hello);
   );
 };
 
-export default BlogForm; 
+export default BlogForm;

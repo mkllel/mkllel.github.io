@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { db, auth, isAdmin } from '../utils/firebase';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import { db } from '../utils/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import { PortfolioProject } from '../utils/firebase';
-import { formatDateKorean } from '../utils/dateUtils';
-import LoadingSpinner from '../components/LoadingSpinner';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -20,17 +17,8 @@ const PortfolioDetail = () => {
   const [project, setProject] = useState<PortfolioProject | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [isAdminUser, setIsAdminUser] = useState(false);
 
   useEffect(() => {
-    // 관리자 권한 확인
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const adminStatus = await isAdmin(user.uid);
-        setIsAdminUser(adminStatus);
-      }
-    });
-
     // 포트폴리오 프로젝트 가져오기
     const fetchProject = async () => {
       if (!id) {
@@ -58,54 +46,7 @@ const PortfolioDetail = () => {
     };
 
     fetchProject();
-    return () => unsubscribe();
-  }, [id, navigate]);
-
-  // 관리자 페이지로 이동 - 편집 기능
-  const handleEdit = () => {
-    navigate(`/admin`);
-  };
-
-  // 관리자 페이지로 이동 - 삭제 기능
-  const handleDelete = () => {
-    if (window.confirm('정말로 이 프로젝트를 삭제하시겠습니까?')) {
-      navigate(`/admin`);
-    }
-  };
-
-  // 마크다운 형식 텍스트를 HTML로 간단하게 변환
-  const renderMarkdown = (markdown: string): string => {
-    if (!markdown) return '';
-    let processedMarkdown = markdown.replace(/<hr>/g, '---');
-    let html = processedMarkdown
-      // 이미지 마크다운 변환 (가장 먼저!)
-      .replace(/!\[([^\]]*)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width:100%;margin:1rem 0;" />')
-      // h3 처리
-      .replace(/###\s+(.*?)$/gm, '<h3>$1</h3>')
-      // h2 처리
-      .replace(/##\s+(.*?)$/gm, '<h2>$1</h2>')
-      // h1 처리
-      .replace(/#\s+(.*?)$/gm, '<h1>$1</h1>')
-      // 굵은 글씨
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      // 기울임꼴
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      // 코드 블록
-      .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>')
-      // 인라인 코드
-      .replace(/`(.*?)`/g, '<code>$1</code>')
-      // 링크
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
-      // 순서 없는 목록
-      .replace(/^\s*-\s+(.*?)$/gm, '<li>$1</li>')
-      // 수평선
-      .replace(/^---$/gm, '<hr/>')
-      // 단락
-      .replace(/\n\n/g, '</p><p>')
-      // 줄바꿈
-      .replace(/\n/g, '<br/>');
-    return '<p>' + html + '</p>';
-  };
+  }, [id]);
 
   if (loading) {
     return (
@@ -150,12 +91,6 @@ const PortfolioDetail = () => {
   return (
     <div className="portfolio-details mx-auto my-8">
       <div className="portfolio-details-header">
-        {/* {isAdminUser && (
-          <div className="admin-controls">
-            <button className="edit-button" onClick={handleEdit}>수정</button>
-            <button className="delete-button" onClick={handleDelete}>삭제</button>
-          </div>
-        )} */}
         <div className="portfolio-details-cover-container">
           <div className="portfolio-details-cover-overlay"></div>
           {project.imageUrl && (
@@ -168,7 +103,6 @@ const PortfolioDetail = () => {
           <div className="portfolio-details-title-container">
             <h1>{project.title}</h1>
             <div className="portfolio-details-meta">
-              {/* <span className="date-time">{formatDateKorean(project.createdAt)}</span> */}
               <span className="portfolio-category">{project.category || '일반'}</span>
             </div>
           </div>
@@ -220,4 +154,4 @@ const PortfolioDetail = () => {
   );
 };
 
-export default PortfolioDetail; 
+export default PortfolioDetail;

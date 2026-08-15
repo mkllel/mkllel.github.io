@@ -14,10 +14,13 @@ import {
   deleteDoc,
   serverTimestamp,
   setDoc,
-  enableIndexedDbPersistence
+  enableIndexedDbPersistence,
+  type Timestamp
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, type StorageReference } from 'firebase/storage';
 import { getAnalytics } from 'firebase/analytics';
+
+export type ContentDate = Timestamp | Date | string | number | { seconds: number };
 
 // Define types for blog posts and portfolio projects
 export interface BlogPost {
@@ -27,8 +30,8 @@ export interface BlogPost {
   image?: string;
   category?: string;
   tags?: string[];
-  createdAt: any; // Timestamp | Date | string
-  updatedAt?: any; // Timestamp | Date | string
+  createdAt: ContentDate;
+  updatedAt?: ContentDate;
 }
 
 export interface PortfolioProject {
@@ -42,8 +45,8 @@ export interface PortfolioProject {
   link?: string;
   category?: string;
   featured?: boolean;
-  createdAt: any; // Timestamp | Date | string
-  updatedAt?: any; // Timestamp | Date | string
+  createdAt: ContentDate;
+  updatedAt?: ContentDate;
 }
 
 const firebaseProjectId = import.meta.env.VITE_FIREBASE_PROJECT_ID || "my-portfolio-2ea55";
@@ -103,7 +106,7 @@ const cleanupUploadedImage = async (storageRef: StorageReference | null) => {
   }
 };
 
-const removeUndefinedFields = <T extends Record<string, any>>(data: T): T => {
+const removeUndefinedFields = <T extends object>(data: T): T => {
   return Object.fromEntries(
     Object.entries(data).filter(([, value]) => value !== undefined)
   ) as T;
@@ -242,8 +245,8 @@ const createBlogPost = async (postData: {
   category?: string;
   tags?: string[];
   image?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: ContentDate;
+  updatedAt?: ContentDate;
 }, imageFile?: File) => {
   const docRef = doc(collection(db, "blogPosts"));
   let uploadedImageRef: StorageReference | null = null;
@@ -279,7 +282,7 @@ const createBlogPost = async (postData: {
 };
 
 // Function to update a blog post
-const updateBlogPost = async (postId: string, data: any, imageFile?: File) => {
+const updateBlogPost = async (postId: string, data: Partial<BlogPost>, imageFile?: File) => {
   let uploadedImageRef: StorageReference | null = null;
 
   try {
@@ -323,8 +326,8 @@ const createPortfolioProject = async (projectData: {
   imageUrl?: string;
   link?: string;
   featured?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: ContentDate;
+  updatedAt?: ContentDate;
 }, imageFile?: File) => {
   const docRef = doc(collection(db, "portfolioProjects"));
   let uploadedImageRef: StorageReference | null = null;
@@ -361,7 +364,7 @@ const createPortfolioProject = async (projectData: {
 };
 
 // Function to update a portfolio project
-const updatePortfolioProject = async (projectId: string, data: any, imageFile?: File) => {
+const updatePortfolioProject = async (projectId: string, data: Partial<PortfolioProject>, imageFile?: File) => {
   let uploadedImageRef: StorageReference | null = null;
 
   try {
@@ -404,7 +407,7 @@ const extractFileName = (imageUrl: string): string => {
     const fileName = pathParts[pathParts.length - 1];
     // 타임스탬프 제거 (타임스탬프_파일명.확장자 형식 가정)
     return fileName.substring(fileName.indexOf('_') + 1);
-  } catch (error) {
+  } catch {
     return '파일명 추출 실패';
   }
 };

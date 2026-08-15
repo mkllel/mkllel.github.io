@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { collection, onSnapshot, getFirestore, Timestamp } from 'firebase/firestore';
-import { BlogPost as BlogPostType } from '../utils/firebase';
+import { BlogPost as BlogPostType, type ContentDate } from '../utils/firebase';
 import { formatDateKorean } from '../utils/dateUtils';
 
 const Blog = () => {
@@ -29,7 +29,7 @@ const Blog = () => {
           if (!a.createdAt || !b.createdAt) return 0;
           
           // Handle different timestamp types
-          const getTimeValue = (timestamp: any) => {
+          const getTimeValue = (timestamp: ContentDate) => {
             if (timestamp instanceof Timestamp) {
               return timestamp.seconds;
             } else if (timestamp instanceof Date) {

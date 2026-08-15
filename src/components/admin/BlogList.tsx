@@ -17,7 +17,7 @@ const BlogList: React.FC<BlogListProps> = ({
       const fileName = pathParts[pathParts.length - 1];
       // 타임스탬프 제거 (타임스탬프_파일명.확장자 형식 가정)
       return fileName.substring(fileName.indexOf('_') + 1);
-    } catch (error) {
+    } catch {
       return '파일명 추출 실패';
     }
   };
@@ -94,4 +94,4 @@ const BlogList: React.FC<BlogListProps> = ({
   );
 };
 
-export default BlogList; 
+export default BlogList;

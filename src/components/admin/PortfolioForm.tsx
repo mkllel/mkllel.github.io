@@ -10,7 +10,6 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
   setActiveTab,
   onSubmit,
   isLoading,
-  error,
   setError
 }) => {
   // 포트폴리오 프로젝트 폼 상태
@@ -77,7 +76,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
     try {
       new URL(url);
       return true;
-    } catch (err) {
+    } catch {
       return false;
     }
   };
@@ -109,7 +108,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
       });
       setDescription(newDescription);
       setContentImages([]);
-    } catch (err) {
+    } catch {
       setError('설명 이미지 업로드 중 오류가 발생했습니다.');
     } finally {
       setIsUploadingContentImages(false);
@@ -411,4 +410,4 @@ console.log(hello);
   );
 };
 
-export default PortfolioForm; 
+export default PortfolioForm;

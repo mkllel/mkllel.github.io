@@ -10,7 +10,7 @@ A modern portfolio website built with React, TypeScript, and Tailwind CSS.
 - Authentication with Firebase (Email/Password, Google, GitHub)
 - Blog section with content management
 - Portfolio showcase
-- Contact form
+- Contact links for email, GitHub, and resume
 
 ## 📋 Pages
 

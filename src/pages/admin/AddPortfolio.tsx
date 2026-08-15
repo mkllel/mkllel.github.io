@@ -13,7 +13,6 @@ const AddPortfolio = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [createdProjectId, setCreatedProjectId] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -49,7 +48,6 @@ const AddPortfolio = () => {
       
       // ID가 성공적으로 반환되면 상태 업데이트 및 모달 표시
       if (projectId) {
-        setCreatedProjectId(projectId);
         setShowSuccessModal(true);
         
         // 폼 초기화
@@ -200,4 +198,4 @@ const AddPortfolio = () => {
   );
 };
 
-export default AddPortfolio; 
+export default AddPortfolio;

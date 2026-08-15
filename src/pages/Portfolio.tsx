@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot, getFirestore, Timestamp } from 'firebase/firestore';
-import { PortfolioProject } from '../utils/firebase';
+import { PortfolioProject, type ContentDate } from '../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import PortfolioCard from '../components/PortfolioCard';
 
@@ -29,11 +29,13 @@ const Portfolio = () => {
           if (!a.createdAt || !b.createdAt) return 0;
           
           // Handle different timestamp types
-          const getTimeValue = (timestamp: any) => {
-            if (timestamp instanceof Timestamp || (typeof timestamp === 'object' && timestamp?.seconds !== undefined)) {
+          const getTimeValue = (timestamp: ContentDate) => {
+            if (timestamp instanceof Timestamp) {
               return timestamp.seconds;
             } else if (timestamp instanceof Date) {
               return timestamp.getTime() / 1000;
+            } else if (typeof timestamp === 'object' && 'seconds' in timestamp) {
+              return timestamp.seconds;
             } else if (typeof timestamp === 'string') {
               const parsedTime = Date.parse(timestamp);
               return Number.isNaN(parsedTime) ? 0 : parsedTime / 1000;

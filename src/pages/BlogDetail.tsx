@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { db, auth, isAdmin } from '../utils/firebase';
+import { useParams, useNavigate } from 'react-router-dom';
+import { db } from '../utils/firebase';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
 import { BlogPost } from '../utils/firebase';
 import { formatDateKorean } from '../utils/dateUtils';
 import ReactMarkdown from 'react-markdown';
@@ -19,18 +18,9 @@ const BlogDetail = () => {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [isAdminUser, setIsAdminUser] = useState(false);
   const [relatedProject, setRelatedProject] = useState<{id: string, title: string} | null>(null);
 
   useEffect(() => {
-    // 관리자 권한 확인
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const adminStatus = await isAdmin(user.uid);
-        setIsAdminUser(adminStatus);
-      }
-    });
-
     // 블로그 포스트 가져오기
     const fetchBlogPost = async () => {
       if (!id) {
@@ -74,20 +64,7 @@ const BlogDetail = () => {
     };
 
     fetchBlogPost();
-    return () => unsubscribe();
-  }, [id, navigate]);
-
-  // 관리자 페이지로 이동 - 편집 기능
-  const handleEdit = () => {
-    navigate(`/admin`);
-  };
-
-  // 관리자 페이지로 이동 - 삭제 기능
-  const handleDelete = () => {
-    if (window.confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
-      navigate(`/admin`);
-    }
-  };
+  }, [id]);
 
   if (loading) {
     return (
@@ -132,12 +109,6 @@ const BlogDetail = () => {
   return (
     <div className="blog-details">
       <div className="blog-details-header">
-        {/* {isAdminUser && (
-          <div className="admin-controls">
-            <button className="edit-button" onClick={handleEdit}>수정</button>
-            <button className="delete-button" onClick={handleDelete}>삭제</button>
-          </div>
-        )} */}
         <div className="blog-details-cover-container">
           <div className="blog-details-cover-overlay"></div>
           {post.image ? (
@@ -188,4 +159,4 @@ const BlogDetail = () => {
   );
 };
 
-export default BlogDetail; 
+export default BlogDetail;

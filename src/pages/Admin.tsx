@@ -7,7 +7,6 @@ import PortfolioList from '../components/admin/PortfolioList';
 import PortfolioForm from '../components/admin/PortfolioForm';
 import useAdminAuth from '../components/admin/hooks/useAdminAuth';
 import useAdminData from '../components/admin/hooks/useAdminData';
-import { formatDateKorean } from '../utils/dateUtils';
 import { BlogPost, PortfolioProject } from '../utils/firebase';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -20,7 +19,7 @@ const Admin = () => {
   const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
   
   // 훅을 사용하여 관리자 인증 및 데이터 관리
-  const { user, isAdminUser, isAuthLoading, authError } = useAdminAuth();
+  const { isAdminUser, isAuthLoading, authError } = useAdminAuth();
   const { 
     blogPosts, 
     portfolioProjects, 
@@ -183,4 +182,4 @@ const Admin = () => {
   );
 };
 
-export default Admin; 
+export default Admin;

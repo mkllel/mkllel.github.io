@@ -17,7 +17,7 @@ const PortfolioList: React.FC<PortfolioListProps> = ({
       const fileName = pathParts[pathParts.length - 1];
       // 타임스탬프 제거 (타임스탬프_파일명.확장자 형식 가정)
       return fileName.substring(fileName.indexOf('_') + 1);
-    } catch (error) {
+    } catch {
       return '파일명 추출 실패';
     }
   };
@@ -113,4 +113,4 @@ const PortfolioList: React.FC<PortfolioListProps> = ({
   );
 };
 
-export default PortfolioList; 
+export default PortfolioList;

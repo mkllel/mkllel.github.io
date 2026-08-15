@@ -1,9 +1,10 @@
 import { Timestamp } from 'firebase/firestore';
+import type { ContentDate } from './firebase';
 
 /**
  * 다양한 날짜 타입을 한글 형식으로 포맷팅 (2025년 4월 19일 오후 8:07)
  */
-export const formatDateKorean = (timestamp: any): string => {
+export const formatDateKorean = (timestamp: ContentDate | null | undefined): string => {
   if (!timestamp) return '날짜 없음';
   
   try {
@@ -35,4 +36,4 @@ export const formatDateKorean = (timestamp: any): string => {
     console.error('날짜 형식 변환 오류:', error);
     return '날짜 변환 오류';
   }
-}; 
+};

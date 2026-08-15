@@ -21,6 +21,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 // Hook to use the auth context
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   return useContext(AuthContext);
 };
@@ -63,4 +64,4 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
   );
 };
 
-export default AuthContext; 
+export default AuthContext;
