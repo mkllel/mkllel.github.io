@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/LoadingSpinner';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -27,8 +28,8 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="portfolio" element={<Portfolio />} />
             <Route path="portfolio/:id" element={<PortfolioDetail />} />
-            <Route path="blog" element={<Blog />} />
-            <Route path="blog/:id" element={<BlogDetail />} />
+            <Route path="blog" element={<ProtectedRoute><Blog /></ProtectedRoute>} />
+            <Route path="blog/:id" element={<ProtectedRoute><BlogDetail /></ProtectedRoute>} />
             <Route path="login" element={<Login />} />
             <Route path="admin" element={<AdminRoute />} />
             <Route path="*" element={<Navigate to="/" replace />} />

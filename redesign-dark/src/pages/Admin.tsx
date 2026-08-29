@@ -11,6 +11,7 @@ import useAdminAuth from '../components/admin/hooks/useAdminAuth';
 import useAdminData from '../components/admin/hooks/useAdminData';
 import { BlogPost, PortfolioProject } from '../utils/firebase';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { LogOut } from 'lucide-react';
 
 const Admin = () => {
   // 활성 탭 상태 관리 (블로그 또는 포트폴리오)
@@ -21,7 +22,7 @@ const Admin = () => {
   const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
 
   // 훅을 사용하여 관리자 인증 및 데이터 관리
-  const { isAdminUser, isAuthLoading, authError } = useAdminAuth();
+  const { isAdminUser, isAuthLoading, isSigningOut, authError, logout } = useAdminAuth();
   const {
     blogPosts,
     portfolioProjects,
@@ -108,7 +109,18 @@ const Admin = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-6">관리자 대시보드</h1>
+      <div className="admin-dashboard-heading">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">관리자 대시보드</h1>
+        <button
+          className="admin-logout-button"
+          type="button"
+          onClick={logout}
+          disabled={isSigningOut}
+        >
+          <LogOut size={17} aria-hidden={true} />
+          <span>{isSigningOut ? '로그아웃 중...' : '로그아웃'}</span>
+        </button>
+      </div>
 
       {/* 에러 및 성공 메시지 표시 */}
       <AdminMessages

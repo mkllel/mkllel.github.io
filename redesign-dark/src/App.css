@@ -1855,6 +1855,47 @@ li {
 }
 
 /* Featured project order */
+.admin-dashboard-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-dashboard-heading h1 {
+  margin: 0;
+}
+
+.admin-logout-button {
+  display: inline-flex;
+  min-height: 40px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.admin-logout-button:hover:not(:disabled) {
+  border-color: var(--green);
+  background: var(--surface-hover);
+  color: var(--green);
+}
+
+.admin-logout-button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
 .admin-tabs {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -2266,6 +2307,10 @@ li {
 
   .admin-tabs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-dashboard-heading {
+    align-items: flex-start;
   }
 
   .admin-tab:last-child:nth-child(odd) {

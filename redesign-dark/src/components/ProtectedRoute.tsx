@@ -16,13 +16,19 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
 
-      if (user) {
-        const adminStatus = await isAdmin(user.uid);
-        setHasAdminAccess(adminStatus);
-      } else {
+      try {
+        if (user) {
+          const adminStatus = await isAdmin(user.uid);
+          setHasAdminAccess(adminStatus);
+        } else {
+          setHasAdminAccess(false);
+        }
+      } catch (error) {
+        console.error('보호된 페이지 권한 확인 오류:', error);
         setHasAdminAccess(false);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
