@@ -1,4 +1,4 @@
-# Portfolio - 이민규 (MinKyu Lee)
+# Portfolio
 
 백엔드 중심 웹 개발자 이민규의 포트폴리오 사이트입니다.
 
