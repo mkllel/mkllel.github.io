@@ -1,35 +1,58 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="./assets/icon-DRQzV63m.ico" />
+    <script>
+      (function() {
+        var theme = localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+    <link rel="icon" type="image/x-icon" href="/assets/icon-DRQzV63m.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MinKyu Lee</title>
+    <title>이민규 | 백엔드 중심 웹 개발자</title>
     <meta
       name="description"
-      content="웹 개발자 이민규의 포트폴리오입니다. React, TypeScript, Firebase 기반 프로젝트와 개발 경험을 소개합니다."
+      content="Python·FastAPI 기반 업무 자동화 API와 운영 가능한 웹 서비스를 만드는 개발자 이민규의 포트폴리오입니다."
     />
     <meta name="author" content="MinKyu Lee" />
     <link rel="canonical" href="https://mkllel.github.io/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://mkllel.github.io/" />
-    <meta property="og:title" content="MinKyu Lee | Web Developer Portfolio" />
+    <meta property="og:title" content="이민규 | 백엔드 중심 웹 개발자" />
     <meta
       property="og:description"
-      content="React, TypeScript, Firebase 기반 프로젝트와 개발 경험을 담은 웹 개발자 이민규의 포트폴리오입니다."
+      content="Python·FastAPI 기반 업무 자동화, AI 서비스 백엔드 연동, Docker 운영 경험을 소개합니다."
     />
-    <meta property="og:image" content="https://mkllel.github.io/picture/myProfile.png" />
+    <meta property="og:image" content="https://mkllel.github.io/picture/og-portfolio.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="백엔드 중심 웹 개발자 이민규 포트폴리오" />
     <meta property="og:site_name" content="MinKyu Lee Portfolio" />
     <meta property="og:locale" content="ko_KR" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="MinKyu Lee | Web Developer Portfolio" />
+    <meta name="twitter:title" content="이민규 | 백엔드 중심 웹 개발자" />
     <meta
       name="twitter:description"
-      content="React, TypeScript, Firebase 기반 프로젝트와 개발 경험을 담은 웹 개발자 이민규의 포트폴리오입니다."
+      content="Python·FastAPI 기반 업무 자동화, AI 서비스 백엔드 연동, Docker 운영 경험을 소개합니다."
     />
-    <meta name="twitter:image" content="https://mkllel.github.io/picture/myProfile.png" />
+    <meta name="twitter:image" content="https://mkllel.github.io/picture/og-portfolio.png" />
+    <meta name="twitter:image:alt" content="백엔드 중심 웹 개발자 이민규 포트폴리오" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "이민규",
+        "url": "https://mkllel.github.io/",
+        "jobTitle": "Backend-focused Web Developer",
+        "sameAs": ["https://github.com/mkllel"]
+      }
+    </script>
     <script>
       (function(location) {
         if (location.search[1] === '/') {
@@ -49,35 +72,8 @@
         }
       })(window.location);
     </script>
-    <style>
-      /* 글로벌 포커스 효과 제거 스타일 */
-      input:focus, 
-      textarea:focus, 
-      select:focus, 
-      button:focus {
-        outline: none !important;
-        box-shadow: none !important;
-        -webkit-appearance: none !important;
-      }
-
-      a:focus-visible,
-      input:focus-visible,
-      textarea:focus-visible,
-      select:focus-visible,
-      button:focus-visible {
-        outline: 2px solid #818cf8 !important;
-        outline-offset: 3px !important;
-        box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25) !important;
-      }
-      
-      /* Firefox에 대한 추가 스타일 */
-      input::-moz-focus-inner,
-      button::-moz-focus-inner {
-        border: 0;
-      }
-    </style>
-    <script type="module" crossorigin src="./assets/index-BIxLi3ts.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CnPrrooP.css">
+    <script type="module" crossorigin src="/assets/index-Bp4g78Lz.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-oSp0iVlu.css">
   </head>
   <body>
     <div id="root"></div>
