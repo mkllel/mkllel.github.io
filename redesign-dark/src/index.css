@@ -1,0 +1,91 @@
+@import './pretendard-subset.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('/fonts/NanumSquare-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('/fonts/NanumSquare-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    height: 100%;
+    background: var(--canvas);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    letter-spacing: 0;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: 'NanumSquare', Pretendard, sans-serif;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    letter-spacing: 0;
+  }
+
+  input,
+  select,
+  textarea {
+    color-scheme: inherit;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--muted);
+    opacity: 1;
+  }
+
+  button,
+  select {
+    cursor: pointer;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  #root {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  :focus-visible {
+    outline: 3px solid #f2a56f;
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: #285c47;
+    color: #ffffff;
+  }
+}

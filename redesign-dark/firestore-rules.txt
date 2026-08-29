@@ -1,0 +1,75 @@
+// Firebase Firestore 보안 규칙 참조 파일
+// Firebase 콘솔 > Firestore Database > 규칙 탭에 이 내용을 복사하여 붙여넣고 게시하세요.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isBootstrapAdmin() {
+      return isSignedIn() && request.auth.uid == 'KtZLKuzl56QzPLiFVRVfovWVapz2';
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.admin == true ||
+        isBootstrapAdmin() ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidBlogPost() {
+      return request.resource.data.keys().hasOnly([
+        'title', 'content', 'image', 'category', 'tags', 'createdAt', 'updatedAt'
+      ]) &&
+      request.resource.data.title is string &&
+      request.resource.data.title.size() > 0 &&
+      request.resource.data.title.size() <= 200 &&
+      request.resource.data.content is string &&
+      request.resource.data.content.size() > 0 &&
+      request.resource.data.content.size() <= 200000 &&
+      (!request.resource.data.keys().hasAny(['tags']) || (
+        request.resource.data.tags is list &&
+        request.resource.data.tags.size() <= 30
+      ));
+    }
+
+    function isValidPortfolioProject() {
+      return request.resource.data.keys().hasOnly([
+        'title', 'description', 'imageUrl', 'technologies', 'githubUrl',
+        'liveUrl', 'link', 'category', 'featured', 'createdAt', 'updatedAt'
+      ]) &&
+      request.resource.data.title is string &&
+      request.resource.data.title.size() > 0 &&
+      request.resource.data.title.size() <= 200 &&
+      request.resource.data.description is string &&
+      request.resource.data.description.size() > 0 &&
+      request.resource.data.description.size() <= 200000 &&
+      request.resource.data.technologies is list &&
+      request.resource.data.technologies.size() <= 30;
+    }
+
+    match /admins/{adminId} {
+      allow read: if isSignedIn() && (request.auth.uid == adminId || isAdmin());
+      allow create, update, delete: if isBootstrapAdmin();
+    }
+
+    match /blogPosts/{postId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidBlogPost();
+      allow delete: if isAdmin();
+    }
+
+    match /portfolioProjects/{projectId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidPortfolioProject();
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

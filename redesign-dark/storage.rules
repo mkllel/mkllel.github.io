@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isBootstrapAdmin() {
+      return isSignedIn() && request.auth.uid == 'KtZLKuzl56QzPLiFVRVfovWVapz2';
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.admin == true ||
+        isBootstrapAdmin() ||
+        exists(/databases/(default)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidImageWrite() {
+      return request.resource == null || (
+        request.resource.size < 5 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/(jpeg|png|webp|gif)')
+      );
+    }
+
+    // 공개 이미지 읽기 허용
+    match /images/{allPaths=**} {
+      allow read: if true;
+    }
+
+    match /images/blog/{postId}/{fileName} {
+      allow write: if isAdmin() && isValidImageWrite();
+    }
+
+    match /images/portfolio/{projectId}/{fileName} {
+      allow write: if isAdmin() && isValidImageWrite();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
