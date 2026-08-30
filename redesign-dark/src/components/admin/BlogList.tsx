@@ -1,6 +1,7 @@
 import React from 'react';
 import { formatDateKorean } from '../../utils/dateUtils';
 import { BlogListProps } from './types';
+import AdminImagePreview from './AdminImagePreview';
 
 const BlogList: React.FC<BlogListProps> = ({
   blogPosts,
@@ -8,20 +9,6 @@ const BlogList: React.FC<BlogListProps> = ({
   onDelete,
   isLoading
 }) => {
-  // URL에서 파일명 추출
-  const extractFileName = (imageUrl: string): string => {
-    try {
-      // URL에서 경로 부분 추출
-      const pathParts = new URL(imageUrl).pathname.split('/');
-      // 마지막 부분이 파일명
-      const fileName = pathParts[pathParts.length - 1];
-      // 타임스탬프 제거 (타임스탬프_파일명.확장자 형식 가정)
-      return fileName.substring(fileName.indexOf('_') + 1);
-    } catch {
-      return '파일명 추출 실패';
-    }
-  };
-
   return (
     <div className="mb-8">
       <h2 className="text-xl font-bold mb-4">블로그 포스트 목록</h2>
@@ -35,18 +22,7 @@ const BlogList: React.FC<BlogListProps> = ({
               key={post.id}
               className="border dark:border-gray-700 p-4 rounded-md shadow-sm hover:shadow-md transition-shadow"
             >
-              {post.image && (
-                <div className="mb-3">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-40 object-cover rounded-md"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                    파일명: {extractFileName(post.image)}
-                  </p>
-                </div>
-              )}
+              <AdminImagePreview key={post.image || 'empty'} src={post.image} alt={post.title} />
 
               <h3 className="font-bold text-lg mb-1 truncate">{post.title}</h3>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { formatDateKorean } from '../../utils/dateUtils';
 import { PortfolioListProps } from './types';
+import AdminImagePreview from './AdminImagePreview';
 
 const PortfolioList: React.FC<PortfolioListProps> = ({
   portfolioProjects,
@@ -8,20 +9,6 @@ const PortfolioList: React.FC<PortfolioListProps> = ({
   onDelete,
   isLoading
 }) => {
-  // URL에서 파일명 추출
-  const extractFileName = (imageUrl: string): string => {
-    try {
-      // URL에서 경로 부분 추출
-      const pathParts = new URL(imageUrl).pathname.split('/');
-      // 마지막 부분이 파일명
-      const fileName = pathParts[pathParts.length - 1];
-      // 타임스탬프 제거 (타임스탬프_파일명.확장자 형식 가정)
-      return fileName.substring(fileName.indexOf('_') + 1);
-    } catch {
-      return '파일명 추출 실패';
-    }
-  };
-
   return (
     <div className="mb-8">
       <h2 className="text-xl font-bold mb-4">포트폴리오 프로젝트 목록</h2>
@@ -35,18 +22,11 @@ const PortfolioList: React.FC<PortfolioListProps> = ({
               key={project.id}
               className="min-w-0 border dark:border-gray-700 p-4 rounded-md shadow-sm hover:shadow-md transition-shadow"
             >
-              {project.imageUrl && (
-                <div className="mb-3">
-                  <img
-                    src={project.imageUrl}
-                    alt={project.title}
-                    className="w-full h-40 object-cover rounded-md"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                    파일명: {extractFileName(project.imageUrl)}
-                  </p>
-                </div>
-              )}
+              <AdminImagePreview
+                key={project.imageUrl || project.galleryImages?.[0]?.url || 'empty'}
+                src={project.imageUrl || project.galleryImages?.[0]?.url}
+                alt={project.title}
+              />
 
               <h3 className="font-bold text-lg mb-1 truncate flex items-center">
                 {project.title}

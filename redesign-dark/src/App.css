@@ -1896,6 +1896,17 @@ li {
   opacity: 0.55;
 }
 
+.admin-list-image-placeholder {
+  display: grid;
+  width: 100%;
+  height: 160px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-hover);
+  color: var(--muted);
+}
+
 .admin-tabs {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
