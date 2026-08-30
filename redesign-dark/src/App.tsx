@@ -10,7 +10,6 @@ const Portfolio = lazy(() => import('./pages/Portfolio'));
 const PortfolioDetail = lazy(() => import('./pages/PortfolioDetail'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogDetail = lazy(() => import('./pages/BlogDetail'));
-const Login = lazy(() => import('./pages/Login'));
 const AdminRoute = lazy(() => import('./pages/AdminRoute'));
 
 const RouteFallback = () => (
@@ -30,7 +29,6 @@ const App = () => {
             <Route path="portfolio/:id" element={<PortfolioDetail />} />
             <Route path="blog" element={<ProtectedRoute><Blog /></ProtectedRoute>} />
             <Route path="blog/:id" element={<ProtectedRoute><BlogDetail /></ProtectedRoute>} />
-            <Route path="login" element={<Login />} />
             <Route path="admin" element={<AdminRoute />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

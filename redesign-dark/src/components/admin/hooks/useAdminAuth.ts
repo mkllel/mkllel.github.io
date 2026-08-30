@@ -32,7 +32,7 @@ const useAdminAuth = (): UseAdminAuthResult => {
           setUser(null);
           setIsAdminUser(false);
           setIsAuthLoading(false);
-          navigate('/login');
+          navigate('/admin');
         }
       } catch (error) {
         console.error('관리자 권한 확인 오류:', error);
@@ -57,7 +57,7 @@ const useAdminAuth = (): UseAdminAuthResult => {
 
     try {
       await signOut(auth);
-      navigate('/login', { replace: true });
+      navigate('/admin', { replace: true });
     } catch (error) {
       console.error('관리자 로그아웃 오류:', error);
       setAuthError('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');

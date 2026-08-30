@@ -24,7 +24,7 @@ const Footer = () => (
     </div>
     <div className="site-container site-footer__bottom">
       <span>
-        <Link className="site-footer__admin-link" to="/login" aria-label="관리자 로그인">©</Link>{' '}
+        <Link className="site-footer__admin-link" to="/admin" aria-label="관리자 로그인">©</Link>{' '}
         {new Date().getFullYear()} MinKyu Lee. All Rights Reserved.
       </span>
     </div>

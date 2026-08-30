@@ -81,7 +81,7 @@ const Navigation = () => {
               </div>
             ) : (
               <Link
-                to="/login"
+                to="/admin"
                 className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200"
               >
                 로그인
