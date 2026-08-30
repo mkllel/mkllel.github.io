@@ -414,6 +414,26 @@ li {
   );
 }
 
+:root[data-theme='light'] .hero-trace {
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme='light'] .hero-trace__pixels {
+  background-image:
+    radial-gradient(circle, rgba(19, 122, 84, 0.42) 0 1px, transparent 1.25px),
+    radial-gradient(circle, rgba(21, 34, 26, 0.12) 0 0.75px, transparent 1px);
+  filter: drop-shadow(0 0 4px rgba(19, 122, 84, 0.08));
+}
+
+:root[data-theme='light'] .hero-trace__glow {
+  background: radial-gradient(
+    circle 220px at var(--pointer-x) var(--pointer-y),
+    rgba(19, 122, 84, 0.07) 0,
+    rgba(19, 122, 84, 0.02) 48%,
+    transparent 74%
+  );
+}
+
 @media (hover: hover) {
   .home-hero:hover .hero-trace,
   .home-hero:focus-within .hero-trace {
