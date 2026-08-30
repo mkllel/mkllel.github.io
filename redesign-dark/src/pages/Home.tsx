@@ -38,13 +38,13 @@ const Home = () => {
   const heroTraceRef = useRef<HTMLDivElement>(null);
   const projectButtonRef = useRef<HTMLAnchorElement>(null);
 
-  const handleHeroPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+  const handleHeroPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     const trace = heroTraceRef.current;
     if (!trace) return;
 
-    trace.style.setProperty('--pointer-x', `${event.clientX - bounds.left + 48}px`);
-    trace.style.setProperty('--pointer-y', `${event.clientY - bounds.top + 34}px`);
+    trace.style.setProperty('--pointer-x', `${event.clientX - bounds.left}px`);
+    trace.style.setProperty('--pointer-y', `${event.clientY - bounds.top}px`);
   };
 
   const handleMagneticPointerMove = (event: ReactPointerEvent<HTMLSpanElement>) => {
@@ -88,21 +88,12 @@ const Home = () => {
 
   return (
     <div className="site-page">
-      <section className="home-hero">
-        <div className="site-container home-hero__inner" onPointerMove={handleHeroPointerMove}>
-          <div className="hero-trace" ref={heroTraceRef} aria-hidden="true">
-            <span className="hero-trace__lane" />
-            <span className="hero-trace__lane" />
-            <span className="hero-trace__lane" />
-            <span className="hero-trace__lane" />
-            <span className="hero-trace__pointer">
-              <i />
-              <i />
-              <i />
-              <i />
-            </span>
-            <span className="hero-trace__scanline" />
-          </div>
+      <section className="home-hero" onPointerMove={handleHeroPointerMove}>
+        <div className="hero-trace" ref={heroTraceRef} aria-hidden="true">
+          <span className="hero-trace__pixels" />
+          <span className="hero-trace__glow" />
+        </div>
+        <div className="site-container home-hero__inner">
           <div className="home-hero__copy">
             <p className="eyebrow">ABOUT ME</p>
             <h1>업무 자동화와 운영 가능한 API를 만드는 웹 개발자 이민규입니다.</h1>
