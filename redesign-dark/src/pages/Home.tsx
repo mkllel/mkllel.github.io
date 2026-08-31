@@ -141,7 +141,7 @@ const Home = () => {
           <div className="section-heading section-heading--experience">
             <p className="eyebrow">FEATURED PROJECTS</p>
             <h2 id="featured-heading">Featured Projects</h2>
-            <p>기능 목록보다 해결한 문제와 맡은 범위를 먼저 보여드립니다.</p>
+            <p>기능을 나열하기보다 어떤 문제를 해결했고, 그 과정에서 어디까지 맡았는지 먼저 보여드립니다.</p>
           </div>
           <div className="featured-grid">
             {selectedProjects.map((project, index) => (
@@ -172,7 +172,7 @@ const Home = () => {
           <div className="section-heading section-heading--left">
             <p className="eyebrow">SKILLS</p>
             <h2 id="skills-heading">Skills</h2>
-            <p>기술 이름만 나열하지 않고 어떤 문제에 적용했는지 함께 정리했습니다.</p>
+            <p>기술명만 나열하지 않고, 각 기술을 어떤 문제에 활용했는지도 함께 정리했습니다.</p>
           </div>
           <div className="skill-groups">
             {skillGroups.map((group) => (
