@@ -6,6 +6,7 @@ import BlogForm from '../components/admin/BlogForm';
 import PortfolioList from '../components/admin/PortfolioList';
 import PortfolioForm from '../components/admin/PortfolioForm';
 import FeaturedProjectOrder from '../components/admin/FeaturedProjectOrder';
+import SiteThemeSettings from '../components/admin/SiteThemeSettings';
 import type { AdminTab } from '../components/admin/types';
 import useAdminAuth from '../components/admin/hooks/useAdminAuth';
 import useAdminData from '../components/admin/hooks/useAdminData';
@@ -199,6 +200,13 @@ const Admin = () => {
           portfolioProjects={portfolioProjects}
           isLoading={isLoading}
           onSave={handleSaveFeaturedOrder}
+        />
+      )}
+
+      {activeTab === 'siteTheme' && (
+        <SiteThemeSettings
+          setError={setError}
+          setSuccessMessage={setSuccessMessage}
         />
       )}
     </div>

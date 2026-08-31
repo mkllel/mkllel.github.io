@@ -1,5 +1,5 @@
 import React from 'react';
-import { Briefcase, FileText, ListOrdered, PenLine, Plus } from 'lucide-react';
+import { Briefcase, FileText, ListOrdered, Palette, PenLine, Plus } from 'lucide-react';
 import type { AdminTab } from './types';
 
 interface AdminHeaderProps {
@@ -26,6 +26,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({
     { id: 'addPortfolio', label: '프로젝트 추가', icon: Plus, onSelect: resetProjectForm },
     { id: 'addBlog', label: '블로그 작성', icon: PenLine, onSelect: resetBlogForm },
     { id: 'featuredOrder', label: '주요 순서', icon: ListOrdered },
+    { id: 'siteTheme', label: '사이트 테마', icon: Palette },
   ];
 
   return (

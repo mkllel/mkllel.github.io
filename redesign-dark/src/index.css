@@ -80,7 +80,7 @@
   }
 
   :focus-visible {
-    outline: 3px solid #f2a56f;
+    outline: 3px solid var(--green);
     outline-offset: 3px;
   }
 

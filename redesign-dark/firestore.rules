@@ -68,6 +68,15 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /siteSettings/{settingId} {
+      allow read: if settingId == 'theme';
+      allow create, update: if settingId == 'theme' &&
+        isAdmin() &&
+        request.resource.data.keys().hasOnly(['accent']) &&
+        request.resource.data.accent in ['green', 'blue', 'purple'];
+      allow delete: if false;
+    }
+
     // 나머지 문서는 기본 거부
     match /{document=**} {
       allow read, write: if false;

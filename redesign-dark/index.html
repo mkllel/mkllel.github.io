@@ -6,6 +6,8 @@
       (function() {
         var theme = localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark';
         document.documentElement.dataset.theme = theme;
+        var accent = localStorage.getItem('portfolio-site-accent');
+        document.documentElement.dataset.accent = accent === 'blue' || accent === 'purple' ? accent : 'green';
         document.documentElement.classList.toggle('dark', theme === 'dark');
         document.documentElement.style.colorScheme = theme;
       })();
