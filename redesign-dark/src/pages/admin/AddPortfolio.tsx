@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createPortfolioProject } from '../../utils/firebase';
+import { createPortfolioProject } from '../../utils/firebaseAdmin';
 import AlertModal from '../../components/AlertModal';
 
 const AddPortfolio = () => {

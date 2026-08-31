@@ -8,6 +8,7 @@ interface PageMetadata {
   path?: string;
   image?: string;
   type?: 'website' | 'article';
+  noIndex?: boolean;
 }
 
 const setMeta = (selector: string, attribute: 'name' | 'property', key: string, content: string) => {
@@ -24,8 +25,9 @@ export const usePageMetadata = ({
   title,
   description,
   path = '/',
-  image = '/picture/og-portfolio.png',
+  image = '/picture/og-portfolio.jpg',
   type = 'website',
+  noIndex = false,
 }: PageMetadata) => {
   useEffect(() => {
     const fullTitle = title.includes('이민규') ? title : `${title} | 이민규`;
@@ -44,6 +46,7 @@ export const usePageMetadata = ({
     setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description);
     setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl);
     setMeta('meta[name="twitter:image:alt"]', 'name', 'twitter:image:alt', `${fullTitle} 대표 이미지`);
+    setMeta('meta[name="robots"]', 'name', 'robots', noIndex ? 'noindex, nofollow' : 'index, follow');
 
     let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!canonical) {
@@ -52,5 +55,5 @@ export const usePageMetadata = ({
       document.head.appendChild(canonical);
     }
     canonical.href = canonicalUrl;
-  }, [description, image, path, title, type]);
+  }, [description, image, noIndex, path, title, type]);
 };

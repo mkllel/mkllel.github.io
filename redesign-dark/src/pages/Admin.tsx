@@ -10,7 +10,7 @@ import SiteThemeSettings from '../components/admin/SiteThemeSettings';
 import type { AdminTab } from '../components/admin/types';
 import useAdminAuth from '../components/admin/hooks/useAdminAuth';
 import useAdminData from '../components/admin/hooks/useAdminData';
-import { BlogPost, PortfolioProject } from '../utils/firebase';
+import type { BlogPost, PortfolioProject } from '../utils/firebase';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { LogOut } from 'lucide-react';
 

@@ -68,8 +68,8 @@ const Header = () => {
   return (
     <header className="site-header">
       <div className="site-container site-header__inner">
-        <Link to="/" className="brand" aria-label="이민규 포트폴리오 홈">
-          <img className="brand__logo" src="/icon.ico" alt="" width="34" height="34" />
+        <Link to="/" className="brand" aria-label="Backend-focused Web Developer 포트폴리오 홈">
+          <img className="brand__logo" src="/picture/header-logo.png" alt="" width="34" height="34" />
           <span>Backend-focused Web Developer</span>
         </Link>
 
@@ -109,7 +109,15 @@ const Header = () => {
 const HeaderLink = ({ to, label }: { to: string; label: string }) => {
   const location = useLocation();
   const active = to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
-  return <Link to={to} className={active ? 'nav-link nav-link--active' : 'nav-link'}>{label}</Link>;
+  return (
+    <Link
+      to={to}
+      className={active ? 'nav-link nav-link--active' : 'nav-link'}
+      aria-current={active ? 'page' : undefined}
+    >
+      {label}
+    </Link>
+  );
 };
 
 const ThemeToggle = ({ theme, onToggle }: { theme: Theme; onToggle: () => void }) => {

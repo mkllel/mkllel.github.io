@@ -1,8 +1,7 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/LoadingSpinner';
-import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import './accentThemes.css';
 
@@ -12,6 +11,8 @@ const PortfolioDetail = lazy(() => import('./pages/PortfolioDetail'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogDetail = lazy(() => import('./pages/BlogDetail'));
 const AdminRoute = lazy(() => import('./pages/AdminRoute'));
+const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 const RouteFallback = () => (
   <div className="flex min-h-[60vh] items-center justify-center">
@@ -31,7 +32,7 @@ const App = () => {
             <Route path="blog" element={<ProtectedRoute><Blog /></ProtectedRoute>} />
             <Route path="blog/:id" element={<ProtectedRoute><BlogDetail /></ProtectedRoute>} />
             <Route path="admin" element={<AdminRoute />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </Suspense>

@@ -1,5 +1,5 @@
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import { BlogPost, PortfolioProject } from './firebase';
+import type { BlogPost, PortfolioProject } from './firebase';
 
 interface SearchResult {
   id: string;

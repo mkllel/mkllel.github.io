@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PortfolioFormProps } from './types';
-import { PortfolioProject, type PortfolioGalleryImage, type PortfolioResourceLink } from '../../utils/firebase';
-import { uploadBlogContentImages } from '../../utils/firebase';
+import type { PortfolioGalleryImage, PortfolioProject, PortfolioResourceLink } from '../../utils/firebase';
+import { uploadBlogContentImages } from '../../utils/firebaseAdmin';
 import { getProjectResourceLinks, toPortfolioViewProject, type PortfolioViewProject } from '../../data/portfolioContent';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -500,7 +500,7 @@ return hello;
             {isMarkdownPreviewOpen && (
               <div id="markdownPreview" className="border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-gray-800">
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">미리보기</h3>
-                <div className="prose prose-sm prose-indigo dark:prose-invert max-w-none overflow-auto max-h-[400px]">
+                <div className="markdown-preview markdown-preview--admin overflow-auto max-h-[400px]">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {description}
                   </ReactMarkdown>

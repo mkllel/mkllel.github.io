@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createBlogPost } from '../../utils/firebase';
+import { createBlogPost } from '../../utils/firebaseAdmin';
 import AlertModal from '../../components/AlertModal';
 
 const AddBlog = () => {

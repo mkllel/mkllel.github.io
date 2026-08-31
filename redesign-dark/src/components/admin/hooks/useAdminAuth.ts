@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, isAdmin } from '../../../utils/firebase';
+import { auth, isAdmin } from '../../../utils/firebaseAuth';
 import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 
 interface UseAdminAuthResult {

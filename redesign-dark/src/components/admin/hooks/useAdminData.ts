@@ -5,8 +5,6 @@ import {
   onSnapshot
 } from 'firebase/firestore';
 import {
-  BlogPost,
-  PortfolioProject,
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
@@ -14,7 +12,8 @@ import {
   updatePortfolioProject,
   saveFeaturedProjectOrder,
   deletePortfolioProject
-} from '../../../utils/firebase';
+} from '../../../utils/firebaseAdmin';
+import type { BlogPost, PortfolioProject } from '../../../utils/firebase';
 
 interface UseAdminDataResult {
   blogPosts: BlogPost[];

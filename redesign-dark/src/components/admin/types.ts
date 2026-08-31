@@ -1,4 +1,4 @@
-import { BlogPost, PortfolioProject } from '../../utils/firebase';
+import type { BlogPost, PortfolioProject } from '../../utils/firebase';
 
 export type AdminTab = 'blog' | 'portfolio' | 'addBlog' | 'addPortfolio' | 'featuredOrder' | 'siteTheme';
 

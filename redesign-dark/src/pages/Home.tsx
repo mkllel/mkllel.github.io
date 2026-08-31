@@ -117,13 +117,21 @@ const Home = () => {
             </div>
           </div>
           <figure className="home-portrait">
-            <img
-              src="/picture/profile-optimized.webp"
-              alt="웹 개발자 이민규"
-              width="640"
-              height="800"
-              fetchPriority="high"
-            />
+            <picture>
+              <source
+                media="(max-width: 720px)"
+                srcSet="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+              />
+              <img
+                src="/picture/profile-optimized.webp"
+                srcSet="/picture/profile-optimized-360.webp 360w, /picture/profile-optimized.webp 640w"
+                sizes="(max-width: 960px) 260px, 340px"
+                alt="웹 개발자 이민규"
+                width="640"
+                height="800"
+                fetchPriority="high"
+              />
+            </picture>
           </figure>
         </div>
       </section>

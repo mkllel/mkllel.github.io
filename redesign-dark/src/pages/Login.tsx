@@ -6,7 +6,7 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import { auth, isAdmin } from '../utils/firebase';
+import { auth, isAdmin } from '../utils/firebaseAuth';
 
 const Login = () => {
   const [email, setEmail] = useState('');

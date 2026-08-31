@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { auth, isAdmin } from '../utils/firebase';
+import { auth, isAdmin } from '../utils/firebaseAuth';
 import Admin from './Admin';
 import Login from './Login';
 
