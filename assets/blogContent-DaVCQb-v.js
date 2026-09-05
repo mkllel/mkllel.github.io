@@ -1,4 +1,4 @@
-import{C as a}from"./portfolioContent---9RVXan.js";const i={"스크래핑이라고 부르기엔 좀 빡셌던 Selenium 자동화 프로젝트":{priority:1,featured:!0,relatedProjectId:a,relatedProjectTitle:"어린이집 B2B 행정 자동화 플랫폼",sequence:["API 요청 접수","인증 세션 생성","기관별 단계 실행","상태·오류 기록","파일 저장·응답"],appendix:`
+import{C as a}from"./portfolioContent-CttieXMy.js";const i={"스크래핑이라고 부르기엔 좀 빡셌던 Selenium 자동화 프로젝트":{priority:1,featured:!0,relatedProjectId:a,relatedProjectTitle:"어린이집 B2B 행정 자동화 플랫폼",sequence:["API 요청 접수","인증 세션 생성","기관별 단계 실행","상태·오류 기록","파일 저장·응답"],appendix:`
 ## 운영 관점에서 정리한 설계 기준
 
 단순한 페이지 수집이 아니라 인증 세션과 장시간 작업을 관리해야 했기 때문에, API 요청과 브라우저 작업을 분리해 상태를 추적했습니다.
