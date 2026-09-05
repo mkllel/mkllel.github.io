@@ -1,17 +1,16 @@
 import type { PortfolioProject } from '../utils/firebase';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import { toString } from 'mdast-util-to-string';
+import type { Root, RootContent } from 'mdast';
 
 export const CHILDCARE_PROJECT_ID = 'vJUDdRO6unChbvQUqYho';
-
-export interface CaseStudyImage {
-  src: string;
-  alt: string;
-}
 
 export interface CaseStudySection {
   title: string;
   description: string;
-  items?: string[];
-  images?: CaseStudyImage[];
+  markdown: string;
 }
 
 export interface PortfolioViewProject extends PortfolioProject {
@@ -20,7 +19,7 @@ export interface PortfolioViewProject extends PortfolioProject {
   role: string;
   outcome: string;
   caseStudy: CaseStudySection[];
-  introImages?: CaseStudyImage[];
+  introMarkdown: string;
   architecture?: string[];
   visual: 'automation' | 'medical' | 'infrastructure' | 'web';
   priority: number;
@@ -53,99 +52,64 @@ export const getProjectResourceLinks = (project: PortfolioProject): DisplayResou
   });
 };
 
-const cleanMarkdownText = (value: string): string => value
-  .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-  .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-  .replace(/[*_`~]/g, '')
-  .replace(/<[^>]+>/g, '')
-  .replace(/\s+/g, ' ')
-  .trim();
-
-const extractMarkdownImages = (value: string, projectTitle: string): CaseStudyImage[] => {
-  const images: CaseStudyImage[] = [];
-  const imagePattern = /!\[([^\]]*)\]\((https?:\/\/[^\s)]+)(?:\s+["'][^"']*["'])?\)/g;
-
-  for (const match of value.matchAll(imagePattern)) {
-    images.push({
-      src: match[2],
-      alt: cleanMarkdownText(match[1]) || `${projectTitle} 설명 이미지`,
-    });
-  }
-
-  return images;
-};
+const markdownParser = unified().use(remarkParse).use(remarkGfm);
+const plainText = (nodes: RootContent[]): string =>
+  nodes.map(node => toString(node)).join(' ').replace(/\s+/g, ' ').trim();
+const cleanMarkdownText = (value: string): string =>
+  plainText((markdownParser.parse(value) as Root).children);
 
 const parseCaseStudy = (description: string, projectTitle: string): {
   intro: string;
-  introImages: CaseStudyImage[];
+  introMarkdown: string;
   sections: CaseStudySection[];
 } => {
   const sections: CaseStudySection[] = [];
-  const introParts: string[] = [];
-  const introImages: CaseStudyImage[] = [];
+  const tree = markdownParser.parse(description) as Root;
+  const slice = (node: RootContent) => description.slice(node.position!.start.offset, node.position!.end.offset);
+  const isDefinition = (node: RootContent) => node.type === 'definition' || node.type === 'footnoteDefinition';
+  const definitions = tree.children.filter(isDefinition).map(slice).join('\n\n');
+  const content = tree.children.filter(node => !isDefinition(node));
+  const first = content[0];
+  if (first?.type === 'heading' && toString(first).trim() === cleanMarkdownText(projectTitle)) {
+    content.shift();
+  }
+  // Split only at peer headings; nested headings and fenced code remain intact.
+  const sectionDepth = Math.min(...content.filter(node => node.type === 'heading').map(node => node.depth));
+  const markdown = (nodes: RootContent[]) => [nodes.map(slice).join('\n\n'), definitions].filter(Boolean).join('\n\n');
+  let intro: RootContent[] = [];
   let currentTitle = '';
-  let body: string[] = [];
-  let items: string[] = [];
-  let images: CaseStudyImage[] = [];
+  let body: RootContent[] = [];
 
   const flushSection = () => {
-    const sectionDescription = cleanMarkdownText(body.join(' '));
-    const cleanedItems = items.map(cleanMarkdownText).filter(Boolean);
-    const normalizedHeading = cleanMarkdownText(currentTitle);
-    const normalizedProjectTitle = cleanMarkdownText(projectTitle);
-    const isDocumentTitle = sections.length === 0
-      && normalizedHeading
-      && (normalizedHeading === normalizedProjectTitle
-        || normalizedHeading.includes(normalizedProjectTitle)
-        || normalizedProjectTitle.includes(normalizedHeading));
-
-    if (!normalizedHeading || isDocumentTitle) {
-      if (sectionDescription) introParts.push(sectionDescription);
-      introImages.push(...images);
-    } else if (sectionDescription || cleanedItems.length > 0 || images.length > 0) {
+    if (!currentTitle) {
+      intro = body;
+    } else {
       sections.push({
-        title: normalizedHeading,
-        description: sectionDescription,
-        ...(cleanedItems.length > 0 ? { items: cleanedItems } : {}),
-        ...(images.length > 0 ? { images } : {}),
+        title: currentTitle,
+        description: plainText(body),
+        markdown: markdown(body),
       });
     }
 
     body = [];
-    items = [];
-    images = [];
   };
 
-  description.split(/\r?\n/).forEach((line) => {
-    const heading = line.match(/^\s*#{1,4}\s+(.+?)\s*$/);
-    if (heading) {
+  content.forEach((node) => {
+    if (node.type === 'heading' && node.depth === sectionDepth) {
       flushSection();
-      currentTitle = heading[1];
+      currentTitle = toString(node);
       return;
     }
-
-    const listItem = line.match(/^\s*(?:[-*+]|\d+\.)\s+(.+?)\s*$/);
-    if (listItem) {
-      items.push(listItem[1]);
-      return;
-    }
-
-    const lineImages = extractMarkdownImages(line, projectTitle);
-    if (lineImages.length > 0) {
-      images.push(...lineImages);
-    }
-
-    const textWithoutImages = line.replace(/!\[[^\]]*\]\([^)]*\)/g, '').trim();
-    if (textWithoutImages && !/^\s*---+\s*$/.test(textWithoutImages)) body.push(textWithoutImages);
+    body.push(node);
   });
   flushSection();
 
-  if (sections.length === 0) {
-    const plainDescription = cleanMarkdownText(description);
-    if (plainDescription) sections.push({ title: '상세 내용', description: plainDescription });
+  if (sections.length === 0 && intro.length > 0) {
+    sections.push({ title: '상세 내용', description: plainText(intro), markdown: markdown(intro) });
+    return { intro: plainText(intro), introMarkdown: '', sections };
   }
 
-  return { intro: introParts.join(' '), introImages, sections };
+  return { intro: plainText(intro), introMarkdown: intro.length ? markdown(intro) : '', sections };
 };
 
 const findSectionText = (sections: CaseStudySection[], keywords: string[]): string | undefined =>
@@ -192,7 +156,7 @@ export const toPortfolioViewProject = (
       || findSectionText(parsed.sections, ['검증과 결과', '구현 결과', '결과'])
       || '',
     caseStudy: parsed.sections,
-    introImages: parsed.introImages,
+    introMarkdown: parsed.introMarkdown,
     architecture: project.architecture?.filter(Boolean),
     visual: getProjectVisual(project),
     priority,

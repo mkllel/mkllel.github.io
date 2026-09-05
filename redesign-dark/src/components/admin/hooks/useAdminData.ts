@@ -110,6 +110,7 @@ const useAdminData = (): UseAdminDataResult => {
   const handleCreateBlogPost = useCallback(async (post: BlogPost, imageFile?: File | null) => {
     setIsLoading(true);
     setError('');
+    setSuccessMessage('');
 
     try {
       await createBlogPost(post, imageFile || undefined);
@@ -118,6 +119,7 @@ const useAdminData = (): UseAdminDataResult => {
     } catch (err) {
       console.error('블로그 포스트 생성 오류:', err);
       setError('블로그 포스트를 저장하는 중 오류가 발생했습니다.');
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -125,9 +127,10 @@ const useAdminData = (): UseAdminDataResult => {
 
   // 블로그 포스트 업데이트
   const handleUpdateBlogPost = useCallback(async (post: BlogPost, imageFile?: File | null) => {
+    setSuccessMessage('');
     if (!post.id) {
       setError('업데이트할 블로그 포스트 ID가 없습니다.');
-      return;
+      throw new Error('업데이트할 블로그 포스트 ID가 없습니다.');
     }
 
     setIsLoading(true);
@@ -140,6 +143,7 @@ const useAdminData = (): UseAdminDataResult => {
     } catch (err) {
       console.error('블로그 포스트 업데이트 오류:', err);
       setError('블로그 포스트를 업데이트하는 중 오류가 발생했습니다.');
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -175,6 +179,7 @@ const useAdminData = (): UseAdminDataResult => {
   const handleCreateProject = useCallback(async (project: PortfolioProject, imageFile?: File | null) => {
     setIsLoading(true);
     setError('');
+    setSuccessMessage('');
 
     try {
       await createPortfolioProject(project, imageFile || undefined);
@@ -183,6 +188,7 @@ const useAdminData = (): UseAdminDataResult => {
     } catch (err) {
       console.error('포트폴리오 프로젝트 생성 오류:', err);
       setError('포트폴리오 프로젝트를 저장하는 중 오류가 발생했습니다.');
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -190,9 +196,10 @@ const useAdminData = (): UseAdminDataResult => {
 
   // 포트폴리오 프로젝트 업데이트
   const handleUpdateProject = useCallback(async (project: PortfolioProject, imageFile?: File | null) => {
+    setSuccessMessage('');
     if (!project.id) {
       setError('업데이트할 프로젝트 ID가 없습니다.');
-      return;
+      throw new Error('업데이트할 프로젝트 ID가 없습니다.');
     }
 
     setIsLoading(true);
@@ -205,6 +212,7 @@ const useAdminData = (): UseAdminDataResult => {
     } catch (err) {
       console.error('포트폴리오 프로젝트 업데이트 오류:', err);
       setError('포트폴리오 프로젝트를 업데이트하는 중 오류가 발생했습니다.');
+      throw err;
     } finally {
       setIsLoading(false);
     }

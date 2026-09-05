@@ -1220,7 +1220,7 @@ li {
 
 .case-section {
   display: grid;
-  grid-template-columns: 70px 1fr;
+  grid-template-columns: 70px minmax(0, 1fr);
   gap: 24px;
   padding: 42px 0;
   border-bottom: 1px solid var(--line);
@@ -1264,6 +1264,60 @@ li {
 .case-section li::marker {
   color: var(--green);
 }
+
+.project-markdown {
+  min-width: 0;
+  color: var(--ink-soft);
+  line-height: 1.78;
+  overflow-wrap: anywhere;
+}
+
+.project-markdown > * + * {
+  margin-top: 18px;
+}
+
+.project-markdown p {
+  margin: 0 0 18px;
+}
+
+.project-markdown ul,
+.project-markdown ol {
+  margin: 18px 0;
+  padding-left: 24px;
+}
+
+.project-markdown ul { list-style: disc; }
+.project-markdown ol { list-style: decimal; }
+.project-markdown li > ul { list-style: circle; }
+.project-markdown ul.contains-task-list { list-style: none; }
+.project-markdown li { margin: 7px 0; }
+.project-markdown li > p { margin-bottom: 8px; }
+.project-markdown li::marker { color: var(--green); }
+.project-markdown a { color: var(--green-dark); text-decoration: underline; text-underline-offset: 3px; }
+.project-markdown strong { color: var(--ink); font-weight: 700; }
+.project-markdown h3,
+.project-markdown h4,
+.project-markdown h5,
+.project-markdown h6 { color: var(--ink); font-size: 1.2rem; margin: 26px 0 12px; }
+.project-markdown blockquote { border-left: 3px solid var(--green); padding-left: 20px; }
+.project-markdown pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+  padding: 18px;
+  border-radius: 5px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.project-markdown code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; }
+.project-markdown :not(pre) > code { background: var(--paper); padding: 2px 5px; border-radius: 3px; }
+.project-markdown img { display: block; max-width: 100%; height: auto; margin: 18px 0; border-radius: 5px; }
+.project-markdown__table { max-width: 100%; overflow-x: auto; }
+.project-markdown table { border-collapse: collapse; width: 100%; }
+.project-markdown th,
+.project-markdown td { border: 1px solid var(--line); padding: 10px 14px; text-align: left; }
+.project-markdown th { background: var(--paper); color: var(--ink); }
+.project-markdown > :last-child { margin-bottom: 0; }
 
 .case-footer,
 .article-footer {

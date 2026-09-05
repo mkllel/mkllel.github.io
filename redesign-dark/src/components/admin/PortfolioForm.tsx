@@ -5,6 +5,7 @@ import { uploadBlogContentImages } from '../../utils/firebaseAdmin';
 import { getProjectResourceLinks, toPortfolioViewProject, type PortfolioViewProject } from '../../data/portfolioContent';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import ProjectMarkdown from '../ProjectMarkdown';
 
 const DetailPagePreview = ({ project }: { project: PortfolioViewProject }) => {
   const resourceLinks = getProjectResourceLinks(project);
@@ -63,15 +64,10 @@ const DetailPagePreview = ({ project }: { project: PortfolioViewProject }) => {
         </section>
       )}
 
-      {project.introImages && project.introImages.length > 0 && (
+      {project.introMarkdown && (
         <section className="case-content-media section--white">
-          <div className="admin-detail-preview__inner case-content-media__grid">
-            {project.introImages.map((image, index) => (
-              <figure className="case-content-image" key={`${image.src}-${index}`}>
-                <img src={image.src} alt={image.alt} />
-                {image.alt && <figcaption>{image.alt}</figcaption>}
-              </figure>
-            ))}
+          <div className="admin-detail-preview__inner case-sections">
+            <ProjectMarkdown>{project.introMarkdown}</ProjectMarkdown>
           </div>
         </section>
       )}
@@ -102,22 +98,7 @@ const DetailPagePreview = ({ project }: { project: PortfolioViewProject }) => {
               <span className="case-section__index">{String(index + 1).padStart(2, '0')}</span>
               <div>
                 <h2>{section.title}</h2>
-                {section.description && <p>{section.description}</p>}
-                {section.items && (
-                  <ul>
-                    {section.items.map((item, itemIndex) => <li key={`${item}-${itemIndex}`}>{item}</li>)}
-                  </ul>
-                )}
-                {section.images && (
-                  <div className="case-section__images">
-                    {section.images.map((image, imageIndex) => (
-                      <figure className="case-content-image" key={`${image.src}-${imageIndex}`}>
-                        <img src={image.src} alt={image.alt} />
-                        {image.alt && <figcaption>{image.alt}</figcaption>}
-                      </figure>
-                    ))}
-                  </div>
-                )}
+                <ProjectMarkdown>{section.markdown}</ProjectMarkdown>
               </div>
             </section>
           ))}

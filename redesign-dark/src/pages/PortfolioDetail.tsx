@@ -8,6 +8,7 @@ import {
 } from '../data/portfolioContent';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { db, type PortfolioProject } from '../utils/firebase';
+import ProjectMarkdown from '../components/ProjectMarkdown';
 
 const PortfolioDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -123,15 +124,10 @@ const PortfolioDetail = () => {
         </section>
       )}
 
-      {project.introImages && project.introImages.length > 0 && (
+      {project.introMarkdown && (
         <section className="case-content-media section--white">
-          <div className="site-container case-content-media__grid">
-            {project.introImages.map((image, index) => (
-              <figure className="case-content-image" key={`${image.src}-${index}`}>
-                <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
-                {image.alt && <figcaption>{image.alt}</figcaption>}
-              </figure>
-            ))}
+          <div className="site-container case-sections">
+            <ProjectMarkdown>{project.introMarkdown}</ProjectMarkdown>
           </div>
         </section>
       )}
@@ -162,22 +158,7 @@ const PortfolioDetail = () => {
               <span className="case-section__index">{String(index + 1).padStart(2, '0')}</span>
               <div>
                 <h2>{section.title}</h2>
-                {section.description && <p>{section.description}</p>}
-                {section.items && (
-                  <ul>
-                    {section.items.map((item) => <li key={item}>{item}</li>)}
-                  </ul>
-                )}
-                {section.images && (
-                  <div className="case-section__images">
-                    {section.images.map((image, imageIndex) => (
-                      <figure className="case-content-image" key={`${image.src}-${imageIndex}`}>
-                        <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
-                        {image.alt && <figcaption>{image.alt}</figcaption>}
-                      </figure>
-                    ))}
-                  </div>
-                )}
+                <ProjectMarkdown>{section.markdown}</ProjectMarkdown>
               </div>
             </section>
           ))}
