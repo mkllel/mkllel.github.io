@@ -3,16 +3,15 @@ import { Link, useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import {
   getProjectResourceLinks,
-  toPortfolioViewProject,
-  type PortfolioViewProject,
 } from '../data/portfolioContent';
+import { toPortfolioDetailProject, type PortfolioDetailProject } from '../data/portfolioDetailContent';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { db, type PortfolioProject } from '../utils/firebase';
 import ProjectMarkdown from '../components/ProjectMarkdown';
 
 const PortfolioDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const [project, setProject] = useState<PortfolioViewProject | null>(null);
+  const [project, setProject] = useState<PortfolioDetailProject | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -44,7 +43,7 @@ const PortfolioDetail = () => {
             setProject(null);
             setError('프로젝트를 찾을 수 없습니다.');
           } else {
-            setProject(toPortfolioViewProject(remote));
+            setProject(toPortfolioDetailProject(remote));
           }
         } else {
           setProject(null);
@@ -132,7 +131,7 @@ const PortfolioDetail = () => {
         </section>
       )}
 
-      {project.architecture && (
+      {project.architecture && project.architecture.length > 0 && (
         <section className="section section--paper">
           <div className="site-container">
             <div className="section-heading section-heading--left section-heading--compact">

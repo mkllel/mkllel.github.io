@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
 import { initializeApp, deleteApp } from 'firebase/app';
+import { loadTypeScript } from './load-typescript.mjs';
+import * as firestore from 'firebase/firestore';
 import {
   collection, connectFirestoreEmulator, deleteDoc, deleteField, doc,
   getDoc, getDocs, getFirestore, query, serverTimestamp, setDoc,
@@ -32,6 +34,11 @@ const delegate = client('delegate', 'registered-admin');
 const visitor = client('visitor');
 const member = client('member', 'ordinary-user');
 const claimOnly = client('claim-only', 'unregistered-admin', { admin: true });
+const operations = loadTypeScript(new URL('../src/utils/firebaseAdmin.ts', import.meta.url), {
+  './firebase': { app: clients[0].app, db: admin },
+  'firebase/firestore': firestore,
+  'firebase/storage': { getStorage: () => ({}) },
+});
 const project = (db, id) => doc(db, 'portfolioProjects', id);
 const denied = (promise) => assert.rejects(promise, { code: 'permission-denied' });
 const fields = {
@@ -119,18 +126,59 @@ test('only bootstrap admin can grant or revoke administrator access', async () =
   await deleteDoc(doc(admin, 'admins', 'temporary-admin'));
 });
 
-test('blog writes remain admin-only with current form fields', async () => {
+test('blog reads, queries and writes are admin-only', async () => {
   const data = { title: 'Blog', content: 'Body', image: '', category: '',
     tags: [], createdAt: serverTimestamp(), updatedAt: serverTimestamp() };
   const ref = doc(admin, 'blogPosts', 'test-blog');
   await setDoc(ref, data);
   await updateDoc(ref, { id: ref.id, content: 'Updated', updatedAt: serverTimestamp() });
-  for (const db of [visitor, member]) {
+  for (const db of [admin, delegate]) {
+    assert.equal((await getDoc(doc(db, 'blogPosts', ref.id))).data().content, 'Updated');
+    assert.ok((await getDocs(collection(db, 'blogPosts'))).size > 0);
+  }
+  for (const db of [visitor, member, claimOnly]) {
+    await denied(getDoc(doc(db, 'blogPosts', ref.id)));
+    await denied(getDocs(collection(db, 'blogPosts')));
     await denied(setDoc(doc(db, 'blogPosts', 'forbidden'), data));
     await denied(updateDoc(doc(db, 'blogPosts', ref.id), { content: 'Changed' }));
     await denied(deleteDoc(doc(db, 'blogPosts', ref.id)));
   }
   await deleteDoc(ref);
+});
+
+test('real project persistence supports unnamed links, cleared fields and partial updates', async () => {
+  const id = await operations.createPortfolioProject({ ...fields,
+    link: 'https://example.com/original',
+    resourceLinks: [{ url: ' https://example.com/file.pdf ', label: undefined }],
+  });
+  const ref = project(admin, id);
+  assert.deepEqual((await getDoc(ref)).data().resourceLinks, [{ url: 'https://example.com/file.pdf' }]);
+
+  await operations.updatePortfolioProject(id, { title: 'Partial update' });
+  let stored = (await getDoc(ref)).data();
+  assert.equal(stored.link, 'https://example.com/original');
+  assert.equal(stored.summary, fields.summary);
+  assert.equal(stored.featuredOrder, fields.featuredOrder);
+
+  await operations.updatePortfolioProject(id, { summary: '', role: '', outcome: '',
+    category: '', architecture: [], galleryImages: [], link: '',
+    resourceLinks: [{ url: 'https://example.com/next', label: '   ' }],
+  });
+  stored = (await getDoc(ref)).data();
+  for (const key of ['summary', 'role', 'outcome', 'category']) assert.equal(stored[key], '');
+  assert.deepEqual(stored.architecture, []);
+  assert.deepEqual(stored.galleryImages, []);
+  assert.deepEqual(stored.resourceLinks, [{ url: 'https://example.com/next' }]);
+  assert.equal(Object.hasOwn(stored, 'link'), false);
+  assert.equal(stored.featuredOrder, fields.featuredOrder);
+  await operations.deletePortfolioProject(id);
+});
+
+test('real blog persistence clears an existing category', async () => {
+  const id = await operations.createBlogPost({ title: 'Test', content: 'Body', category: 'Old category' });
+  await operations.updateBlogPost(id, { category: '' });
+  assert.equal((await getDoc(doc(admin, 'blogPosts', id))).data().category, '');
+  await operations.deleteBlogPost(id);
 });
 
 test('theme selection allows only the three supported accents and admin writes', async () => {

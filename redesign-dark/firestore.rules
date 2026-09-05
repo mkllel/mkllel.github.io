@@ -23,9 +23,9 @@ service cloud.firestore {
       allow create, update, delete: if isBootstrapAdmin();
     }
 
-    // 공개 콘텐츠는 모두 읽기 가능, 쓰기는 관리자만 가능
+    // 블로그는 데이터 조회와 작성 모두 관리자 전용입니다.
     match /blogPosts/{postId} {
-      allow read: if true;
+      allow read: if isAdmin();
       allow create, update, delete: if isAdmin();
     }
 

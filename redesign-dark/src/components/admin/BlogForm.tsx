@@ -115,7 +115,7 @@ const BlogForm: React.FC<BlogFormProps> = ({
       const postData: Partial<BlogPost> = {
         title,
         content,
-        category: category || undefined,
+        category,
         tags: tagsArray
       };
 

@@ -2,12 +2,14 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { PortfolioFormProps } from './types';
 import type { PortfolioGalleryImage, PortfolioProject, PortfolioResourceLink } from '../../utils/firebase';
 import { uploadBlogContentImages } from '../../utils/firebaseAdmin';
-import { getProjectResourceLinks, toPortfolioViewProject, type PortfolioViewProject } from '../../data/portfolioContent';
+import { getProjectResourceLinks } from '../../data/portfolioContent';
+import { toPortfolioDetailProject, type PortfolioDetailProject } from '../../data/portfolioDetailContent';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ProjectMarkdown from '../ProjectMarkdown';
+import { normalizeResourceLinks } from '../../utils/portfolioFields';
 
-const DetailPagePreview = ({ project }: { project: PortfolioViewProject }) => {
+const DetailPagePreview = ({ project }: { project: PortfolioDetailProject }) => {
   const resourceLinks = getProjectResourceLinks(project);
   const galleryImages = (project.galleryImages || []).filter((image) => image.url.trim());
 
@@ -148,14 +150,14 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
     const technologyList = technologies.split(',').map(tech => tech.trim()).filter(Boolean);
     const architectureSteps = architecture.split(',').map(step => step.trim()).filter(Boolean);
 
-    return toPortfolioViewProject({
+    return toPortfolioDetailProject({
       id: selectedProject?.id || 'detail-preview',
       title: title.trim() || '프로젝트 제목',
       description: description.trim() || '## 상세 내용\n\n프로젝트 설명을 입력하면 이곳에 표시됩니다.',
-      summary: summary.trim() || undefined,
-      role: role.trim() || undefined,
-      outcome: outcome.trim() || undefined,
-      architecture: architectureSteps.length > 0 ? architectureSteps : undefined,
+      summary: summary.trim(),
+      role: role.trim(),
+      outcome: outcome.trim(),
+      architecture: architectureSteps,
       imageUrl: imagePreviewUrl,
       link: link.trim() || undefined,
       resourceLinks,
@@ -296,9 +298,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
         return;
       }
 
-      const normalizedResourceLinks = resourceLinks
-        .filter(resource => resource.url.trim())
-        .map(resource => ({ url: resource.url.trim(), label: resource.label?.trim() || undefined }));
+      const normalizedResourceLinks = normalizeResourceLinks(resourceLinks);
       const normalizedGalleryImages = galleryImages
         .filter(image => image.url.trim())
         .map(image => ({ url: image.url.trim(), alt: image.alt.trim() }));
@@ -320,15 +320,15 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
       const projectData: Partial<PortfolioProject> = {
         title,
         description,
-        summary: summary || undefined,
-        role: role || undefined,
-        outcome: outcome || undefined,
-        architecture: architectureSteps.length > 0 ? architectureSteps : undefined,
-        link: link || undefined,
+        summary: summary.trim(),
+        role: role.trim(),
+        outcome: outcome.trim(),
+        architecture: architectureSteps,
+        link: link.trim(),
         resourceLinks: normalizedResourceLinks,
         galleryImages: normalizedGalleryImages,
         technologies: techArray,
-        category: category || undefined,
+        category,
         featured,
         isPrivate
       };

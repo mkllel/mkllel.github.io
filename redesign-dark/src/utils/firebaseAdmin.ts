@@ -25,6 +25,7 @@ import {
   type ContentDate,
   type PortfolioProject,
 } from './firebase';
+import { normalizeResourceLinks } from './portfolioFields';
 
 const storage = getStorage(app);
 
@@ -133,6 +134,8 @@ const createPortfolioProject = async (projectData: {
   role?: string;
   outcome?: string;
   architecture?: string[];
+  resourceLinks?: PortfolioProject['resourceLinks'];
+  galleryImages?: PortfolioProject['galleryImages'];
   category?: string;
   technologies?: string[];
   imageUrl?: string;
@@ -160,6 +163,8 @@ const createPortfolioProject = async (projectData: {
 
     await setDoc(docRef, removeUndefinedFields({
       ...projectData,
+      ...(projectData.resourceLinks !== undefined
+        ? { resourceLinks: normalizeResourceLinks(projectData.resourceLinks) } : {}),
       imageUrl,
       technologies: projectData.technologies || [],
       featured: projectData.featured || false,
@@ -185,7 +190,10 @@ const updatePortfolioProject = async (
   try {
     const updateData: UpdateData<DocumentData> = {
       ...data,
-      link: data.link?.trim() ? data.link : deleteField(),
+      ...(data.resourceLinks !== undefined
+        ? { resourceLinks: normalizeResourceLinks(data.resourceLinks) } : {}),
+      ...(data.link !== undefined
+        ? { link: data.link.trim() ? data.link : deleteField() } : {}),
       featuredOrder: data.featured === false ? deleteField() : data.featuredOrder,
       updatedAt: new Date().toISOString(),
     };

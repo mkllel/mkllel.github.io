@@ -1,26 +1,13 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
-import vm from 'node:vm';
 import test from 'node:test';
-import ts from 'typescript';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { loadTypeScript } from './load-typescript.mjs';
 
-const require = createRequire(import.meta.url);
-function loadSource(path) {
-  const source = readFileSync(new URL(path, import.meta.url), 'utf8');
-  const { outputText } = ts.transpileModule(source, {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022,
-      jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
-  });
-  const exports = {};
-  vm.runInNewContext(outputText, { exports, require });
-  return exports;
-}
-const { toPortfolioViewProject } = loadSource('../src/data/portfolioContent.ts');
-const Markdown = loadSource('../src/components/ProjectMarkdown.tsx').default;
-const view = (description) => toPortfolioViewProject({
+const { toPortfolioDetailProject } = loadTypeScript(new URL('../src/data/portfolioDetailContent.ts', import.meta.url));
+const { toPortfolioViewProject, getFeaturedProjects } = loadTypeScript(new URL('../src/data/portfolioContent.ts', import.meta.url));
+const Markdown = loadTypeScript(new URL('../src/components/ProjectMarkdown.tsx', import.meta.url)).default;
+const view = (description) => toPortfolioDetailProject({
   id: 'test', title: 'Project', description, technologies: [], createdAt: '2026-09-05',
 });
 const html = (markdown) => renderToStaticMarkup(createElement(Markdown, null, markdown));
@@ -85,4 +72,27 @@ test('summary extraction retains meaningful underscores and code names', () => {
   const doc = view('## Details\nUse `restart_policy` and **VM_1**.');
   assert.ok(doc.summary.includes('restart_policy'));
   assert.ok(doc.summary.includes('VM_1'));
+});
+
+test('explicitly cleared fields stay blank in both cards and detail views', () => {
+  const project = { title: 'Project', description: '## 담당\nOld role\n\n## 결과\nOld outcome',
+    summary: '', role: '', outcome: '', architecture: [], technologies: [], createdAt: '2026-09-05' };
+  for (const convert of [toPortfolioViewProject, toPortfolioDetailProject]) {
+    const result = convert(project);
+    assert.equal(result.summary, '');
+    assert.equal(result.role, '');
+    assert.equal(result.outcome, '');
+    assert.equal(result.architecture.length, 0);
+  }
+});
+
+test('lightweight cards retain saved metadata, featured order and privacy', () => {
+  const make = (id, order, isPrivate = false) => ({ id, title: id, description: 'Body',
+    summary: 'Saved summary', role: 'Saved role', technologies: [], createdAt: '2026-09-05',
+    featured: true, featuredOrder: order, isPrivate });
+  const cards = getFeaturedProjects([make('third', 3), make('hidden', 0, true), make('first', 1), make('second', 2), make('fourth', 4)]);
+  assert.deepEqual(Array.from(cards, x => x.id), ['first', 'second', 'third']);
+  assert.equal(cards[0].summary, 'Saved summary');
+  assert.equal(cards[0].role, 'Saved role');
+  assert.equal(Object.hasOwn(cards[0], 'caseStudy'), false);
 });
