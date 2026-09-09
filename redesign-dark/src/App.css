@@ -2572,6 +2572,10 @@ li {
     font-size: 2.25rem;
   }
 
+  .case-hero .button-row {
+    margin-top: 24px;
+  }
+
   .case-section {
     grid-template-columns: 42px 1fr;
     gap: 10px;
