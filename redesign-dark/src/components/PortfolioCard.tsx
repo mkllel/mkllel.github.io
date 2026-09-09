@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ImageOff } from 'lucide-react';
 import type { PortfolioViewProject } from '../data/portfolioContent';
+import PortfolioThumbnail from './PortfolioThumbnail';
 
 const PortfolioCard = ({ project }: { project: PortfolioViewProject }) => (
   <Link className="project-card" to={`/portfolio/${project.id}`}>
@@ -37,14 +38,11 @@ const ProjectVisual = ({ project }: { project: PortfolioViewProject }) => {
     return (
       <div className={`project-card__visual project-card__visual--image${isSplit ? ' project-card__visual--split' : ''}`}>
         {visualImages.slice(0, 2).map((image) => (
-          <img
+          <PortfolioThumbnail
             key={image.url}
             src={image.url}
             alt={image.alt || `${project.title} 구축 화면`}
-            width={isSplit ? 360 : 720}
-            height="420"
-            loading="lazy"
-            decoding="async"
+            split={isSplit}
           />
         ))}
       </div>
