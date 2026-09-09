@@ -1,4 +1,4 @@
-import{t as b}from"./portfolioContent-CttieXMy.js";import{u as M,t as g,a as S,r as x,M as T}from"./index-DrM_l87Q.js";import{j as s}from"./index-E8JikeM8.js";const y=M().use(S).use(x),m=e=>e.map(r=>g(r)).join(" ").replace(/\s+/g," ").trim(),w=e=>m(y.parse(e).children),D=(e,r)=>{const t=[],n=y.parse(e),o=i=>e.slice(i.position.start.offset,i.position.end.offset),a=i=>i.type==="definition"||i.type==="footnoteDefinition",d=n.children.filter(a).map(o).join(`
+import{t as b}from"./portfolioContent-CttieXMy.js";import{u as M,t as g,a as S,r as x,M as T}from"./index-D5C0jxGj.js";import{j as s}from"./index-CZj8mXWM.js";const y=M().use(S).use(x),m=e=>e.map(r=>g(r)).join(" ").replace(/\s+/g," ").trim(),w=e=>m(y.parse(e).children),D=(e,r)=>{const t=[],n=y.parse(e),o=i=>e.slice(i.position.start.offset,i.position.end.offset),a=i=>i.type==="definition"||i.type==="footnoteDefinition",d=n.children.filter(a).map(o).join(`
 
 `),p=n.children.filter(i=>!a(i)),u=p[0];(u==null?void 0:u.type)==="heading"&&g(u).trim()===w(r)&&p.shift();const P=Math.min(...p.filter(i=>i.type==="heading").map(i=>i.depth)),f=i=>[i.map(o).join(`
 
