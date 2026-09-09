@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Legacy build output copied into the repository root
+/assets/
+/picture/
+/skills/
+/404.html
+/icon.ico
+/vite.svg
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

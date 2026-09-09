@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Build output belongs in dist, not next to the application source
+/assets/
+/skills/
+/404.html
+/icon.ico
+/vite.svg
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

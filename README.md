@@ -25,6 +25,11 @@ Python·FastAPI 기반 업무 자동화, AI 서비스 백엔드 연동, Docker �
 
 현재 리디자인 소스는 `redesign-dark` 디렉터리에 있습니다.
 
+최상위의 `src`, `public`, `package.json`과 설정 파일은 이전 버전용으로 남겨 둔 자료입니다.
+현재 사이트의 개발·검사·배포 및 Firebase 규칙 관리는 모두 `redesign-dark`에서 진행합니다.
+Firebase 규칙은 이 폴더의 `firebase.json`이 지정한 `firestore.rules`와 `storage.rules`를 기준으로 사용합니다.
+최상위의 이전 규칙이나 과거 안내 파일을 운영 환경에 적용하지 마세요.
+
 ```bash
 cd redesign-dark
 npm install
@@ -100,6 +105,8 @@ npm run deploy
 ```
 
 `vite build`로 생성한 `dist`를 `gh-pages` 브랜치에 게시합니다. GitHub Pages는 해당 브랜치의 루트 디렉터리를 서비스합니다.
+
+빌드 결과는 `main` 브랜치에서 추적하지 않습니다. `dist` 내용을 저장소 최상위로 복사하지 마세요.
 
 ## License
 
