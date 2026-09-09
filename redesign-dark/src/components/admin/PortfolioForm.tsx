@@ -175,6 +175,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
     'B2B SaaS · 업무 자동화 · 백엔드',
     '백엔드 · AI 서비스 연동 · 인프라',
     '백엔드 · 인프라',
+    '인프라 · Linux · 서비스 운영 · MCP',
     '인프라 · Linux · 서비스 운영',
     '인프라 · 운영',
     '웹 개발 · CMS',
@@ -482,8 +483,56 @@ return hello;
               <div id="markdownPreview" className="border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-gray-800">
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">미리보기</h3>
                 <div className="markdown-preview markdown-preview--admin overflow-auto max-h-[400px]">
+                  <div className="mb-6 border-b border-gray-200 pb-5 dark:border-gray-700">
+                    <p className="mb-2 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                      {category || '프로젝트'}
+                    </p>
+                    <h4 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
+                      {title.trim() || '프로젝트 제목'}
+                    </h4>
+                    {summary.trim() && (
+                      <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">{summary}</p>
+                    )}
+                    <dl className="space-y-3 text-sm">
+                      {role.trim() && (
+                        <div>
+                          <dt className="font-bold text-gray-900 dark:text-white">담당</dt>
+                          <dd className="mt-1 text-gray-600 dark:text-gray-300">{role}</dd>
+                        </div>
+                      )}
+                      {technologies.trim() && (
+                        <div>
+                          <dt className="font-bold text-gray-900 dark:text-white">기술</dt>
+                          <dd className="mt-1 text-gray-600 dark:text-gray-300">
+                            {technologies.split(',').map(tech => tech.trim()).filter(Boolean).join(' · ')}
+                          </dd>
+                        </div>
+                      )}
+                      {outcome.trim() && (
+                        <div>
+                          <dt className="font-bold text-gray-900 dark:text-white">결과</dt>
+                          <dd className="mt-1 text-gray-600 dark:text-gray-300">{outcome}</dd>
+                        </div>
+                      )}
+                    </dl>
+                    {architecture.trim() && (
+                      <div className="mt-5">
+                        <h5 className="mb-2 text-sm font-bold text-gray-900 dark:text-white">구조와 처리 흐름</h5>
+                        <ol className="space-y-2">
+                          {architecture.split(',').map(step => step.trim()).filter(Boolean).map((step, index) => (
+                            <li className="flex items-start gap-2 text-sm" key={`${step}-${index}`}>
+                              <span className="font-bold text-indigo-600 dark:text-indigo-400">
+                                {String(index + 1).padStart(2, '0')}
+                              </span>
+                              <span className="text-gray-700 dark:text-gray-300">{step}</span>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
+                  </div>
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {description}
+                    {description || '프로젝트 설명을 입력하면 이곳에 표시됩니다.'}
                   </ReactMarkdown>
                 </div>
               </div>

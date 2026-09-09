@@ -1,5 +1,5 @@
-import React from 'react';
-import { formatDateKorean } from '../../utils/dateUtils';
+import React, { useMemo } from 'react';
+import { contentDateToSeconds, formatDateKorean } from '../../utils/dateUtils';
 import { PortfolioListProps } from './types';
 import AdminImagePreview from './AdminImagePreview';
 
@@ -9,15 +9,22 @@ const PortfolioList: React.FC<PortfolioListProps> = ({
   onDelete,
   isLoading
 }) => {
+  const sortedProjects = useMemo(
+    () => [...portfolioProjects].sort(
+      (a, b) => contentDateToSeconds(b.createdAt) - contentDateToSeconds(a.createdAt),
+    ),
+    [portfolioProjects],
+  );
+
   return (
     <div className="mb-8">
       <h2 className="text-xl font-bold mb-4">포트폴리오 프로젝트 목록</h2>
 
-      {portfolioProjects.length === 0 ? (
+      {sortedProjects.length === 0 ? (
         <p className="text-gray-500 dark:text-gray-400">포트폴리오 프로젝트가 없습니다.</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {portfolioProjects.map((project) => (
+          {sortedProjects.map((project) => (
             <div
               key={project.id}
               className="min-w-0 border dark:border-gray-700 p-4 rounded-md shadow-sm hover:shadow-md transition-shadow"
