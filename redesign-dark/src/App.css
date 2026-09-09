@@ -1181,7 +1181,7 @@ li {
 
 .architecture-flow {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--flow-columns, 5), minmax(0, 1fr));
   margin: 0;
   padding: 0;
   border: 1px solid var(--line);
@@ -1230,6 +1230,10 @@ li {
   color: var(--ink);
   font-size: 0.9rem;
   line-height: 1.45;
+}
+
+.architecture-description {
+  margin-top: 24px;
 }
 
 .case-sections {

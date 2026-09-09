@@ -7,6 +7,7 @@ import { toPortfolioDetailProject, type PortfolioDetailProject } from '../../dat
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ProjectMarkdown from '../ProjectMarkdown';
+import ProjectSystemFlow from '../ProjectSystemFlow';
 import { normalizeResourceLinks } from '../../utils/portfolioFields';
 
 const DetailPagePreview = ({ project }: { project: PortfolioDetailProject }) => {
@@ -66,7 +67,7 @@ const DetailPagePreview = ({ project }: { project: PortfolioDetailProject }) => 
         </section>
       )}
 
-      {project.introMarkdown && (
+      {!project.architecture?.length && project.introMarkdown && (
         <section className="case-content-media section--white">
           <div className="admin-detail-preview__inner case-sections">
             <ProjectMarkdown>{project.introMarkdown}</ProjectMarkdown>
@@ -75,22 +76,11 @@ const DetailPagePreview = ({ project }: { project: PortfolioDetailProject }) => 
       )}
 
       {project.architecture && project.architecture.length > 0 && (
-        <section className="section section--paper">
-          <div className="admin-detail-preview__inner">
-            <div className="section-heading section-heading--left section-heading--compact">
-              <p className="eyebrow">SYSTEM FLOW</p>
-              <h2>구조와 처리 흐름</h2>
-            </div>
-            <ol className="architecture-flow">
-              {project.architecture.map((step, index) => (
-                <li key={`${step}-${index}`}>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  <strong>{step}</strong>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
+        <ProjectSystemFlow
+          steps={project.architecture}
+          description={project.introMarkdown}
+          contentClassName="admin-detail-preview__inner"
+        />
       )}
 
       <section className="section section--white">

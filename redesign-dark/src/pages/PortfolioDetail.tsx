@@ -9,6 +9,7 @@ import { usePageMetadata } from '../hooks/usePageMetadata';
 import { db, type PortfolioProject } from '../utils/firebase';
 import ProjectMarkdown from '../components/ProjectMarkdown';
 import ProjectImage from '../components/ProjectImage';
+import ProjectSystemFlow from '../components/ProjectSystemFlow';
 import type { ProjectSlide } from '../components/ProjectLightbox';
 
 const ProjectLightbox = lazy(() => import('../components/ProjectLightbox'));
@@ -143,7 +144,7 @@ const PortfolioDetail = () => {
         </section>
       )}
 
-      {project.introMarkdown && (
+      {!project.architecture?.length && project.introMarkdown && (
         <section className="case-content-media section--white">
           <div className="site-container case-sections">
             <ProjectMarkdown onImageOpen={openImage}>{project.introMarkdown}</ProjectMarkdown>
@@ -152,22 +153,12 @@ const PortfolioDetail = () => {
       )}
 
       {project.architecture && project.architecture.length > 0 && (
-        <section className="section section--paper">
-          <div className="site-container">
-            <div className="section-heading section-heading--left section-heading--compact">
-              <p className="eyebrow">SYSTEM FLOW</p>
-              <h2>구조와 처리 흐름</h2>
-            </div>
-            <ol className="architecture-flow">
-              {project.architecture.map((step, index) => (
-                <li key={step}>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  <strong>{step}</strong>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
+        <ProjectSystemFlow
+          steps={project.architecture}
+          description={project.introMarkdown}
+          contentClassName="site-container"
+          onImageOpen={openImage}
+        />
       )}
 
       <section className="section section--white">
