@@ -24,11 +24,11 @@ const PortfolioDetail = () => {
   const openImage = (clicked: HTMLImageElement) => {
     const images = Array.from(articleRef.current?.querySelectorAll<HTMLImageElement>('img[data-project-image]') || []);
     const slides = images.map(image => ({
-      src: image.currentSrc || image.src,
+      src: image.dataset.originalSrc || image.currentSrc || image.src,
       alt: image.alt,
       description: image.alt,
-      width: image.naturalWidth || undefined,
-      height: image.naturalHeight || undefined,
+      width: Number(image.dataset.originalWidth) || undefined,
+      height: Number(image.dataset.originalHeight) || undefined,
     }));
     const index = images.indexOf(clicked);
     if (index >= 0) setViewer({ slides, index, open: true });
@@ -81,7 +81,7 @@ const PortfolioDetail = () => {
     void fetchProject();
   }, [id]);
 
-  if (loading) return <div className="status-message status-message--page"><span className="loading-dot" />프로젝트를 불러오는 중입니다.</div>;
+  if (loading) return <div className="status-message status-message--page" role="status"><span className="loading-dot" />프로젝트를 불러오는 중입니다.</div>;
 
   if (error || !project) {
     return (
@@ -127,7 +127,7 @@ const PortfolioDetail = () => {
           <div className="case-gallery site-container">
             {galleryImages.map((image) => (
               <figure key={image.url}>
-                <ProjectImage src={image.url} alt={image.alt || `${project.title} 구축 화면`} decoding="async" onOpen={openImage} />
+                <ProjectImage src={image.url} alt={image.alt || `${project.title} 구축 화면`} sizes="(max-width: 720px) calc(100vw - 28px), (max-width: 1220px) calc(50vw - 28px), 582px" decoding="async" onOpen={openImage} />
                 {image.alt && <figcaption>{image.alt}</figcaption>}
               </figure>
             ))}

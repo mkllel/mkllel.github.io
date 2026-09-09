@@ -23,3 +23,48 @@ const projectThumbnails: Record<string, { src: string; srcSet: string }> = {
 };
 
 export default projectThumbnails;
+
+export const projectDetailImages: Record<string, { src: string; srcSet: string; width: number; height: number }> = {
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FKhsT4sMBOZxEyLuvsPey%2F1749801056795_dajae.png?alt=media&token=a9405e17-e2d1-448e-a79c-363d133a5b8e": {
+    "src": "/project-thumbnails/a69f979e70534daa48cd-960.webp",
+    "srcSet": "/project-thumbnails/a69f979e70534daa48cd-480.webp 480w, /project-thumbnails/a69f979e70534daa48cd-960.webp 960w, /project-thumbnails/a69f979e70534daa48cd-1600.webp 1600w",
+    "width": 2846,
+    "height": 1548
+  },
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FrhLYG12hg9xXBVf9623Z%2F1749800008735_transtech.png?alt=media&token=d6ffc50d-d494-4bbe-8799-34f5e69ffbef": {
+    "src": "/project-thumbnails/44e0d86c1ef60bc95d32-960.webp",
+    "srcSet": "/project-thumbnails/44e0d86c1ef60bc95d32-480.webp 480w, /project-thumbnails/44e0d86c1ef60bc95d32-960.webp 960w, /project-thumbnails/44e0d86c1ef60bc95d32-1600.webp 1600w",
+    "width": 2846,
+    "height": 1556
+  },
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fscanox-medical-ai-20260909%2F36f9a1126d4648bc-ScanoX_Lumbar_Spine_Analysis.png?alt=media&token=429b2e11-d094-41eb-8634-3f953bfbd787": {
+    "src": "/project-thumbnails/5f8e17273938c58a9adb-960.webp",
+    "srcSet": "/project-thumbnails/5f8e17273938c58a9adb-480.webp 480w, /project-thumbnails/5f8e17273938c58a9adb-960.webp 960w, /project-thumbnails/5f8e17273938c58a9adb-1600.webp 1600w",
+    "width": 3840,
+    "height": 2200
+  },
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fscanox-medical-ai-20260909%2F40b78aa78d979afb-ScanoX_Hand_Analysis.png?alt=media&token=2407e887-04fa-40cb-ab8d-2fd0934eeca8": {
+    "src": "/project-thumbnails/8f455de6541ad6b051e2-960.webp",
+    "srcSet": "/project-thumbnails/8f455de6541ad6b051e2-480.webp 480w, /project-thumbnails/8f455de6541ad6b051e2-960.webp 960w, /project-thumbnails/8f455de6541ad6b051e2-1600.webp 1600w",
+    "width": 3840,
+    "height": 2200
+  },
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fscanox-medical-ai-20260909%2Fa62bfda1266b4796-ScanoX_Knee_ACL_Analysis.png?alt=media&token=6dd0c1cc-a6ce-4f32-8165-5ab29a2d9a80": {
+    "src": "/project-thumbnails/5f69d60e678a12375e6c-960.webp",
+    "srcSet": "/project-thumbnails/5f69d60e678a12375e6c-480.webp 480w, /project-thumbnails/5f69d60e678a12375e6c-960.webp 960w, /project-thumbnails/5f69d60e678a12375e6c-1600.webp 1600w",
+    "width": 3840,
+    "height": 2200
+  },
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fscanox-medical-ai-20260909%2Fd90c4c2212c4c698-ScanoX_HKA_Angle_Analysis.png?alt=media&token=bcdfbba0-6240-4336-af94-9ec9d591a375": {
+    "src": "/project-thumbnails/338a849c3b96dc05b29a-960.webp",
+    "srcSet": "/project-thumbnails/338a849c3b96dc05b29a-480.webp 480w, /project-thumbnails/338a849c3b96dc05b29a-960.webp 960w, /project-thumbnails/338a849c3b96dc05b29a-1600.webp 1600w",
+    "width": 2350,
+    "height": 1350
+  },
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FvJUDdRO6unChbvQUqYho%2F1785829925919_childcare-b2b-admin-automation.png?alt=media&token=ccea69f2-12e7-4ce7-954c-4277d4fe2d99": {
+    "src": "/project-thumbnails/4d74cc0d30ecc06ac0e9-960.webp",
+    "srcSet": "/project-thumbnails/4d74cc0d30ecc06ac0e9-480.webp 480w, /project-thumbnails/4d74cc0d30ecc06ac0e9-960.webp 960w, /project-thumbnails/4d74cc0d30ecc06ac0e9-1536.webp 1536w",
+    "width": 1536,
+    "height": 1024
+  }
+};

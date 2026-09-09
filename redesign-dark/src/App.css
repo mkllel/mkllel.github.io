@@ -979,7 +979,9 @@ li {
 }
 
 .status-message--page {
-  min-height: 65vh;
+  /* Keep the footer below the viewport while remote content is loading. */
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .status-message--error {

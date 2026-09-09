@@ -1,24 +1,8 @@
-@import './pretendard-subset.css';
+@import './font-subsets.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: 'NanumSquare';
-  src: url('/fonts/NanumSquare-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'NanumSquare';
-  src: url('/fonts/NanumSquare-ExtraBold.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
 
 @layer base {
   html {
