@@ -1280,6 +1280,18 @@ li {
   margin: 0 0 18px;
 }
 
+.project-markdown > hr {
+  margin: 36px 0 22px;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.project-markdown > hr + p:last-child {
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
 .project-markdown ul,
 .project-markdown ol {
   margin: 18px 0;
