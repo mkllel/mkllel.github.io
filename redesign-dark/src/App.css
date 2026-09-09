@@ -1092,6 +1092,22 @@ li {
   background: #eef2ef;
 }
 
+.project-image-trigger {
+  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  vertical-align: top;
+  cursor: zoom-in;
+}
+
+.project-image-trigger:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: -3px;
+}
+
 .case-gallery img {
   display: block;
   width: 100%;

@@ -12,6 +12,17 @@ const view = (description) => toPortfolioDetailProject({
 });
 const html = (markdown) => renderToStaticMarkup(createElement(Markdown, null, markdown));
 
+test('detail images are accessible zoom buttons without nesting inside links', () => {
+  const result = renderToStaticMarkup(createElement(Markdown, { onImageOpen: () => {} },
+    '[![Screen](/screen.png)](/screen.png)\n\n[Docs](https://example.com)'));
+  assert.ok(result.includes('aria-label="Screen 확대 보기"'));
+  assert.ok(result.includes('aria-haspopup="dialog"'));
+  assert.ok(result.includes('data-project-image'));
+  assert.ok(!result.includes('<a href="/screen.png">'));
+  assert.ok(result.includes('<a href="https://example.com">Docs</a>'));
+  assert.ok(!html('![Screen](/screen.png)').includes('<button'));
+});
+
 test('paragraphs, lists, links and images retain their authored order', () => {
   const doc = view('## Steps\nFirst **paragraph**\n\n- first item\n\nSecond paragraph\n\n![Example](/picture/myProfile_New.png)\n\n- second item\n\n[Docs](https://example.com)');
   const result = html(doc.caseStudy[0].markdown);

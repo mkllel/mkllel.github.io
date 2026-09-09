@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import {
@@ -8,12 +8,31 @@ import { toPortfolioDetailProject, type PortfolioDetailProject } from '../data/p
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { db, type PortfolioProject } from '../utils/firebase';
 import ProjectMarkdown from '../components/ProjectMarkdown';
+import ProjectImage from '../components/ProjectImage';
+import type { ProjectSlide } from '../components/ProjectLightbox';
+
+const ProjectLightbox = lazy(() => import('../components/ProjectLightbox'));
 
 const PortfolioDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<PortfolioDetailProject | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const articleRef = useRef<HTMLElement>(null);
+  const [viewer, setViewer] = useState<{ slides: ProjectSlide[]; index: number; open: boolean } | null>(null);
+
+  const openImage = (clicked: HTMLImageElement) => {
+    const images = Array.from(articleRef.current?.querySelectorAll<HTMLImageElement>('img[data-project-image]') || []);
+    const slides = images.map(image => ({
+      src: image.currentSrc || image.src,
+      alt: image.alt,
+      description: image.alt,
+      width: image.naturalWidth || undefined,
+      height: image.naturalHeight || undefined,
+    }));
+    const index = images.indexOf(clicked);
+    if (index >= 0) setViewer({ slides, index, open: true });
+  };
 
   usePageMetadata({
     title: project?.title ?? '프로젝트 상세',
@@ -24,6 +43,7 @@ const PortfolioDetail = () => {
 
   useEffect(() => {
     setError('');
+    setViewer(null);
 
     if (!id) {
       setError('프로젝트를 찾을 수 없습니다.');
@@ -76,7 +96,7 @@ const PortfolioDetail = () => {
   const galleryImages = (project.galleryImages || []).filter((image) => image.url.trim());
 
   return (
-    <article className="case-study page-shell">
+    <article className="case-study page-shell" ref={articleRef}>
       <header className="case-hero">
         <div className="site-container case-hero__grid">
           <div>
@@ -107,7 +127,7 @@ const PortfolioDetail = () => {
           <div className="case-gallery site-container">
             {galleryImages.map((image) => (
               <figure key={image.url}>
-                <img src={image.url} alt={image.alt || `${project.title} 구축 화면`} decoding="async" />
+                <ProjectImage src={image.url} alt={image.alt || `${project.title} 구축 화면`} decoding="async" onOpen={openImage} />
                 {image.alt && <figcaption>{image.alt}</figcaption>}
               </figure>
             ))}
@@ -118,7 +138,7 @@ const PortfolioDetail = () => {
       {project.imageUrl && (
         <section className="case-cover-section" aria-label="프로젝트 대표 이미지">
           <figure className="case-cover site-container">
-            <img src={project.imageUrl} alt={`${project.title} 대표 이미지`} decoding="async" />
+            <ProjectImage src={project.imageUrl} alt={`${project.title} 대표 이미지`} decoding="async" onOpen={openImage} />
           </figure>
         </section>
       )}
@@ -126,7 +146,7 @@ const PortfolioDetail = () => {
       {project.introMarkdown && (
         <section className="case-content-media section--white">
           <div className="site-container case-sections">
-            <ProjectMarkdown>{project.introMarkdown}</ProjectMarkdown>
+            <ProjectMarkdown onImageOpen={openImage}>{project.introMarkdown}</ProjectMarkdown>
           </div>
         </section>
       )}
@@ -157,7 +177,7 @@ const PortfolioDetail = () => {
               <span className="case-section__index">{String(index + 1).padStart(2, '0')}</span>
               <div>
                 <h2>{section.title}</h2>
-                <ProjectMarkdown>{section.markdown}</ProjectMarkdown>
+                <ProjectMarkdown onImageOpen={openImage}>{section.markdown}</ProjectMarkdown>
               </div>
             </section>
           ))}
@@ -168,6 +188,15 @@ const PortfolioDetail = () => {
         <p>다른 경험도 문제와 담당 범위를 기준으로 정리했습니다.</p>
         <Link className="button button--primary" to="/portfolio">전체 프로젝트 보기</Link>
       </footer>
+      {viewer && (
+        <Suspense fallback={<span role="status" className="sr-only">이미지 확대 보기를 불러오는 중</span>}>
+          <ProjectLightbox
+            {...viewer}
+            onClose={() => setViewer(current => current ? { ...current, open: false } : null)}
+            onExited={() => setViewer(null)}
+          />
+        </Suspense>
+      )}
     </article>
   );
 };
