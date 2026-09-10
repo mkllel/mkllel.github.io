@@ -2,6 +2,8 @@
 <html lang="ko" class="dark">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/icon.ico" sizes="16x16 32x32 48x48" />
+    <link id="site-favicon" rel="icon" type="image/svg+xml" href="/favicon-dark.svg" sizes="any" />
     <script>
       (function() {
         var theme = localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark';
@@ -10,9 +12,9 @@
         document.documentElement.dataset.accent = accent === 'blue' || accent === 'purple' ? accent : 'green';
         document.documentElement.classList.toggle('dark', theme === 'dark');
         document.documentElement.style.colorScheme = theme;
+        document.getElementById('site-favicon').setAttribute('href', '/favicon-' + theme + '.svg');
       })();
     </script>
-    <link rel="icon" type="image/x-icon" href="/icon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>이민규 | 백엔드 중심 웹 개발자</title>
     <meta

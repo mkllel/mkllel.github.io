@@ -187,6 +187,11 @@ li {
   width: 34px;
   height: 34px;
   object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+:root[data-theme='light'] .brand__logo {
+  filter: brightness(0);
 }
 
 .brand span {

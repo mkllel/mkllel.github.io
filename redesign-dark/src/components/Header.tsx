@@ -16,6 +16,7 @@ const Header = () => {
     root.dataset.theme = theme;
     root.classList.toggle('dark', theme === 'dark');
     root.style.colorScheme = theme;
+    document.querySelector<HTMLLinkElement>('#site-favicon')?.setAttribute('href', `/favicon-${theme}.svg`);
     localStorage.setItem('portfolio-theme', theme);
   }, [theme]);
 
