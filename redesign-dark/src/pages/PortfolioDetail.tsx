@@ -140,6 +140,7 @@ const PortfolioDetail = () => {
         <section className="case-cover-section" aria-label="프로젝트 대표 이미지">
           <figure className="case-cover site-container">
             <ProjectImage src={project.imageUrl} alt={`${project.title} 대표 이미지`} decoding="async" onOpen={openImage} />
+            {project.imageCaption?.trim() && <figcaption>{project.imageCaption.trim()}</figcaption>}
           </figure>
         </section>
       )}

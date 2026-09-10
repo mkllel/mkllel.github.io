@@ -139,6 +139,7 @@ const createPortfolioProject = async (projectData: {
   category?: string;
   technologies?: string[];
   imageUrl?: string;
+  imageCaption?: string;
   link?: string;
   featured?: boolean;
   isPrivate?: boolean;

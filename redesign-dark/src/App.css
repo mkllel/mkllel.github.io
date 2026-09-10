@@ -1117,12 +1117,18 @@ li {
   object-fit: contain;
 }
 
-.case-gallery figcaption {
+.case-gallery figcaption,
+.case-cover figcaption {
   padding: 10px 14px;
   border-top: 1px solid #cbd6cf;
   color: #35463b;
   font-size: 0.76rem;
   line-height: 1.5;
+}
+
+.case-cover figcaption {
+  overflow-wrap: anywhere;
+  white-space: pre-line;
 }
 
 .case-cover {

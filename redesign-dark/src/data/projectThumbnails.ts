@@ -4,6 +4,10 @@ const projectThumbnails: Record<string, { src: string; srcSet: string }> = {
     "src": "/project-thumbnails/a69f979e70534daa48cd-480.webp",
     "srcSet": "/project-thumbnails/a69f979e70534daa48cd-480.webp 480w, /project-thumbnails/a69f979e70534daa48cd-960.webp 960w"
   },
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fgvxw5JAhaTm9skN4JsOu%2F1789022081342_HomeServer.png?alt=media&token=b79e3767-1a4e-4ecf-a231-83b965cd1c76": {
+    "src": "/project-thumbnails/0519bceafcd5cbaca616-480.webp",
+    "srcSet": "/project-thumbnails/0519bceafcd5cbaca616-480.webp 480w, /project-thumbnails/0519bceafcd5cbaca616-960.webp 960w"
+  },
   "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FrhLYG12hg9xXBVf9623Z%2F1749800008735_transtech.png?alt=media&token=d6ffc50d-d494-4bbe-8799-34f5e69ffbef": {
     "src": "/project-thumbnails/44e0d86c1ef60bc95d32-480.webp",
     "srcSet": "/project-thumbnails/44e0d86c1ef60bc95d32-480.webp 480w, /project-thumbnails/44e0d86c1ef60bc95d32-960.webp 960w"
@@ -16,9 +20,9 @@ const projectThumbnails: Record<string, { src: string; srcSet: string }> = {
     "src": "/project-thumbnails/5f69d60e678a12375e6c-480.webp",
     "srcSet": "/project-thumbnails/5f69d60e678a12375e6c-480.webp 480w, /project-thumbnails/5f69d60e678a12375e6c-960.webp 960w"
   },
-  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FvJUDdRO6unChbvQUqYho%2F1785829925919_childcare-b2b-admin-automation.png?alt=media&token=ccea69f2-12e7-4ce7-954c-4277d4fe2d99": {
-    "src": "/project-thumbnails/4d74cc0d30ecc06ac0e9-480.webp",
-    "srcSet": "/project-thumbnails/4d74cc0d30ecc06ac0e9-480.webp 480w, /project-thumbnails/4d74cc0d30ecc06ac0e9-960.webp 960w"
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FvJUDdRO6unChbvQUqYho%2F1789021587550_B2B.png?alt=media&token=58caa94a-e642-4e19-aa1b-9830a46da7dd": {
+    "src": "/project-thumbnails/ba94554c8d2ab5ded4a9-480.webp",
+    "srcSet": "/project-thumbnails/ba94554c8d2ab5ded4a9-480.webp 480w, /project-thumbnails/ba94554c8d2ab5ded4a9-960.webp 960w"
   }
 };
 
@@ -30,6 +34,12 @@ export const projectDetailImages: Record<string, { src: string; srcSet: string; 
     "srcSet": "/project-thumbnails/a69f979e70534daa48cd-480.webp 480w, /project-thumbnails/a69f979e70534daa48cd-960.webp 960w, /project-thumbnails/a69f979e70534daa48cd-1600.webp 1600w",
     "width": 2846,
     "height": 1548
+  },
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fgvxw5JAhaTm9skN4JsOu%2F1789022081342_HomeServer.png?alt=media&token=b79e3767-1a4e-4ecf-a231-83b965cd1c76": {
+    "src": "/project-thumbnails/0519bceafcd5cbaca616-960.webp",
+    "srcSet": "/project-thumbnails/0519bceafcd5cbaca616-480.webp 480w, /project-thumbnails/0519bceafcd5cbaca616-960.webp 960w, /project-thumbnails/0519bceafcd5cbaca616-1600.webp 1600w",
+    "width": 1672,
+    "height": 941
   },
   "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FrhLYG12hg9xXBVf9623Z%2F1749800008735_transtech.png?alt=media&token=d6ffc50d-d494-4bbe-8799-34f5e69ffbef": {
     "src": "/project-thumbnails/44e0d86c1ef60bc95d32-960.webp",
@@ -61,10 +71,10 @@ export const projectDetailImages: Record<string, { src: string; srcSet: string; 
     "width": 2350,
     "height": 1350
   },
-  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FvJUDdRO6unChbvQUqYho%2F1785829925919_childcare-b2b-admin-automation.png?alt=media&token=ccea69f2-12e7-4ce7-954c-4277d4fe2d99": {
-    "src": "/project-thumbnails/4d74cc0d30ecc06ac0e9-960.webp",
-    "srcSet": "/project-thumbnails/4d74cc0d30ecc06ac0e9-480.webp 480w, /project-thumbnails/4d74cc0d30ecc06ac0e9-960.webp 960w, /project-thumbnails/4d74cc0d30ecc06ac0e9-1536.webp 1536w",
-    "width": 1536,
-    "height": 1024
+  "https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2FvJUDdRO6unChbvQUqYho%2F1789021587550_B2B.png?alt=media&token=58caa94a-e642-4e19-aa1b-9830a46da7dd": {
+    "src": "/project-thumbnails/ba94554c8d2ab5ded4a9-960.webp",
+    "srcSet": "/project-thumbnails/ba94554c8d2ab5ded4a9-480.webp 480w, /project-thumbnails/ba94554c8d2ab5ded4a9-960.webp 960w, /project-thumbnails/ba94554c8d2ab5ded4a9-1600.webp 1600w",
+    "width": 1672,
+    "height": 941
   }
 };

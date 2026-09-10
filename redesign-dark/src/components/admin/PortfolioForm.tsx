@@ -63,6 +63,7 @@ const DetailPagePreview = ({ project }: { project: PortfolioDetailProject }) => 
         <section className="case-cover-section" aria-label="프로젝트 대표 이미지">
           <figure className="case-cover admin-detail-preview__inner">
             <img src={project.imageUrl} alt={`${project.title} 대표 이미지`} />
+            {project.imageCaption?.trim() && <figcaption>{project.imageCaption.trim()}</figcaption>}
           </figure>
         </section>
       )}
@@ -124,6 +125,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
   const [isPrivate, setIsPrivate] = useState(false);
   const [isMarkdownPreviewOpen, setIsMarkdownPreviewOpen] = useState(true);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageCaption, setImageCaption] = useState('');
   const [contentImages, setContentImages] = useState<File[]>([]);
   const [isUploadingContentImages, setIsUploadingContentImages] = useState(false);
 
@@ -149,6 +151,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
       outcome: outcome.trim(),
       architecture: architectureSteps,
       imageUrl: imagePreviewUrl,
+      imageCaption: imageCaption.trim(),
       link: link.trim() || undefined,
       resourceLinks,
       galleryImages,
@@ -158,7 +161,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
       isPrivate,
       createdAt: selectedProject?.createdAt || new Date(),
     });
-  }, [architecture, category, description, featured, galleryImages, imagePreviewUrl, isPrivate, link, outcome, resourceLinks, role, selectedProject, summary, technologies, title]);
+  }, [architecture, category, description, featured, galleryImages, imageCaption, imagePreviewUrl, isPrivate, link, outcome, resourceLinks, role, selectedProject, summary, technologies, title]);
 
   // 프로젝트 카테고리 목록
   const categories = [
@@ -191,6 +194,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
       setLink(selectedProject.link || '');
       setResourceLinks(selectedProject.resourceLinks || []);
       setGalleryImages(selectedProject.galleryImages || []);
+      setImageCaption(selectedProject.imageCaption || '');
       setTechnologies(selectedProject.technologies?.join(', ') || '');
       setCategory(selectedProject.category || '');
       setFeatured(selectedProject.featured || false);
@@ -217,6 +221,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
     setFeatured(false);
     setIsPrivate(false);
     setImageFile(null);
+    setImageCaption('');
     setContentImages([]);
   };
 
@@ -318,6 +323,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
         link: link.trim(),
         resourceLinks: normalizedResourceLinks,
         galleryImages: normalizedGalleryImages,
+        imageCaption: imageCaption.trim(),
         technologies: techArray,
         category,
         featured,
@@ -743,6 +749,19 @@ return hello;
               onChange={handleImageChange}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
             />
+
+            <div>
+              <label htmlFor="projectImageCaption" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                프로젝트 이미지 설명 (선택)
+              </label>
+              <textarea
+                id="projectImageCaption"
+                value={imageCaption}
+                onChange={e => setImageCaption(e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+              />
+            </div>
 
             {/* 이미지 미리보기 영역 */}
             <div className="mt-2">

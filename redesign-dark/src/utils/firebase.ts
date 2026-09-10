@@ -33,6 +33,7 @@ export interface PortfolioProject {
   outcome?: string;
   architecture?: string[];
   imageUrl?: string;
+  imageCaption?: string;
   galleryImages?: PortfolioGalleryImage[];
   resourceLinks?: PortfolioResourceLink[];
   technologies: string[];
