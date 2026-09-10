@@ -1883,6 +1883,30 @@ li {
   color: var(--muted);
 }
 
+.home-scroll-reveal {
+  transition: opacity 450ms ease-out, transform 450ms ease-out;
+}
+
+.home-scroll-reveal[data-reveal-pending] {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.home-scroll-reveal:focus-within {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+@media print, (prefers-reduced-motion: reduce) {
+  .home-scroll-reveal[data-reveal-pending],
+  .home-scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body,
   .site-header,

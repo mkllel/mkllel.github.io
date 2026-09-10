@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { getFeaturedProjects, type PortfolioViewProject } from '../data/portfolioContent';
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import { db, type PortfolioProject } from '../utils/firebase';
 
 const skillGroups = [
@@ -37,6 +38,8 @@ const Home = () => {
   const [selectedProjects, setSelectedProjects] = useState<PortfolioViewProject[]>([]);
   const heroTraceRef = useRef<HTMLDivElement>(null);
   const projectButtonRef = useRef<HTMLAnchorElement>(null);
+  const featuredRevealRef = useScrollReveal();
+  const skillsRevealRef = useScrollReveal();
 
   const handleHeroPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -137,7 +140,7 @@ const Home = () => {
       </section>
 
       <section className="section section--paper" aria-labelledby="featured-heading">
-        <div className="site-container">
+        <div className="site-container home-scroll-reveal" ref={featuredRevealRef}>
           <div className="section-heading section-heading--experience">
             <p className="eyebrow">FEATURED PROJECTS</p>
             <h2 id="featured-heading">Featured Projects</h2>
@@ -168,7 +171,7 @@ const Home = () => {
       </section>
 
       <section className="section section--white" aria-labelledby="skills-heading">
-        <div className="site-container split-intro">
+        <div className="site-container split-intro home-scroll-reveal" ref={skillsRevealRef}>
           <div className="section-heading section-heading--left">
             <p className="eyebrow">SKILLS</p>
             <h2 id="skills-heading">Skills</h2>
