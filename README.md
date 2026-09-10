@@ -12,14 +12,12 @@ Python·FastAPI 기반 업무 자동화, AI 서비스 백엔드 연동, Docker �
 - **Styling:** Tailwind CSS 3 + CSS custom properties
 - **Routing:** React Router 7
 - **Data / Auth:** Firebase Authentication + Cloud Firestore + Cloud Storage
-- **Content:** React Markdown + remark-gfm
-- **Theme:** 라이트·다크 모드 (`data-theme`, localStorage 기반)
+- **Content:** React Markdown + remark-gfm + unified 기반 Markdown 파싱
+- **Theme:** 라이트·다크 모드 (`data-theme`, localStorage 기반) + Firebase에 저장하는 사이트 강조 색상 설정
 - **Icons:** Lucide React
 - **Fonts:** Pretendard Variable + NanumSquare (local)
 - **Deploy:** GitHub Pages (`gh-pages`)
 - **Quality:** ESLint + TypeScript
-
-런타임 의존성은 7개입니다: `react`, `react-dom`, `react-router-dom`, `firebase`, `react-markdown`, `remark-gfm`, `lucide-react`.
 
 ## Getting Started
 
@@ -46,7 +44,8 @@ npm run dev
 | `npm run build` | 프로덕션 빌드 생성 |
 | `npm run preview` | 프로덕션 빌드 로컬 미리보기 |
 | `npm run lint` | ESLint 검사 |
-| `npm run deploy` | 빌드 후 GitHub Pages 배포 |
+| `npm run thumbnails` | 공개 프로젝트 이미지의 최적화 파일과 매핑 정보 생성 |
+| `npm run deploy` | 이미지 최적화 파일 갱신·프로덕션 빌드 후 GitHub Pages 배포 |
 
 ## Project Structure
 
@@ -67,7 +66,7 @@ redesign-dark/
       BlogDetail.tsx
       Login.tsx
       Admin.tsx
-    data/                # 정적 폴백 콘텐츠
+    data/                # 프로젝트·블로그 콘텐츠 가공 및 최적화 이미지 정보
     hooks/               # 페이지별 메타데이터 처리
     utils/               # Firebase, 검색, 날짜 유틸리티
     App.css              # 디자인 토큰, 레이아웃, 반응형 스타일
@@ -86,10 +85,15 @@ redesign-dark/
 
 - About Me, Skills, Featured Projects 중심의 채용용 메인 화면
 - 라이트·다크 테마와 사용자 선택 저장
+- 관리자에서 초록·파랑·보라 강조 색상 선택
 - 카테고리·기술 기준 프로젝트 필터
 - Markdown 기반 프로젝트·기술 기록 상세 페이지
 - 여러 썸네일과 프로젝트 링크·PDF 자료 표시
+- 프로젝트 이미지 클릭 확대
+- 대표 이미지의 선택형 설명과 갤러리 이미지별 설명 표시
+- 목록 썸네일·상세 이미지의 WebP 최적화 및 화면 크기별 이미지 제공
 - Firebase 이메일·비밀번호 및 Google 관리자 로그인
+- 관리자 로그아웃과 비로그인 사용자의 블로그 접근 제한
 - 포트폴리오·블로그 콘텐츠 등록, 수정, 삭제
 - 프로젝트 공개·비공개 설정과 주요 프로젝트 순서 관리
 - 관리자 작성 화면의 기본 미리보기와 상세 페이지형 미리보기

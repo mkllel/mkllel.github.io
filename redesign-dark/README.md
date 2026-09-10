@@ -1,29 +1,15 @@
-# My Portfolio
+# Portfolio Application
 
-A modern portfolio website built with React, TypeScript, and Tailwind CSS.
+현재 운영 중인 포트폴리오 사이트의 애플리케이션 소스입니다. 개발, 빌드, 배포 및 Firebase 규칙 관리는 이 디렉터리를 기준으로 진행합니다.
 
-## 🚀 Features
+## Development
 
-- Responsive design for all screen sizes
-- Modern UI with Tailwind CSS
-- TypeScript for type safety
-- Authentication with Firebase (Email/Password, Google, GitHub)
-- Blog section with content management
-- Portfolio showcase
-- Contact links for email, GitHub, and resume
+`npm install` — 의존성 설치
 
-## 📋 Pages
+`npm run dev` — 개발 서버 실행
 
-- **Home**: Introduction, skills, and about section
-- **Portfolio**: Showcase of projects with filtering
-- **Blog**: Blog posts with categories and search
-- **Login**: Authentication page for admin access
+## Documentation
 
-## 🔧 Technologies
-
-- React 19
-- TypeScript
-- Tailwind CSS
-- Firebase (Authentication, Firestore, Storage)
-- React Router
-- Vite with SWC
+- [프로젝트 소개·기술 구성·배포 안내](../README.md)
+- [스크립트 안내](./scripts/README.md)
+- [테스트 안내](./tests/README.md)
