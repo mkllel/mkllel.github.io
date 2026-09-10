@@ -4,6 +4,7 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { getFeaturedProjects, type PortfolioViewProject } from '../data/portfolioContent';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import StackTicker from '../components/StackTicker';
 import { db, type PortfolioProject } from '../utils/firebase';
 
 const skillGroups = [
@@ -136,6 +137,7 @@ const Home = () => {
               />
             </picture>
           </figure>
+          <StackTicker />
         </div>
       </section>
 
