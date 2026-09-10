@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/index.esm-CuGH-83y.js","assets/index-DkN5MWZw.js","assets/index-Ch7_ZhG_.css"])))=>i.map(i=>d[i]);
+import{_ as e,y as s}from"./index-DkN5MWZw.js";const c=async()=>{try{const{getAnalytics:t,isSupported:a}=await e(async()=>{const{getAnalytics:i,isSupported:r}=await import("./index.esm-CuGH-83y.js");return{getAnalytics:i,isSupported:r}},__vite__mapDeps([0,1,2]));await a()&&t(s)}catch{}};export{c as initializeFirebaseAnalytics};
