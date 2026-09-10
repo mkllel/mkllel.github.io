@@ -68,9 +68,8 @@ const Header = () => {
   return (
     <header className="site-header">
       <div className="site-container site-header__inner">
-        <Link to="/" className="brand" aria-label="Backend-focused Web Developer 포트폴리오 홈">
+        <Link to="/" className="brand" aria-label="포트폴리오 홈">
           <img className="brand__logo" src="/picture/header-logo.png" alt="" width="34" height="34" />
-          <span>Backend-focused Web Developer</span>
         </Link>
 
         <nav className="desktop-nav" aria-label="주요 메뉴">
