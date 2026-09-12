@@ -5,6 +5,7 @@ import { getBlogPresentation } from '../data/blogContent';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { contentDateToSeconds, formatDateKorean } from '../utils/dateUtils';
 import { db, type BlogPost } from '../utils/firebase';
+import BlogThumbnail from '../components/BlogThumbnail';
 
 const stripMarkdown = (content: string) => content
   .replace(/!\[.*?\]\(.*?\)/g, '')
@@ -101,11 +102,9 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
 
   return (
     <article className="blog-list-item">
-      {post.image && (
-        <Link className="blog-list-item__image" to={`/blog/${post.id}`} tabIndex={-1} aria-hidden="true">
-          <img src={post.image} alt="" width="420" height="240" loading="lazy" decoding="async" />
-        </Link>
-      )}
+      <Link to={`/blog/${post.id}`} tabIndex={-1} aria-hidden="true">
+        <BlogThumbnail key={post.image} src={post.image} title={post.title} />
+      </Link>
       <div className="blog-list-item__body">
         <div className="blog-list-item__meta">
           {presentation.featured && <strong>대표 글</strong>}
