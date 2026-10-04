@@ -32,6 +32,8 @@ export interface PortfolioProject {
   role?: string;
   outcome?: string;
   architecture?: string[];
+  architectureLayout?: 'sequence' | 'tree';
+  architectureParents?: (number | null)[];
   imageUrl?: string;
   imageCaption?: string;
   galleryImages?: PortfolioGalleryImage[];

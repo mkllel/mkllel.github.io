@@ -75,7 +75,7 @@ export default function ProjectArticle({ project, articleRef, onImageOpen }: Pro
       )}
 
       {!!project.architecture?.length && (
-        <ProjectSystemFlow steps={project.architecture} description={project.introMarkdown} contentClassName="site-container" onImageOpen={onImageOpen} />
+        <ProjectSystemFlow projectId={project.id} steps={project.architecture} layout={project.architectureLayout} parents={project.architectureParents} description={project.introMarkdown} contentClassName="site-container" onImageOpen={onImageOpen} />
       )}
 
       <section className="section section--white">

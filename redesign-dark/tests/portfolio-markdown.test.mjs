@@ -96,6 +96,13 @@ test('unsafe links and raw HTML cannot become executable content', () => {
   assert.ok(!result.includes('<script>'));
 });
 
+test('encoded whitespace in code languages cannot inject CSS classes', () => {
+  const result = html('```js&#x20;injected-class\nconst value = 1;\n```');
+  assert.ok(result.includes('class="language-js"'));
+  assert.ok(!result.includes('injected-class'));
+  assert.ok(result.includes('const value = 1;'));
+});
+
 test('summary extraction retains meaningful underscores and code names', () => {
   const doc = view('## Details\nUse `restart_policy` and **VM_1**.');
   assert.ok(doc.summary.includes('restart_policy'));

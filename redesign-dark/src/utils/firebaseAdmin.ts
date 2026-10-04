@@ -134,6 +134,8 @@ const createPortfolioProject = async (projectData: {
   role?: string;
   outcome?: string;
   architecture?: string[];
+  architectureLayout?: PortfolioProject['architectureLayout'];
+  architectureParents?: PortfolioProject['architectureParents'];
   resourceLinks?: PortfolioProject['resourceLinks'];
   galleryImages?: PortfolioProject['galleryImages'];
   category?: string;

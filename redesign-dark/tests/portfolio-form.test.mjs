@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { readFileSync } from 'node:fs';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { loadTypeScript } from './load-typescript.mjs';
 
 function formHarness(selectedProject = null) {
@@ -53,10 +56,13 @@ test('actual form submits unnamed links without undefined and preserves explicit
   const change = (id, value) => form.find(node => node.props?.id === id).props.onChange({ target: { value } });
   change('projectTitle', 'Test title');
   change('projectDescription', '## Content\nBody');
-  for (const id of ['projectSummary', 'projectRole', 'projectOutcome', 'projectArchitecture', 'projectLink']) {
+  for (const id of ['projectSummary', 'projectRole', 'projectOutcome', 'projectLink']) {
     change(id, 'Old value');
     change(id, '');
   }
+  const flowEditor = () => form.find(node => node.type?.name === 'ProjectFlowEditor');
+  flowEditor().props.onChange({layout: 'tree', nodes: [{id: 'root', label: 'Old flow', parentId: null}]});
+  flowEditor().props.onChange({layout: 'sequence', nodes: []});
   form.find(node => node.type === 'button' && node.props.children === '+ 링크').props.onClick();
   form.find(node => node.props?.['aria-label'] === '자료 링크 1 URL').props.onChange({ target: { value: 'https://example.com/test.pdf' } });
   await form.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} });
@@ -66,6 +72,8 @@ test('actual form submits unnamed links without undefined and preserves explicit
   assert.equal(Object.hasOwn(form.submitted.resourceLinks[0], 'label'), false);
   for (const key of ['summary', 'role', 'outcome', 'category', 'link']) assert.equal(form.submitted[key], '');
   assert.equal(form.submitted.architecture.length, 0);
+  assert.equal(form.submitted.architectureLayout, 'sequence');
+  assert.deepEqual(form.submitted.architectureParents, []);
 });
 
 for (const caption of ['', '   ', '  AI-generated illustration.  ']) {
@@ -103,4 +111,56 @@ test('editing loads and clears a caption without uploading a replacement image',
   assert.equal(form.submitted.imageCaption, '');
   assert.equal(form.submittedImage, null);
   assert.equal(Object.hasOwn(form.submitted, 'imageUrl'), false);
+});
+
+test('home lab admin preview renders sibling VMs and submits the original flow unchanged', async () => {
+  const { projects } = JSON.parse(readFileSync(new URL('../content/public-projects.json', import.meta.url), 'utf8'));
+  const project = projects.find(project => project.id === 'gvxw5JAhaTm9skN4JsOu');
+  const form = formHarness(project);
+  const preview = form.find(node => node.type?.name === 'DetailPagePreview');
+  const previewTree = preview.type(preview.props);
+  const flow = previewTree.props.children[1].props.children.find(node => node?.type?.name === 'ProjectSystemFlow');
+  assert.equal(flow.props.projectId, project.id);
+  assert.deepEqual(flow.props.steps, project.architecture);
+  const SystemFlow = loadTypeScript(new URL('../src/components/ProjectSystemFlow.tsx', import.meta.url)).default;
+  assert.match(renderToStaticMarkup(createElement(SystemFlow, flow.props)), /class="architecture-tree"/);
+  await form.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} });
+  assert.equal(form.error, '');
+  assert.deepEqual(form.submitted.architecture, project.architecture);
+  assert.equal(form.submitted.architectureLayout, 'tree');
+  assert.deepEqual(form.submitted.architectureParents, [null, 0, 0, 2, 3]);
+});
+
+test('saved tree survives editing, preview and switching to an explicit sequence', async () => {
+  const project = {id: 'new-tree', title: 'Tree', description: '## Body\nText', technologies: [],
+    architecture: ['Host', 'Dev', 'Services'], architectureLayout: 'tree', architectureParents: [null, 0, 0]};
+  const form = formHarness(project);
+  const editor = () => form.find(node => node.type?.name === 'ProjectFlowEditor');
+  assert.equal(editor().props.value.layout, 'tree');
+  editor().props.onChange({...editor().props.value, nodes: editor().props.value.nodes.map(node => node.label === 'Dev' ? {...node, label: 'Development, AI'} : node)});
+  const preview = form.find(node => node.type?.name === 'DetailPagePreview');
+  assert.equal(preview.props.project.architectureLayout, 'tree');
+  assert.deepEqual(preview.props.project.architectureParents, [null, 0, 0]);
+  await form.find(node => node.type === 'form').props.onSubmit({preventDefault() {}});
+  assert.deepEqual(form.submitted.architecture, ['Host', 'Development, AI', 'Services']);
+  const reopened = formHarness({...project, ...form.submitted});
+  const current = reopened.find(node => node.type?.name === 'ProjectFlowEditor');
+  current.props.onChange({...current.props.value, layout: 'sequence'});
+  await reopened.find(node => node.type === 'form').props.onSubmit({preventDefault() {}});
+  assert.equal(reopened.submitted.architectureLayout, 'sequence');
+  assert.deepEqual(reopened.submitted.architectureParents, [null, 0, 0]);
+});
+
+test('invalid flow blocks saving without discarding the form draft', async () => {
+  const form = formHarness({id: 'draft', title: 'Draft', description: 'Body', technologies: []});
+  const editor = () => form.find(node => node.type?.name === 'ProjectFlowEditor');
+  editor().props.onChange({layout: 'tree', nodes: [{id: 'a', label: '', parentId: null}]});
+  await form.find(node => node.type === 'form').props.onSubmit({preventDefault() {}});
+  assert.match(form.error, /항목 이름/);
+  assert.equal(form.submitted, undefined);
+  assert.equal(editor().props.value.nodes.length, 1);
+  editor().props.onChange({layout: 'tree', nodes: [{id: 'a', label: 'A', parentId: 'a'}]});
+  await form.find(node => node.type === 'form').props.onSubmit({preventDefault() {}});
+  assert.match(form.error, /순환/);
+  assert.equal(form.submitted, undefined);
 });

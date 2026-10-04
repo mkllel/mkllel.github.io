@@ -39,7 +39,7 @@ export function decodeFirestoreValue(value) {
 
 export function decodePublicProjects(rows) {
   if (!Array.isArray(rows) || rows.some(row => row.error)) throw new Error('Invalid Firestore response');
-  const allowed = ['title', 'description', 'summary', 'role', 'outcome', 'architecture', 'imageUrl',
+  const allowed = ['title', 'description', 'summary', 'role', 'outcome', 'architecture', 'architectureLayout', 'architectureParents', 'imageUrl',
     'imageCaption', 'galleryImages', 'resourceLinks', 'technologies', 'link', 'category',
     'featured', 'featuredOrder', 'isPrivate', 'createdAt', 'updatedAt'];
   const projects = rows.filter(row => row.document).map(({ document }) => ({

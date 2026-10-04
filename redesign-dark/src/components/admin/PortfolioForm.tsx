@@ -9,6 +9,8 @@ import remarkGfm from 'remark-gfm';
 import ProjectMarkdown from '../ProjectMarkdown';
 import ProjectSystemFlow from '../ProjectSystemFlow';
 import { normalizeResourceLinks } from '../../utils/portfolioFields';
+import ProjectFlowEditor from './ProjectFlowEditor';
+import { getProjectFlow, toProjectFlowFields, validateProjectFlow, type ProjectFlow } from '../../utils/projectFlow';
 
 const DetailPagePreview = ({ project }: { project: PortfolioDetailProject }) => {
   const resourceLinks = getProjectResourceLinks(project);
@@ -78,7 +80,10 @@ const DetailPagePreview = ({ project }: { project: PortfolioDetailProject }) => 
 
       {project.architecture && project.architecture.length > 0 && (
         <ProjectSystemFlow
+          projectId={project.id}
           steps={project.architecture}
+          layout={project.architectureLayout}
+          parents={project.architectureParents}
           description={project.introMarkdown}
           contentClassName="admin-detail-preview__inner"
         />
@@ -115,7 +120,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
   const [summary, setSummary] = useState('');
   const [role, setRole] = useState('');
   const [outcome, setOutcome] = useState('');
-  const [architecture, setArchitecture] = useState('');
+  const [flow, setFlow] = useState<ProjectFlow>({ layout: 'sequence', nodes: [] });
   const [link, setLink] = useState('');
   const [resourceLinks, setResourceLinks] = useState<PortfolioResourceLink[]>([]);
   const [galleryImages, setGalleryImages] = useState<PortfolioGalleryImage[]>([]);
@@ -140,7 +145,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
 
   const detailPreviewProject = useMemo(() => {
     const technologyList = technologies.split(',').map(tech => tech.trim()).filter(Boolean);
-    const architectureSteps = architecture.split(',').map(step => step.trim()).filter(Boolean);
+    const flowFields = toProjectFlowFields(flow);
 
     return toPortfolioDetailProject({
       id: selectedProject?.id || 'detail-preview',
@@ -149,7 +154,8 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
       summary: summary.trim(),
       role: role.trim(),
       outcome: outcome.trim(),
-      architecture: architectureSteps,
+      ...flowFields,
+      architecture: flowFields.architecture.map(label => label || '항목 이름'),
       imageUrl: imagePreviewUrl,
       imageCaption: imageCaption.trim(),
       link: link.trim() || undefined,
@@ -161,7 +167,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
       isPrivate,
       createdAt: selectedProject?.createdAt || new Date(),
     });
-  }, [architecture, category, description, featured, galleryImages, imageCaption, imagePreviewUrl, isPrivate, link, outcome, resourceLinks, role, selectedProject, summary, technologies, title]);
+  }, [flow, category, description, featured, galleryImages, imageCaption, imagePreviewUrl, isPrivate, link, outcome, resourceLinks, role, selectedProject, summary, technologies, title]);
 
   // 프로젝트 카테고리 목록
   const categories = [
@@ -190,7 +196,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
       setSummary(selectedProject.summary || '');
       setRole(selectedProject.role || '');
       setOutcome(selectedProject.outcome || '');
-      setArchitecture(selectedProject.architecture?.join(', ') || '');
+      setFlow(getProjectFlow(selectedProject));
       setLink(selectedProject.link || '');
       setResourceLinks(selectedProject.resourceLinks || []);
       setGalleryImages(selectedProject.galleryImages || []);
@@ -212,7 +218,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
     setSummary('');
     setRole('');
     setOutcome('');
-    setArchitecture('');
+    setFlow({ layout: 'sequence', nodes: [] });
     setLink('');
     setResourceLinks([]);
     setGalleryImages([]);
@@ -311,7 +317,11 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
 
       // 기술 스택 문자열을 배열로 변환
       const techArray = technologies.split(',').map(tech => tech.trim()).filter(tech => tech);
-      const architectureSteps = architecture.split(',').map(step => step.trim()).filter(Boolean);
+      const flowError = validateProjectFlow(flow);
+      if (flowError) {
+        setError(flowError);
+        return;
+      }
 
       const projectData: Partial<PortfolioProject> = {
         title,
@@ -319,7 +329,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
         summary: summary.trim(),
         role: role.trim(),
         outcome: outcome.trim(),
-        architecture: architectureSteps,
+        ...toProjectFlowFields(flow),
         link: link.trim(),
         resourceLinks: normalizedResourceLinks,
         galleryImages: normalizedGalleryImages,
@@ -411,19 +421,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
           </div>
         </div>
 
-        <div>
-          <label htmlFor="projectArchitecture" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            처리 흐름
-          </label>
-          <input
-            id="projectArchitecture"
-            type="text"
-            value={architecture}
-            onChange={(e) => setArchitecture(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
-            placeholder="쉼표로 구분 (예: 사용자 요청, API 검증, 작업 실행, 결과 저장)"
-          />
-        </div>
+        <ProjectFlowEditor value={flow} onChange={setFlow} />
 
         {/* 프로젝트 설명 */}
         <div>
@@ -478,7 +476,7 @@ return hello;
             {isMarkdownPreviewOpen && (
               <div id="markdownPreview" className="border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-gray-800">
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">미리보기</h3>
-                <div className="markdown-preview markdown-preview--admin overflow-auto max-h-[400px]">
+                <div className="overflow-auto max-h-[400px]">
                   <div className="mb-6 border-b border-gray-200 pb-5 dark:border-gray-700">
                     <p className="mb-2 text-xs font-bold text-indigo-600 dark:text-indigo-400">
                       {category || '프로젝트'}
@@ -511,25 +509,18 @@ return hello;
                         </div>
                       )}
                     </dl>
-                    {architecture.trim() && (
-                      <div className="mt-5">
-                        <h5 className="mb-2 text-sm font-bold text-gray-900 dark:text-white">구조와 처리 흐름</h5>
-                        <ol className="space-y-2">
-                          {architecture.split(',').map(step => step.trim()).filter(Boolean).map((step, index) => (
-                            <li className="flex items-start gap-2 text-sm" key={`${step}-${index}`}>
-                              <span className="font-bold text-indigo-600 dark:text-indigo-400">
-                                {String(index + 1).padStart(2, '0')}
-                              </span>
-                              <span className="text-gray-700 dark:text-gray-300">{step}</span>
-                            </li>
-                          ))}
-                        </ol>
+                    {flow.nodes.length > 0 && (
+                      <div className="mt-5 project-flow-preview-shell">
+                        <ProjectSystemFlow steps={detailPreviewProject.architecture || []} layout={flow.layout}
+                          parents={detailPreviewProject.architectureParents} contentClassName="project-flow-preview" />
                       </div>
                     )}
                   </div>
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {description || '프로젝트 설명을 입력하면 이곳에 표시됩니다.'}
-                  </ReactMarkdown>
+                  <div className="markdown-preview markdown-preview--admin">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {description || '프로젝트 설명을 입력하면 이곳에 표시됩니다.'}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               </div>
             )}

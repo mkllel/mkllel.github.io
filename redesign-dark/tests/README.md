@@ -6,11 +6,29 @@ Run all non-emulator checks from `redesign-dark`:
 node --test tests/admin-save.test.mjs tests/portfolio-form.test.mjs tests/portfolio-markdown.test.mjs tests/bundle-split.test.mjs
 ```
 
-Public route generation, summary formatting and list failure/retry regression checks:
+Public route generation, summary formatting and loading/retry regression checks:
 
 ```sh
 node --test tests/project-pages.test.mjs tests/portfolio-loading.test.mjs tests/portfolio-markdown.test.mjs
 ```
+
+Loading checks cover the list, Home's featured projects and project details:
+failure versus empty/missing/private results, retry recovery, stale responses
+after navigation and subscription cleanup. SDK responses are stubbed; these
+tests do not change production data or network settings.
+
+System-flow editor and rendering checks:
+
+```sh
+node --test tests/project-flow.test.mjs tests/project-system-flow.test.mjs tests/portfolio-form.test.mjs
+```
+
+The editor stores `architectureLayout` and `architectureParents` alongside the
+existing `architecture` labels. Parent indexes follow the saved array order;
+stable draft IDs preserve relationships while moving or deleting rows. Coverage
+includes mode changes, legacy defaults, cyclic or missing parents, renaming,
+multiple roots, previews and static pages. The emulator suite checks persistence
+with the real create/update helpers. No production data migration is performed.
 
 `npm run build` also generates the static project routes. Check their HTTP status
 using a plain static server (see `scripts/README.md`), not Vite's SPA fallback.
@@ -27,6 +45,32 @@ node --test tests/portfolio-markdown.test.mjs
 
 Tests the actual parser and shared renderer, including authored order, nested
 lists, fenced code, tables, reference links, intro content and unsafe markup.
+
+The code-language regression also prevents encoded whitespace from injecting
+additional CSS classes (GHSA-4fh9-h7wg-q85m).
+
+## Dependency Security Checks
+
+Run both `npm audit` and `npm audit --omit=dev` after dependency updates to
+distinguish build-tool warnings from production dependencies. Firebase remains
+on the existing SDK version; its Node-only `@grpc/grpc-js` dependency is scoped to
+1.13.6 in `package.json` because the SDK's `~1.9.0` range excludes those security
+fixes. Recheck this override when upgrading Firebase, and run the Firestore
+emulator suite below whenever changing it. Do not use production writes for
+compatibility tests.
+
+Rollup is pinned to 4.59.0, which includes the output-path security fix.
+Rollup 4.64.0 stalled this project's build for over two minutes, while 4.59.0
+completed it in about six seconds. Recheck a future Rollup update with both
+`npm run build` and `node --test tests/bundle-split.test.mjs` before removing
+this compatibility pin.
+
+As of 2026-10-04, the remaining development-only advisory is
+[GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm):
+`braces` has no patched release and is used through Tailwind 3 and `gh-pages`.
+Avoid untrusted build/glob inputs. Do not force an audit fix that migrates
+Tailwind or downgrades the deployment tool without a separate compatibility
+review. This warning does not occur in `npm audit --omit=dev`.
 
 ## Administrator Save Regression Tests
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { RefreshCw } from 'lucide-react';
 import { getFeaturedProjects, type PortfolioViewProject } from '../data/portfolioContent';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -37,6 +38,9 @@ const skillGroups = [
 
 const Home = () => {
   const [selectedProjects, setSelectedProjects] = useState<PortfolioViewProject[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [requestVersion, setRequestVersion] = useState(0);
   const heroTraceRef = useRef<HTMLDivElement>(null);
   const projectButtonRef = useRef<HTMLAnchorElement>(null);
   const featuredRevealRef = useScrollReveal();
@@ -73,22 +77,38 @@ const Home = () => {
     description: 'Python·FastAPI 기반 업무 자동화 API와 운영 가능한 웹 서비스를 만드는 개발자 이민규의 포트폴리오입니다.',
   });
 
-  useEffect(() => onSnapshot(
-    query(
-      collection(db, 'portfolioProjects'),
-      where('isPrivate', '==', false),
-    ),
-    (snapshot) => {
-      const remoteProjects = snapshot.docs.map((item) => ({
-        id: item.id,
-        ...item.data(),
-      })) as PortfolioProject[];
-      setSelectedProjects(getFeaturedProjects(remoteProjects));
-    },
-    (snapshotError) => {
-      console.error('대표 프로젝트 조회 오류:', snapshotError);
-    },
-  ), []);
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError('');
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, 'portfolioProjects'),
+        where('isPrivate', '==', false),
+      ),
+      (snapshot) => {
+        if (!active) return;
+        const remoteProjects = snapshot.docs.map((item) => ({
+          id: item.id,
+          ...item.data(),
+        })) as PortfolioProject[];
+        setSelectedProjects(getFeaturedProjects(remoteProjects));
+        setError('');
+        setLoading(false);
+      },
+      (snapshotError) => {
+        if (!active) return;
+        console.error('대표 프로젝트 조회 오류:', snapshotError);
+        setSelectedProjects([]);
+        setError('주요 프로젝트를 불러오지 못했습니다. 연결 상태를 확인한 뒤 다시 시도해 주세요.');
+        setLoading(false);
+      },
+    );
+    return () => {
+      active = false;
+      unsubscribe();
+    };
+  }, [requestVersion]);
 
   return (
     <div className="site-page">
@@ -148,7 +168,17 @@ const Home = () => {
             <h2 id="featured-heading">Featured Projects</h2>
             <p>기능을 나열하기보다 어떤 문제를 해결했고, 그 과정에서 어디까지 맡았는지 먼저 보여드립니다.</p>
           </div>
-          <div className="featured-grid">
+          {loading && <div className="status-message" role="status"><span className="loading-dot" />주요 프로젝트를 불러오는 중입니다.</div>}
+          {error && (
+            <div className="inline-notice" role="alert">
+              <p>{error}</p>
+              <button className="button button--primary button--retry" onClick={() => setRequestVersion(value => value + 1)}>
+                <RefreshCw size={16} aria-hidden="true" /> 다시 시도
+              </button>
+            </div>
+          )}
+          {!loading && !error && selectedProjects.length === 0 && <p className="status-message">표시할 주요 프로젝트가 없습니다.</p>}
+          {!loading && !error && <div className="featured-grid">
             {selectedProjects.map((project, index) => (
               <Link className="featured-case" to={`/portfolio/${project.id}`} key={project.id}>
                 <span className="featured-case__number">0{index + 1}</span>
@@ -168,7 +198,7 @@ const Home = () => {
                 <span className="text-link">사례 자세히 보기 <span aria-hidden="true">→</span></span>
               </Link>
             ))}
-          </div>
+          </div>}
         </div>
       </section>
 

@@ -53,12 +53,17 @@ test('public snapshot decoder preserves paragraphs and drops unrelated fields', 
   const rows = [{ document: { name: 'projects/test/documents/portfolioProjects/public-id', fields: {
     title: { stringValue: 'Title' }, description: { stringValue: 'Body\n\nMore' },
     technologies: { arrayValue: { values: [{ stringValue: 'Python' }] } },
+    architectureLayout: {stringValue: 'tree'},
+    architecture: {arrayValue: {values: [{stringValue: 'Host'}, {stringValue: 'VM'}]}},
+    architectureParents: {arrayValue: {values: [{nullValue: null}, {integerValue: '0'}]}},
     isPrivate: { booleanValue: false }, createdAt: { timestampValue: '2026-10-04T00:00:00Z' },
     adminNotes: { stringValue: 'not for static HTML' },
   } } }];
   const [decoded] = decodePublicProjects(rows);
   assert.equal(decoded.description, 'Body\n\nMore');
   assert.equal(decoded.createdAt, '2026-10-04T00:00:00Z');
+  assert.equal(decoded.architectureLayout, 'tree');
+  assert.deepEqual(decoded.architectureParents, [null, 0]);
   assert.ok(!Object.hasOwn(decoded, 'adminNotes'));
   assert.throws(() => decodePublicProjects({ error: 'failure' }));
   assert.throws(() => decodePublicProjects([{ error: 'failure' }]));

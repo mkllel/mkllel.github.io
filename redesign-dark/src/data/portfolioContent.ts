@@ -69,7 +69,6 @@ export const toPortfolioViewProject = (project: PortfolioProject, priority = 100
   summary: project.summary?.trim() ?? getSummaryExcerpt(project.description),
   role: project.role?.trim() ?? '',
   outcome: project.outcome?.trim() ?? '',
-  architecture: project.architecture?.filter(Boolean),
   visual: getProjectVisual(project),
   priority,
 });

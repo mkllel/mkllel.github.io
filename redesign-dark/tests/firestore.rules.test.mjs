@@ -181,6 +181,28 @@ test('real blog persistence clears an existing category', async () => {
   await operations.deleteBlogPost(id);
 });
 
+test('tree layout and parent links persist through create, edit and mode changes', async () => {
+  const id = await operations.createPortfolioProject({...fields,
+    architecture: ['Host', 'Development', 'Operations'], architectureLayout: 'tree', architectureParents: [null, 0, 0],
+  });
+  const ref = project(admin, id);
+  let stored = (await getDoc(ref)).data();
+  assert.equal(stored.architectureLayout, 'tree');
+  assert.deepEqual(stored.architectureParents, [null, 0, 0]);
+  await operations.updatePortfolioProject(id, {title: 'Renamed project'});
+  stored = (await getDoc(ref)).data();
+  assert.deepEqual(stored.architectureParents, [null, 0, 0]);
+  await operations.updatePortfolioProject(id, {architecture: ['Operations', 'Host', 'Development'], architectureParents: [1, null, 1]});
+  stored = (await getDoc(project(visitor, id))).data();
+  assert.equal(stored.architectureLayout, 'tree');
+  assert.deepEqual(stored.architectureParents, [1, null, 1]);
+  await operations.updatePortfolioProject(id, {architectureLayout: 'sequence'});
+  assert.equal((await getDoc(ref)).data().architectureLayout, 'sequence');
+  await operations.updatePortfolioProject(id, {architecture: [], architectureParents: []});
+  assert.deepEqual((await getDoc(ref)).data().architectureParents, []);
+  await operations.deletePortfolioProject(id);
+});
+
 test('theme selection allows only the three supported accents and admin writes', async () => {
   const ref = doc(admin, 'siteSettings', 'theme');
   for (const accent of ['green', 'blue', 'purple']) {
