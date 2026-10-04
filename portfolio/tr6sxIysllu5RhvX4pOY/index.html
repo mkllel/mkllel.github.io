@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/icon.ico" sizes="16x16 32x32 48x48" />
+    <link id="site-favicon" rel="icon" type="image/svg+xml" href="/favicon-dark.svg" sizes="any" />
+    <script>
+      (function() {
+        var theme = localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        var accent = localStorage.getItem('portfolio-site-accent');
+        document.documentElement.dataset.accent = accent === 'blue' || accent === 'purple' ? accent : 'green';
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.style.colorScheme = theme;
+        document.getElementById('site-favicon').setAttribute('href', '/favicon-' + theme + '.svg');
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>복구 검증 기반 자동 백업 시스템 | 이민규</title><meta name="description" content="Proxmox 홈랩의 파일, 데이터베이스, 가상머신을 보호하는 운영 자동화 Proxmox 홈랩의 파일, DB, VM/LXC를 자동 백업하고 유형별로 무결성과 복구 가능성을 검증하는 시스템을 구축했습니다. 정기 백업, 무결성 검사, 격리 환경의 복원 검증, 보존 정책, VM/LXC 백업을 하나의 운영 흐름으로 연결했습니다. 정상 동작뿐 아니라 실행하지 말아야 할 조건과 실패 이후의 복구 과정도 함께 설계했습니다."/><meta name="author" content="MinKyu Lee"/><meta name="robots" content="index, follow"/><link rel="canonical" href="https://mkllel.github.io/portfolio/tr6sxIysllu5RhvX4pOY/"/><meta property="og:type" content="article"/><meta property="og:url" content="https://mkllel.github.io/portfolio/tr6sxIysllu5RhvX4pOY/"/><meta property="og:title" content="복구 검증 기반 자동 백업 시스템 | 이민규"/><meta property="og:description" content="Proxmox 홈랩의 파일, 데이터베이스, 가상머신을 보호하는 운영 자동화 Proxmox 홈랩의 파일, DB, VM/LXC를 자동 백업하고 유형별로 무결성과 복구 가능성을 검증하는 시스템을 구축했습니다. 정기 백업, 무결성 검사, 격리 환경의 복원 검증, 보존 정책, VM/LXC 백업을 하나의 운영 흐름으로 연결했습니다. 정상 동작뿐 아니라 실행하지 말아야 할 조건과 실패 이후의 복구 과정도 함께 설계했습니다."/><meta property="og:image" content="https://mkllel.github.io/picture/og-portfolio.jpg"/><meta property="og:image:alt" content="복구 검증 기반 자동 백업 시스템 | 이민규 대표 이미지"/><meta property="og:site_name" content="MinKyu Lee Portfolio"/><meta property="og:locale" content="ko_KR"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="복구 검증 기반 자동 백업 시스템 | 이민규"/><meta name="twitter:description" content="Proxmox 홈랩의 파일, 데이터베이스, 가상머신을 보호하는 운영 자동화 Proxmox 홈랩의 파일, DB, VM/LXC를 자동 백업하고 유형별로 무결성과 복구 가능성을 검증하는 시스템을 구축했습니다. 정기 백업, 무결성 검사, 격리 환경의 복원 검증, 보존 정책, VM/LXC 백업을 하나의 운영 흐름으로 연결했습니다. 정상 동작뿐 아니라 실행하지 말아야 할 조건과 실패 이후의 복구 과정도 함께 설계했습니다."/><meta name="twitter:image" content="https://mkllel.github.io/picture/og-portfolio.jpg"/><meta name="twitter:image:alt" content="복구 검증 기반 자동 백업 시스템 | 이민규 대표 이미지"/>
+    <script>
+      (function(location) {
+        if (location.search[1] === '/') {
+          var decoded = location.search
+            .slice(1)
+            .split('&')
+            .map(function(segment) {
+              return segment.replace(/~and~/g, '&');
+            })
+            .join('?');
+
+          window.history.replaceState(
+            null,
+            null,
+            location.pathname.slice(0, -1) + decoded + location.hash
+          );
+        }
+      })(window.location);
+    </script>
+    <script type="module" crossorigin src="/assets/index-BFZnY0Sj.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CgUksKhK.css">
+  </head>
+  <body>
+    <div id="root"><main id="main-content"><article class="case-study page-shell"><header class="case-hero"><div class="site-container case-hero__grid"><div><a class="back-link" href="/portfolio" data-discover="true">← 프로젝트 목록</a><p class="eyebrow">인프라 · 운영</p><h1>복구 검증 기반 자동 백업 시스템</h1><p class="case-hero__summary">Proxmox 홈랩의 파일, 데이터베이스, 가상머신을 보호하는 운영 자동화
+
+Proxmox 홈랩의 파일, DB, VM/LXC를 자동 백업하고 유형별로 무결성과 복구 가능성을 검증하는 시스템을 구축했습니다.
+
+정기 백업, 무결성 검사, 격리 환경의 복원 검증, 보존 정책, VM/LXC 백업을 하나의 운영 흐름으로 연결했습니다. 정상 동작뿐 아니라 실행하지 말아야 할 조건과 실패 이후의 복구 과정도 함께 설계했습니다.</p></div><dl class="case-facts"><div><dt>담당</dt><dd>백업 정책과 실행 흐름 설계, 검증 로직 구현, 운영 대시보드, 안전장치 및 복구 절차 구성</dd></div><div><dt>기술</dt><dd>Python · restic · Proxmox vzdump · systemd · PostgreSQL · SQLite</dd></div><div><dt>결과</dt><dd>정기 백업 6개 무인 실행 및 복원 검증, VM·LXC 아카이브 5개 검증, 별도 VM에서 암호화 백업 복호화 및 복원 확인</dd></div></dl></div></header><section class="section section--white"><div class="site-container case-sections"><section class="case-section"><span class="case-section__index">01</span><div><h2>문제 — 백업 파일이 있다는 것만으로 충분한가?</h2><div class="project-markdown"><p>여러 서비스를 상시 운영하면서 가장 우려했던 것은 장애 자체보다 <strong>복구할 수 있는 데이터가 남아 있는지</strong>였습니다.</p>
+<p>백업 작업이 성공해도 파일이 손상됐거나 데이터베이스를 열 수 없다면 복구에 사용할 수 없습니다. 백업 서버에 의존해야만 복호화할 수 있는 구조 역시 장애 상황에서는 복구를 어렵게 할 수 있습니다.</p>
+<p>그래서 완료 기준을 ‘백업 생성 성공’과 ‘복구 검증 완료’로 나눴습니다. 각 단계의 결과와 실패 지점을 추적하고 운영 원본을 건드리지 않는 임시 공간에서 복원된 데이터를 확인하도록 설계했습니다.</p>
+<p>기존 홈랩 프로젝트가 실행 환경과 서비스 격리에 초점을 맞췄다면, 이 프로젝트는 <strong>그 환경의 데이터를 어떻게 보호하고 복구 가능성을 확인할 것인지</strong>에 집중했습니다.</p></div></div></section><section class="case-section"><span class="case-section__index">02</span><div><h2>설계 — 백업과 복원 검증을 하나의 흐름으로 연결</h2><div class="project-markdown"><p>백업 애플리케이션은 별도의 비특권 LXC 컨테이너에서 운영하고 외장 HDD의 전용 영역을 저장소로 사용했습니다.</p>
+<p>파일과 데이터베이스는 유형별로 백업하며 가상머신과 컨테이너는 Proxmox의 native backup으로 별도 보호했습니다.</p>
+<p>파일과 DB 백업의 실행 및 검증 흐름은 다음과 같습니다. VM과 LXC는 별도의 native backup 경로에서 아카이브를 검증합니다.</p>
+<pre><code>정기 정책 실행
+→ 저장소·실행 충돌 검사
+→ 백업 생성
+→ 무결성 검사
+→ 격리된 임시 공간에 복원
+→ 파일·DB 검증
+→ 결과 기록 및 대시보드 표시
+</code></pre>
+<p>파일 백업 3개와 데이터베이스 백업 3개를 매일 순차적으로 실행합니다. PostgreSQL은 논리 백업을 사용합니다. SQLite는 복원된 DB의 <code>integrity_check</code> 결과와 스키마, 주요 테이블, 대표 조회를 확인합니다.</p>
+<p>실제 정책 실행 기록과 새 아티팩트, 무결성 검사, 복원 검증 결과가 연결되는지 확인하도록 구성했습니다.</p></div></div></section><section class="case-section"><span class="case-section__index">03</span><div><h2>문제 해결 — 백업이 운영 장애를 만들지 않도록</h2><div class="project-markdown"><h3>SSHFS/FUSE를 사용하는 컨테이너의 백업 방식 분리</h3>
+<p>백업 전용 LXC 컨테이너 CT200은 내부에서 SSHFS/FUSE로 저장소에 접근하고 있었습니다. 이 상태에서 컨테이너를 freeze하는 snapshot 백업을 적용하면 FUSE와 교착이 발생할 위험이 있었습니다.</p>
+<p>저장소를 백업 대상에서 제외하는 것만으로는 이 실행 구조의 위험을 없앨 수 없었습니다.</p>
+<p>따라서 <strong>CT200만 정상 종료 후 백업하는 stop 모드</strong>로 분리했습니다. 나머지 게스트는 snapshot 모드를 유지했고 외부 저장소의 실제 데이터가 컨테이너 아카이브에 중복 포함되지 않는지도 확인했습니다.</p>
+<p>자동 stop 백업 전에는 다음 상태를 검사하도록 구성했습니다.</p>
+<ul>
+<li>실행 중인 백업 작업</li>
+<li>대기 중인 작업</li>
+<li>애플리케이션 작업 잠금</li>
+<li>restic 저장소 잠금</li>
+</ul>
+<p>작업이나 잠금이 확인되는 busy 상태에서는 기존 작업을 강제로 중단하지 않고 <code>SKIPPED</code>로 기록한 뒤 <code>exit 0</code>으로 종료합니다. 실제 저장소나 설정 오류는 정상적인 건너뛰기와 구분해 <code>ERROR</code>로 기록합니다.</p>
+<h3>재기동 이후 저장소 자동 연결 실패 해결</h3>
+<p>stop 모드 검증 과정에서는 컨테이너가 다시 시작된 뒤 SSHFS가 자동 연결되지 않는 문제가 드러났습니다.</p>
+<p>기존 network-online 의존성만으로는 실제 인터페이스가 준비될 때까지 기다리지 못했습니다. 네트워크 준비가 끝나기 전에 SSHFS 연결을 시도하면서 <code>Connection reset by peer</code>가 발생했습니다.</p>
+<p>wait-online 의존성을 반영해 실제 인터페이스 준비를 기다리도록 수정하고 다음 시작 순서를 맞췄습니다.</p>
+<pre><code>네트워크 준비
+→ SSHFS 연결
+→ 백업 저장소 확인
+→ 백업 애플리케이션 시작
+</code></pre>
+<p>이후 수동으로 mount하거나 애플리케이션을 시작하지 않아도 저장소와 서비스가 자동 복구되는 것을 확인했습니다.</p></div></div></section><section class="case-section"><span class="case-section__index">04</span><div><h2>안전장치와 보존 정책</h2><div class="project-markdown"><p>저장소가 연결되지 않은 상태에서 시스템 디스크에 백업이 쌓이는 일을 막기 위해 mount, 파일시스템, UUID, 전용 marker와 여유 공간을 검사합니다.</p>
+<p>조건이 확인되지 않으면 작업을 진행하지 않는 fail-closed 방식을 적용했습니다. 최소 여유 공간 기준은 250GB로 두었습니다.</p>
+<p>보존 정책은 파일과 DB를 구분해 적용했습니다.</p>
+<div class="project-markdown__table" tabindex="0" role="region" aria-label="프로젝트 표"><table><thead><tr><th>대상</th><th>일간</th><th>주간</th><th>월간</th><th>연간</th></tr></thead><tbody><tr><td>파일 백업</td><td>30</td><td>12</td><td>12</td><td>3</td></tr><tr><td>DB 백업</td><td>14</td><td>8</td><td>6</td><td>3</td></tr></tbody></table></div>
+<p>자동 정리 시에는 최신 정상 스냅샷, 최신 검증 완료 스냅샷, 유일한 스냅샷을 보호하도록 구성했습니다.</p>
+<p>같은 HDD의 개인 파일 영역은 백업 시스템의 작업 범위에서 제외했습니다. 미디어 서비스에도 원본을 읽기 전용으로 제공하고 외부 데이터가 VM과 LXC 백업에 중복 포함되지 않도록 구분했습니다.</p></div></div></section><section class="case-section"><span class="case-section__index">05</span><div><h2>실제 운영 검증 결과</h2><div class="project-markdown"><h3>2026년 9월 14일 무인 정기 실행</h3>
+<p>2026년 9월 14일 정기 실행 기록을 확인한 결과, 6개 정책이 수동 실행 없이 스케줄러를 통해 시작됐고 백업부터 복원 검증까지 완료됐습니다.</p>
+<p>대시보드의 일별 요약도 실제 실행 결과와 대조했습니다.</p>
+<div class="project-markdown__table" tabindex="0" role="region" aria-label="프로젝트 표"><table><thead><tr><th>검증 항목</th><th>결과</th></tr></thead><tbody><tr><td>정기 정책 자동 실행</td><td>6/6</td></tr><tr><td>백업 성공</td><td>6/6</td></tr><tr><td>무결성 검증</td><td>6/6 VERIFIED</td></tr><tr><td>복원 검증</td><td>6/6 VERIFIED</td></tr><tr><td>해당 정기 실행의 신규 실패</td><td>0</td></tr></tbody></table></div>
+<h3>추가 구현 검증</h3>
+<div class="project-markdown__table" tabindex="0" role="region" aria-label="프로젝트 표"><table><thead><tr><th>검증 항목</th><th>결과</th></tr></thead><tbody><tr><td>VM·LXC 백업 아카이브</td><td>5개 생성 및 검증</td></tr><tr><td>자동 테스트 — 일별 상태 표시 개선 반영 시점</td><td>296 PASS</td></tr><tr><td>정적 검사 및 빌드</td><td>Ruff·formatter·strict mypy·package build PASS</td></tr></tbody></table></div>
+<p>VM과 LXC 아카이브에는 zstd 무결성 검사, VMA 또는 TAR 구조 검사, 게스트 설정 확인과 SHA-256 검증을 적용했습니다.</p>
+<p>백업 서버 의존성도 별도로 확인했습니다. 백업 전용 컨테이너를 이용하지 않고 다른 VM에서 실제 암호화된 SQLite 백업을 복호화하고 추출했습니다. 이어서 SHA-256, <code>integrity_check</code>, 조회 결과를 검증했습니다.</p></div></div></section><section class="case-section"><span class="case-section__index">06</span><div><h2>검증한 범위와 남은 한계</h2><div class="project-markdown"><p>파일과 DB의 실제 복원 검증(Restore Verification)과 VM/LXC 아카이브 검사는 검증 수준이 다릅니다. VM/LXC는 아카이브의 무결성, 구조, 게스트 설정을 확인했으며, 실제 복원 후 부팅과 서비스 동작은 검증하지 않았습니다.</p>
+<p>별도 VM에서 특정 암호화 백업의 독립 복구 경로는 확인했습니다. 다만 동일 물리 호스트와 저장소를 함께 잃는 전체 재해 복구 훈련(DR Drill)은 아직 수행하지 않았습니다. 다음 항목은 후속 검증 과제로 남겼습니다.</p>
+<ul>
+<li>전체 호스트 장애를 가정한 격리 복구 훈련</li>
+<li>복원된 VM과 LXC의 부팅 및 서비스 검증</li>
+<li>실제 복구 시간 측정</li>
+</ul></div></div></section><section class="case-section"><span class="case-section__index">07</span><div><h2>이 프로젝트에서 배운 점</h2><div class="project-markdown"><p>자동화에서는 정상 경로를 실행하는 것보다 운영 상황에 맞춰 작업을 진행하거나 멈출 기준을 정하는 일이 더 어려웠습니다.</p>
+<p>작업 중인 서비스를 백업 때문에 강제로 멈추지 않고 저장소가 불명확하면 기록을 시작하지 않도록 했습니다. 검증된 사본을 정리 과정에서 보호하는 일도 백업 기능의 일부였습니다.</p>
+<p>이 프로젝트를 통해 성공 로그뿐 아니라 실제 검증 결과와 남은 한계까지 근거로 남기는 방식으로 운영 자동화를 설계했습니다.</p>
+<blockquote>
+<p>백업의 완료 기준은 파일이 만들어졌다는 사실이 아니라, 검증한 범위 안에서 다시 사용할 수 있다는 증거입니다.</p>
+</blockquote>
+<h3>기술 스택</h3>
+<p>Python · Proxmox VE · Debian · LXC/QEMU · systemd · restic · vzdump · PostgreSQL · SQLite · SSHFS · NTFS3 · zstd · SHA-256</p></div></div></section></div></section><footer class="case-footer site-container"><p>다른 경험도 문제와 담당 범위를 기준으로 정리했습니다.</p><a class="button button--primary" href="/portfolio" data-discover="true">전체 프로젝트 보기</a></footer></article></main></div>
+  </body>
+</html>

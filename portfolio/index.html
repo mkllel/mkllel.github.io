@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/icon.ico" sizes="16x16 32x32 48x48" />
+    <link id="site-favicon" rel="icon" type="image/svg+xml" href="/favicon-dark.svg" sizes="any" />
+    <script>
+      (function() {
+        var theme = localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        var accent = localStorage.getItem('portfolio-site-accent');
+        document.documentElement.dataset.accent = accent === 'blue' || accent === 'purple' ? accent : 'green';
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.style.colorScheme = theme;
+        document.getElementById('site-favicon').setAttribute('href', '/favicon-' + theme + '.svg');
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>프로젝트 | 이민규</title><meta name="description" content="업무 자동화, AI 서비스 백엔드, Docker 운영 환경을 문제·역할·설계·검증 순서로 정리한 이민규의 프로젝트입니다."/><meta name="author" content="MinKyu Lee"/><meta name="robots" content="index, follow"/><link rel="canonical" href="https://mkllel.github.io/portfolio/"/><meta property="og:type" content="website"/><meta property="og:url" content="https://mkllel.github.io/portfolio/"/><meta property="og:title" content="프로젝트 | 이민규"/><meta property="og:description" content="업무 자동화, AI 서비스 백엔드, Docker 운영 환경을 문제·역할·설계·검증 순서로 정리한 이민규의 프로젝트입니다."/><meta property="og:image" content="https://mkllel.github.io/picture/og-portfolio.jpg"/><meta property="og:image:alt" content="프로젝트 | 이민규 대표 이미지"/><meta property="og:site_name" content="MinKyu Lee Portfolio"/><meta property="og:locale" content="ko_KR"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="프로젝트 | 이민규"/><meta name="twitter:description" content="업무 자동화, AI 서비스 백엔드, Docker 운영 환경을 문제·역할·설계·검증 순서로 정리한 이민규의 프로젝트입니다."/><meta name="twitter:image" content="https://mkllel.github.io/picture/og-portfolio.jpg"/><meta name="twitter:image:alt" content="프로젝트 | 이민규 대표 이미지"/>
+    <script>
+      (function(location) {
+        if (location.search[1] === '/') {
+          var decoded = location.search
+            .slice(1)
+            .split('&')
+            .map(function(segment) {
+              return segment.replace(/~and~/g, '&');
+            })
+            .join('?');
+
+          window.history.replaceState(
+            null,
+            null,
+            location.pathname.slice(0, -1) + decoded + location.hash
+          );
+        }
+      })(window.location);
+    </script>
+    <script type="module" crossorigin src="/assets/index-BFZnY0Sj.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CgUksKhK.css">
+  </head>
+  <body>
+    <div id="root"><main id="main-content"><div class="page-shell"><header class="page-intro site-container"><p class="eyebrow">PROJECT CASE STUDIES</p><h1>프로젝트</h1><p>구현한 기능보다 문제, 제약, 담당 범위와 운영 관점의 해결 과정을 중심으로 정리했습니다.</p></header><section class="site-container project-grid" aria-label="프로젝트 목록"><a class="project-card" href="/portfolio/tr6sxIysllu5RhvX4pOY" data-discover="true"><div class="project-card__visual project-card__visual--empty" role="img" aria-label="복구 검증 기반 자동 백업 시스템 이미지 없음"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-off project-card__empty-icon" aria-hidden="true"><line x1="2" x2="22" y1="2" y2="22"></line><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83"></path><line x1="13.5" x2="6" y1="13.5" y2="21"></line><line x1="18" x2="21" y1="12" y2="15"></line><path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59"></path><path d="M21 15V5a2 2 0 0 0-2-2H9"></path></svg></div><div class="project-card__body"><div class="project-card__meta"><span>인프라 · 운영</span></div><h2>복구 검증 기반 자동 백업 시스템</h2><p>Proxmox 홈랩의 파일, 데이터베이스, 가상머신을 보호하는 운영 자동화
+
+Proxmox 홈랩의 파일, DB, VM/LXC를 자동 백업하고 유형별로 무결성과 복구 가능성을 검증하는 시스템을 구축했습니다.
+
+정기 백업, 무결성 검사, 격리 환경의 복원 검증, 보존 정책, VM/LXC 백업을 하나의 운영 흐름으로 연결했습니다. 정상 동작뿐 아니라 실행하지 말아야 할 조건과 실패 이후의 복구 과정도 함께 설계했습니다.</p><div class="project-card__role"><span>내 역할</span><p>백업 정책과 실행 흐름 설계, 검증 로직 구현, 운영 대시보드, 안전장치 및 복구 절차 구성</p></div><ul class="tag-list" aria-label="사용 기술"><li>Python</li><li>restic</li><li>Proxmox vzdump</li><li>systemd</li><li>PostgreSQL</li></ul><span class="text-link">사례 자세히 보기 <span aria-hidden="true">→</span></span></div></a><a class="project-card" href="/portfolio/PaXlbYANQYyA4SkevWsj" data-discover="true"><div class="project-card__visual project-card__visual--image project-card__visual--split"><img src="/project-thumbnails/5f69d60e678a12375e6c-480.webp" srcSet="/project-thumbnails/5f69d60e678a12375e6c-480.webp 480w, /project-thumbnails/5f69d60e678a12375e6c-960.webp 960w" sizes="(max-width: 650px) calc(50vw - 14px), (max-width: 720px) calc(25vw - 13px), (max-width: 1220px) calc(25vw - 16px), 289px" alt="무릎 ACL 분석 · 원본 영상, 거리 측정 및 결과 시각화" width="360" height="420" loading="lazy" decoding="async"/><img src="/project-thumbnails/5f8e17273938c58a9adb-480.webp" srcSet="/project-thumbnails/5f8e17273938c58a9adb-480.webp 480w, /project-thumbnails/5f8e17273938c58a9adb-960.webp 960w" sizes="(max-width: 650px) calc(50vw - 14px), (max-width: 720px) calc(25vw - 13px), (max-width: 1220px) calc(25vw - 16px), 289px" alt="요추 분석 · 척추와 추간판 분석 결과 시각화" width="360" height="420" loading="lazy" decoding="async"/></div><div class="project-card__body"><div class="project-card__meta"><span>백엔드 · AI 서비스 연동 · 컴퓨터 비전</span><strong>대표</strong></div><h2>ScanoX 의료영상 AI 분석 웹 서비스</h2><p>연구용 Python 추론 코드를 웹에서 사용할 수 있도록 FastAPI 기반 서비스 흐름을 구현했습니다. 이미지 업로드부터 모델 실행, 키포인트 후처리, 측정 결과 시각화, 이미지와 CSV 조회 및 다운로드까지 연결했습니다.</p><div class="project-card__role"><span>내 역할</span><p>AI 모델 개발자가 제공한 모델과 추론 코드를 바탕으로 FastAPI 백엔드 API와 모델 입출력 연동을 구현했습니다. Detectron2 추론 결과의 좌표와 거리 후처리, OpenCV 기반 결과 시각화와 결과 파일 제공 기능도 담당했습니다.
+
+SQLite와 bcrypt를 활용해 사용자 등록, 로그인 및 승인 기능을 구현하고 Docker 기반 실행 환경을 구성해 AWS EC2에 배포했습니다. AI 모델 자체는 별도 담당자가 개발했습니다.</p></div><ul class="tag-list" aria-label="사용 기술"><li>Python</li><li>FastAPI</li><li>Detectron2</li><li>PyTorch</li><li>OpenCV</li></ul><span class="text-link">사례 자세히 보기 <span aria-hidden="true">→</span></span></div></a><a class="project-card" href="/portfolio/gvxw5JAhaTm9skN4JsOu" data-discover="true"><div class="project-card__visual project-card__visual--image"><img src="/project-thumbnails/0519bceafcd5cbaca616-480.webp" srcSet="/project-thumbnails/0519bceafcd5cbaca616-480.webp 480w, /project-thumbnails/0519bceafcd5cbaca616-960.webp 960w" sizes="(max-width: 650px) calc(100vw - 28px), (max-width: 720px) calc(50vw - 26px), (max-width: 1220px) calc(50vw - 32px), 578px" alt="홈랩 기반 백엔드 운영 환경 대표 이미지" width="720" height="420" loading="lazy" decoding="async"/></div><div class="project-card__body"><div class="project-card__meta"><span>인프라 · Linux · 서비스 운영</span><strong>대표</strong></div><h2>홈랩 기반 백엔드 운영 환경</h2><p>Proxmox 기반 홈랩에서 개발 및 AI 실험 환경과 상시 운영 환경을 VM 단위로 분리했습니다. 운영 서비스는 Docker Compose로 구성하고 네트워크, DB, 볼륨을 서비스별로 나누어 관리하고 있습니다. 반복적인 서버 점검에는 Read-Only MCP를 연동했습니다.</p><div class="project-card__role"><span>내 역할</span><p>가상화 구조 설계, Linux VM 구성, Docker 기반 서비스 분리, SSH와 WireGuard를 이용한 원격 관리, Git 기반 배포 및 변경 흐름 구축, Read-Only MCP 설계, 구현 및 운영을 직접 담당했습니다.</p></div><ul class="tag-list" aria-label="사용 기술"><li>Proxmox</li><li>Debian Linux</li><li>Docker</li><li>Docker Compose</li><li>Python</li></ul><span class="text-link">사례 자세히 보기 <span aria-hidden="true">→</span></span></div></a><a class="project-card" href="/portfolio/ELHK5bFb3vq4rGQ0XW1m" data-discover="true"><div class="project-card__visual project-card__visual--image project-card__visual--split"><img src="/project-thumbnails/a69f979e70534daa48cd-480.webp" srcSet="/project-thumbnails/a69f979e70534daa48cd-480.webp 480w, /project-thumbnails/a69f979e70534daa48cd-960.webp 960w" sizes="(max-width: 650px) calc(50vw - 14px), (max-width: 720px) calc(25vw - 13px), (max-width: 1220px) calc(25vw - 16px), 289px" alt="다재인텍 기업 홈페이지" width="360" height="420" loading="lazy" decoding="async"/><img src="/project-thumbnails/44e0d86c1ef60bc95d32-480.webp" srcSet="/project-thumbnails/44e0d86c1ef60bc95d32-480.webp 480w, /project-thumbnails/44e0d86c1ef60bc95d32-960.webp 960w" sizes="(max-width: 650px) calc(50vw - 14px), (max-width: 720px) calc(25vw - 13px), (max-width: 1220px) calc(25vw - 16px), 289px" alt="트랜스테크 기업 홈페이지" width="360" height="420" loading="lazy" decoding="async"/></div><div class="project-card__body"><div class="project-card__meta"><span>웹 개발 · CMS</span></div><h2>기업 홈페이지 · CMS 구축</h2><p>다재인텍과 트랜스테크의 기업 홈페이지를 반응형 웹으로 구축하고, Gnuboard5 기반 콘텐츠 관리 기능과 Cafe24 운영 환경을 구성했습니다.</p><div class="project-card__role"><span>내 역할</span><p>HTML/CSS/JavaScript 기반 화면 구현부터 PHP/Gnuboard5 기능 커스터마이징, 데이터베이스 연동 및 호스팅 환경 적용까지 담당했습니다.</p></div><ul class="tag-list" aria-label="사용 기술"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>jQuery</li><li>PHP</li></ul><span class="text-link">사례 자세히 보기 <span aria-hidden="true">→</span></span></div></a><a class="project-card" href="/portfolio/vJUDdRO6unChbvQUqYho" data-discover="true"><div class="project-card__visual project-card__visual--image"><img src="/project-thumbnails/ba94554c8d2ab5ded4a9-480.webp" srcSet="/project-thumbnails/ba94554c8d2ab5ded4a9-480.webp 480w, /project-thumbnails/ba94554c8d2ab5ded4a9-960.webp 960w" sizes="(max-width: 650px) calc(100vw - 28px), (max-width: 720px) calc(50vw - 26px), (max-width: 1220px) calc(50vw - 32px), 578px" alt="어린이집 B2B 행정 자동화 플랫폼 — 증명서24 대표 이미지" width="720" height="420" loading="lazy" decoding="async"/></div><div class="project-card__body"><div class="project-card__meta"><span>B2B SaaS · 업무 자동화 · 백엔드</span><strong>대표</strong></div><h2>어린이집 B2B 행정 자동화 플랫폼 — 증명서24</h2><p>여러 공공기관의 서류 신청, 발급, 다운로드 절차와 어린이집 행정 업무를 하나의 웹 서비스 흐름으로 연결했습니다. 기관 웹사이트에서 진행해야 하는 인증, 신청, 발급 절차에는 Selenium 기반 브라우저 자동화를 적용했습니다. 장시간 작업의 상태와 실패 지점을 추적할 수 있도록 FastAPI 기반 백엔드 구조를 설계했습니다.</p><div class="project-card__role"><span>내 역할</span><p>백엔드 API, 기관별 브라우저 자동화, 작업 상태 관리, 사용자와 기관 및 증명서 데이터 모델을 설계하고 구현했습니다.
+
+제공받은 디자인과 퍼블리싱 산출물을 바탕으로 React/TypeScript 프론트엔드를 개발하고 API를 연동했습니다. 해당 개발 범위는 단독으로 담당했으며, 테스트 서버 및 DB 환경과 Docker 실행 환경도 구성했습니다.</p></div><ul class="tag-list" aria-label="사용 기술"><li>Python</li><li>FastAPI</li><li>SQLAlchemy</li><li>PostgreSQL</li><li>Selenium</li></ul><span class="text-link">사례 자세히 보기 <span aria-hidden="true">→</span></span></div></a></section></div></main></div>
+  </body>
+</html>

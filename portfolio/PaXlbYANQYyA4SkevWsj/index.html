@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/icon.ico" sizes="16x16 32x32 48x48" />
+    <link id="site-favicon" rel="icon" type="image/svg+xml" href="/favicon-dark.svg" sizes="any" />
+    <script>
+      (function() {
+        var theme = localStorage.getItem('portfolio-theme') === 'light' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        var accent = localStorage.getItem('portfolio-site-accent');
+        document.documentElement.dataset.accent = accent === 'blue' || accent === 'purple' ? accent : 'green';
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.style.colorScheme = theme;
+        document.getElementById('site-favicon').setAttribute('href', '/favicon-' + theme + '.svg');
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScanoX 의료영상 AI 분석 웹 서비스 | 이민규</title><meta name="description" content="연구용 Python 추론 코드를 웹에서 사용할 수 있도록 FastAPI 기반 서비스 흐름을 구현했습니다. 이미지 업로드부터 모델 실행, 키포인트 후처리, 측정 결과 시각화, 이미지와 CSV 조회 및 다운로드까지 연결했습니다."/><meta name="author" content="MinKyu Lee"/><meta name="robots" content="index, follow"/><link rel="canonical" href="https://mkllel.github.io/portfolio/PaXlbYANQYyA4SkevWsj/"/><meta property="og:type" content="article"/><meta property="og:url" content="https://mkllel.github.io/portfolio/PaXlbYANQYyA4SkevWsj/"/><meta property="og:title" content="ScanoX 의료영상 AI 분석 웹 서비스 | 이민규"/><meta property="og:description" content="연구용 Python 추론 코드를 웹에서 사용할 수 있도록 FastAPI 기반 서비스 흐름을 구현했습니다. 이미지 업로드부터 모델 실행, 키포인트 후처리, 측정 결과 시각화, 이미지와 CSV 조회 및 다운로드까지 연결했습니다."/><meta property="og:image" content="https://mkllel.github.io/picture/og-portfolio.jpg"/><meta property="og:image:alt" content="ScanoX 의료영상 AI 분석 웹 서비스 | 이민규 대표 이미지"/><meta property="og:site_name" content="MinKyu Lee Portfolio"/><meta property="og:locale" content="ko_KR"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="ScanoX 의료영상 AI 분석 웹 서비스 | 이민규"/><meta name="twitter:description" content="연구용 Python 추론 코드를 웹에서 사용할 수 있도록 FastAPI 기반 서비스 흐름을 구현했습니다. 이미지 업로드부터 모델 실행, 키포인트 후처리, 측정 결과 시각화, 이미지와 CSV 조회 및 다운로드까지 연결했습니다."/><meta name="twitter:image" content="https://mkllel.github.io/picture/og-portfolio.jpg"/><meta name="twitter:image:alt" content="ScanoX 의료영상 AI 분석 웹 서비스 | 이민규 대표 이미지"/>
+    <script>
+      (function(location) {
+        if (location.search[1] === '/') {
+          var decoded = location.search
+            .slice(1)
+            .split('&')
+            .map(function(segment) {
+              return segment.replace(/~and~/g, '&');
+            })
+            .join('?');
+
+          window.history.replaceState(
+            null,
+            null,
+            location.pathname.slice(0, -1) + decoded + location.hash
+          );
+        }
+      })(window.location);
+    </script>
+    <script type="module" crossorigin src="/assets/index-BFZnY0Sj.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CgUksKhK.css">
+  </head>
+  <body>
+    <div id="root"><main id="main-content"><article class="case-study page-shell"><header class="case-hero"><div class="site-container case-hero__grid"><div><a class="back-link" href="/portfolio" data-discover="true">← 프로젝트 목록</a><p class="eyebrow">백엔드 · AI 서비스 연동 · 컴퓨터 비전</p><h1>ScanoX 의료영상 AI 분석 웹 서비스</h1><p class="case-hero__summary">연구용 Python 추론 코드를 웹에서 사용할 수 있도록 FastAPI 기반 서비스 흐름을 구현했습니다. 이미지 업로드부터 모델 실행, 키포인트 후처리, 측정 결과 시각화, 이미지와 CSV 조회 및 다운로드까지 연결했습니다.</p><div class="button-row"><a class="button button--primary" href="https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/file%2FScanoX.pdf?alt=media&amp;token=6d2d4165-ebad-4e01-9bc5-2e378089c82e" target="_blank" rel="noreferrer">프로젝트 PDF 보기 ↗</a></div></div><dl class="case-facts"><div><dt>담당</dt><dd>AI 모델 개발자가 제공한 모델과 추론 코드를 바탕으로 FastAPI 백엔드 API와 모델 입출력 연동을 구현했습니다. Detectron2 추론 결과의 좌표와 거리 후처리, OpenCV 기반 결과 시각화와 결과 파일 제공 기능도 담당했습니다.
+
+SQLite와 bcrypt를 활용해 사용자 등록, 로그인 및 승인 기능을 구현하고 Docker 기반 실행 환경을 구성해 AWS EC2에 배포했습니다. AI 모델 자체는 별도 담당자가 개발했습니다.</dd></div><div><dt>기술</dt><dd>Python · FastAPI · Detectron2 · PyTorch · OpenCV · NumPy · pandas · Pillow · SQLite · bcrypt · Docker · AWS EC2 · JavaScript · Git</dd></div><div><dt>결과</dt><dd>로컬 파일 기반 추론 코드를 웹 업로드, 분석, 다운로드 흐름에 연결했습니다.
+
+무릎 ACL/PCL 분석에서는 모델이 출력한 6개 키포인트를 거리 측정값과 시각화 이미지로 가공했습니다. 측정값은 웹 화면과 CSV로, 시각화 결과는 조회와 다운로드가 가능한 이미지로 제공했습니다.</dd></div></dl></div></header><section class="case-gallery-section" aria-label="프로젝트 구축 화면"><div class="case-gallery site-container"><figure><img sizes="(max-width: 720px) calc(100vw - 28px), (max-width: 1220px) calc(50vw - 28px), 582px" decoding="async" src="/project-thumbnails/5f69d60e678a12375e6c-960.webp" srcSet="/project-thumbnails/5f69d60e678a12375e6c-480.webp 480w, /project-thumbnails/5f69d60e678a12375e6c-960.webp 960w, /project-thumbnails/5f69d60e678a12375e6c-1600.webp 1600w" width="3840" height="2200" loading="lazy" alt="무릎 ACL 분석 · 원본 영상, 거리 측정 및 결과 시각화" data-original-src="https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fscanox-medical-ai-20260909%2Fa62bfda1266b4796-ScanoX_Knee_ACL_Analysis.png?alt=media&amp;token=6dd0c1cc-a6ce-4f32-8165-5ab29a2d9a80" data-original-width="3840" data-original-height="2200"/><figcaption>무릎 ACL 분석 · 원본 영상, 거리 측정 및 결과 시각화</figcaption></figure><figure><img sizes="(max-width: 720px) calc(100vw - 28px), (max-width: 1220px) calc(50vw - 28px), 582px" decoding="async" src="/project-thumbnails/5f8e17273938c58a9adb-960.webp" srcSet="/project-thumbnails/5f8e17273938c58a9adb-480.webp 480w, /project-thumbnails/5f8e17273938c58a9adb-960.webp 960w, /project-thumbnails/5f8e17273938c58a9adb-1600.webp 1600w" width="3840" height="2200" loading="lazy" alt="요추 분석 · 척추와 추간판 분석 결과 시각화" data-original-src="https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fscanox-medical-ai-20260909%2F36f9a1126d4648bc-ScanoX_Lumbar_Spine_Analysis.png?alt=media&amp;token=429b2e11-d094-41eb-8634-3f953bfbd787" data-original-width="3840" data-original-height="2200"/><figcaption>요추 분석 · 척추와 추간판 분석 결과 시각화</figcaption></figure><figure><img sizes="(max-width: 720px) calc(100vw - 28px), (max-width: 1220px) calc(50vw - 28px), 582px" decoding="async" src="/project-thumbnails/8f455de6541ad6b051e2-960.webp" srcSet="/project-thumbnails/8f455de6541ad6b051e2-480.webp 480w, /project-thumbnails/8f455de6541ad6b051e2-960.webp 960w, /project-thumbnails/8f455de6541ad6b051e2-1600.webp 1600w" width="3840" height="2200" loading="lazy" alt="손 영상 분석 · 원본 영상과 분석 결과 비교" data-original-src="https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fscanox-medical-ai-20260909%2F40b78aa78d979afb-ScanoX_Hand_Analysis.png?alt=media&amp;token=2407e887-04fa-40cb-ab8d-2fd0934eeca8" data-original-width="3840" data-original-height="2200"/><figcaption>손 영상 분석 · 원본 영상과 분석 결과 비교</figcaption></figure><figure><img sizes="(max-width: 720px) calc(100vw - 28px), (max-width: 1220px) calc(50vw - 28px), 582px" decoding="async" src="/project-thumbnails/338a849c3b96dc05b29a-960.webp" srcSet="/project-thumbnails/338a849c3b96dc05b29a-480.webp 480w, /project-thumbnails/338a849c3b96dc05b29a-960.webp 960w, /project-thumbnails/338a849c3b96dc05b29a-1600.webp 1600w" width="2350" height="1350" loading="lazy" alt="HKA 각도 분석 · 하지 전장 영상과 측정 결과" data-original-src="https://firebasestorage.googleapis.com/v0/b/my-portfolio-2ea55.firebasestorage.app/o/images%2Fportfolio%2Fscanox-medical-ai-20260909%2Fd90c4c2212c4c698-ScanoX_HKA_Angle_Analysis.png?alt=media&amp;token=bcdfbba0-6240-4336-af94-9ec9d591a375" data-original-width="2350" data-original-height="1350"/><figcaption>HKA 각도 분석 · 하지 전장 영상과 측정 결과</figcaption></figure></div></section><section class="section section--white"><div class="site-container case-sections"><section class="case-section"><span class="case-section__index">01</span><div><h2>무릎 ACL/PCL 분석 처리 흐름</h2><div class="project-markdown"><ol>
+<li>X-ray 이미지 업로드</li>
+<li>FastAPI에서 이미지 저장</li>
+<li>별도 Python 프로세스로 Detectron2 추론 실행</li>
+<li>키포인트 추출 및 중간 CSV 저장</li>
+<li>좌표와 거리 후처리 및 OpenCV 시각화</li>
+<li>결과 이미지와 거리 측정 CSV 저장</li>
+<li>웹에서 측정값 조회 및 결과 다운로드</li>
+</ol></div></div></section><section class="case-section"><span class="case-section__index">02</span><div><h2>문제</h2><div class="project-markdown"><p>기존 AI 모델은 로컬 디렉터리의 의료영상을 입력받아 추론 결과 파일을 생성하는 연구 코드 형태로 존재했습니다.</p>
+<p>사용자가 웹에서 이용하려면 업로드된 이미지를 추론 코드에 전달하고 모델 출력값을 화면에서 이해할 수 있는 측정 데이터와 결과 이미지로 가공해야 했습니다. 생성된 결과를 조회하고 다운로드할 수 있는 서비스 흐름도 필요했습니다.</p></div></div></section><section class="case-section"><span class="case-section__index">03</span><div><h2>구현 시 고려사항</h2><div class="project-markdown"><ul>
+<li>연구용 추론 코드와 웹 요청 흐름의 연결</li>
+<li>장시간 실행될 수 있는 AI 추론 처리</li>
+<li>모델이 출력한 좌표 데이터를 측정값과 시각화 이미지로 가공</li>
+<li>결과 이미지와 거리 측정 CSV 생성 및 제공</li>
+<li>사용자 등록, 비밀번호 검증 및 관리자 승인 관리</li>
+<li>공개 자료에 환자 식별정보가 포함되지 않도록 자료 범위 제한</li>
+</ul></div></div></section><section class="case-section"><span class="case-section__index">04</span><div><h2>설계 및 구현</h2><div class="project-markdown"><p><strong>AI 추론과 웹 API 연결</strong></p>
+<p>FastAPI에서 사용자가 업로드한 이미지를 서버에 저장하고 별도 Python 프로세스로 Detectron2 추론 스크립트를 실행하도록 구성했습니다.</p>
+<p>추론이 완료되면 생성된 결과 데이터를 읽어 API 응답으로 반환하고 웹 화면에서 측정값과 분석 이미지를 확인할 수 있도록 연결했습니다.</p>
+<p><strong>키포인트 기반 거리 후처리</strong></p>
+<p>무릎 ACL/PCL 분석에서는 Detectron2 추론 결과에서 분석에 필요한 6개 키포인트 좌표를 추출했습니다.</p>
+<p>NumPy로 키포인트 좌표의 배열과 자료형을 처리하고 Python 연산으로 기준선의 기울기, 교점, 거리를 계산했습니다. 코드에 정의된 43mm 기준 길이를 이용해 픽셀 단위 거리를 mm 단위로 환산했습니다.</p>
+<p><strong>OpenCV 결과 시각화</strong></p>
+<p>OpenCV로 원본 X-ray 이미지 위에 키포인트 위치, 라벨, 연결선과 계산에 사용되는 기준선을 표시했습니다.</p>
+<p>시각화한 결과 이미지를 제공하고 기준 길이로 환산한 거리 측정값은 웹 화면과 CSV로 제공했습니다.</p>
+<p>요추 분석에서는 OpenCV로 이미지를 읽고 BGR/RGB 채널 순서를 변환했으며 Detectron2로 시각화한 결과를 Pillow로 저장했습니다.</p>
+<p><strong>결과 파일 제공</strong></p>
+<p>무릎 분석의 키포인트 좌표를 중간 CSV로 저장하고 후처리한 거리 측정값을 별도 CSV로 생성했습니다.</p>
+<p>분석 결과는 이미지와 CSV 파일로 관리했습니다. 웹에서는 측정값과 결과 이미지를 조회하고 결과 이미지와 거리 측정 CSV를 다운로드할 수 있도록 구성했습니다.</p>
+<p><strong>사용자 관리 및 실행 환경</strong></p>
+<p>SQLite에 사용자 정보와 승인 상태를 저장하고 bcrypt로 비밀번호를 해시하고 검증했습니다. 로그인 시 관리자 승인 여부를 확인하도록 구현했습니다.</p>
+<p>Dockerfile에 Python 애플리케이션의 의존성 설치와 Uvicorn 서버 실행 절차를 정의하고 AWS EC2 환경에 서비스를 배포했습니다.</p></div></div></section><section class="case-section"><span class="case-section__index">05</span><div><h2>회고 및 개선점</h2><div class="project-markdown"><p>현재 구현은 웹 요청이 들어올 때마다 별도 Python 프로세스를 실행하고 추론 모델을 다시 로드하는 방식입니다.</p>
+<p>실행 흐름은 단순하지만 요청이 증가하면 모델 반복 로딩에 따른 비용과 공용 입력 및 출력 디렉터리 사용에 따른 파일 충돌 문제가 발생할 수 있습니다.</p>
+<p>후속 개선에서는 모델을 메모리에 유지하는 별도 추론 워커와 요청별 작업 디렉터리를 구성할 수 있습니다. 장시간 추론 작업은 작업 큐 기반 비동기 처리로 분리하고 작업 상태 조회 API를 제공하는 방향을 고려하고 있습니다.</p>
+<hr/>
+<p>회사 프로젝트이므로 소스코드와 운영 주소는 공개하지 않고 담당 범위와 처리 구조를 중심으로 소개합니다.</p></div></div></section></div></section><footer class="case-footer site-container"><p>다른 경험도 문제와 담당 범위를 기준으로 정리했습니다.</p><a class="button button--primary" href="/portfolio" data-discover="true">전체 프로젝트 보기</a></footer></article></main></div>
+  </body>
+</html>
