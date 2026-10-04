@@ -31,7 +31,10 @@ export const usePageMetadata = ({
 }: PageMetadata) => {
   useEffect(() => {
     const fullTitle = title.includes('이민규') ? title : `${title} | 이민규`;
-    const canonicalUrl = `${SITE_URL}${path === '/' ? '/' : path}`;
+    const canonicalPath = /^\/portfolio(?:\/[^/]+)?\/?$/.test(path)
+      ? `${path.replace(/\/+$/, '')}/`
+      : path;
+    const canonicalUrl = `${SITE_URL}${canonicalPath}`;
     const imageUrl = image.startsWith('http') ? image : `${SITE_URL}${image}`;
 
     document.title = fullTitle;

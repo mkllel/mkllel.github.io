@@ -1,5 +1,42 @@
 # Project thumbnails
 
+## Public project HTML and sitemap
+
+`npm run sync:projects` anonymously reads only public portfolio documents and
+saves their display fields in `content/public-projects.json`. This snapshot
+retains the original text and is not imported into browser JavaScript. It never
+includes private projects, blog posts or administrator-only fields, and never
+writes to Firebase. A failed query leaves the previous snapshot intact and
+stops deployment.
+
+`npm run build` uses that snapshot offline to generate `dist/portfolio/index.html`
+and `dist/portfolio/<id>/index.html`, with project-specific metadata and visible
+HTML rendered by the same article/card components as the app. GitHub Pages can
+serve these real paths without the 404 JavaScript fallback. The sitemap is
+generated from the same IDs; only genuinely missing routes use `404.html`.
+
+`npm run deploy` refreshes public data before building. New/deleted/private
+projects and text changes update immediately in the running Firebase app, but
+the static HTML, link previews and sitemap require a fresh build/deployment.
+In particular, making a previously published project private requires a new
+deployment to remove its generated HTML; cached/indexed copies can persist.
+Do not publish a manually built, stale snapshot. The build clears its generated
+portfolio directory so removed projects do not survive a rebuild.
+
+For local verification without SPA fallback:
+
+```sh
+npm run sync:projects
+npm run build
+python3 -m http.server 4174 --bind 127.0.0.1 --directory dist
+```
+
+The static server redirects extensionless directory URLs to their trailing-slash
+form, then returns 200. Canonical URLs and the sitemap use that final slash form;
+existing links and project IDs are retained.
+
+## Thumbnail generation
+
 Run `npm run thumbnails` to refresh the list-only WebP variants from public
 Firestore projects. The deployment script also refreshes them before building.
 This is read-only: original image URLs, gallery images, and project data in

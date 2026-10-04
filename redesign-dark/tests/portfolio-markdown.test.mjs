@@ -57,6 +57,23 @@ test('peer headings become numbered sections while nested headings stay in place
   assert.equal(doc.introMarkdown, 'Intro');
 });
 
+test('sequential authored section numbers do not duplicate the automatic section numbers', () => {
+  const description = '## 1. Problem\nBody\n\n### 1. Nested\nDetail\n\n## 2. Result\n```text\n2. unchanged\n```';
+  const doc = view(description);
+  assert.deepEqual(Array.from(doc.caseStudy, section => section.title), ['Problem', 'Result']);
+  assert.ok(doc.caseStudy[0].markdown.includes('### 1. Nested'));
+  assert.ok(doc.caseStudy[1].markdown.includes('2. unchanged'));
+  assert.equal(doc.description, description);
+  assert.deepEqual(Array.from(view('## 01 · First\nOne\n\n## 02 · Second\nTwo').caseStudy, s => s.title), ['First', 'Second']);
+});
+
+test('dates, versions and nonsequential heading numbers are not stripped', () => {
+  for (const titles of [['2026. Review', '2. Result'], ['1.2 Version', '2. Result'], ['3. Existing step', '4. Next step']]) {
+    const doc = view(titles.map(title => `## ${title}\nBody`).join('\n\n'));
+    assert.deepEqual(Array.from(doc.caseStudy, section => section.title), titles);
+  }
+});
+
 test('introductory lists and unheaded documents do not lose or duplicate content', () => {
   const doc = view('# Project\n- intro item\n\n## Details\nBody');
   assert.ok(html(doc.introMarkdown).includes('<li>intro item</li>'));

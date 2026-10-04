@@ -6,6 +6,15 @@ Run all non-emulator checks from `redesign-dark`:
 node --test tests/admin-save.test.mjs tests/portfolio-form.test.mjs tests/portfolio-markdown.test.mjs tests/bundle-split.test.mjs
 ```
 
+Public route generation, summary formatting and list failure/retry regression checks:
+
+```sh
+node --test tests/project-pages.test.mjs tests/portfolio-loading.test.mjs tests/portfolio-markdown.test.mjs
+```
+
+`npm run build` also generates the static project routes. Check their HTTP status
+using a plain static server (see `scripts/README.md`), not Vite's SPA fallback.
+
 The form test invokes actual form handlers with stubbed React state and no live
 writes. The bundle test builds in memory and checks static imports of the app,
 home and project list to prevent the Markdown parser returning to initial loads.

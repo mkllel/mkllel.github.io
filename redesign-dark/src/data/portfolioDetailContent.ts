@@ -69,6 +69,13 @@ const parseCaseStudy = (description: string, projectTitle: string): {
   });
   flushSection();
 
+  // Remove only a complete, sequential set of authored section numbers.
+  // Dates, version numbers, nested headings and the saved Markdown stay intact.
+  const numberedTitles = sections.map(section => /^(\d{1,2})\s*[.)·]\s+(.+)$/.exec(section.title));
+  if (sections.length > 1 && numberedTitles.every((match, index) => match && Number(match[1]) === index + 1)) {
+    sections.forEach((section, index) => { section.title = numberedTitles[index]![2]; });
+  }
+
   if (sections.length === 0 && intro.length > 0) {
     sections.push({ title: '상세 내용', description: plainText(intro), markdown: markdown(intro) });
     return { intro: plainText(intro), introMarkdown: '', sections };

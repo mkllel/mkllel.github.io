@@ -989,6 +989,7 @@ li {
 }
 
 .project-card__body > p {
+  white-space: pre-line;
   margin: 0;
   color: var(--muted);
   line-height: 1.68;
@@ -1071,6 +1072,10 @@ li {
   font-size: 0.88rem;
 }
 
+.inline-notice .button {
+  margin-top: 12px;
+}
+
 @keyframes pulse {
   50% { opacity: 0.35; }
 }
@@ -1103,6 +1108,7 @@ li {
 }
 
 .case-hero__summary {
+  white-space: pre-line;
   max-width: 720px;
   margin: 22px 0 0;
   color: #c9d3cd;

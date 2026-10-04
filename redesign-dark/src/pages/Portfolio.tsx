@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { RefreshCw } from 'lucide-react';
 import PortfolioCard from '../components/PortfolioCard';
 import { getCuratedProjects, type PortfolioViewProject } from '../data/portfolioContent';
 import { usePageMetadata } from '../hooks/usePageMetadata';
@@ -13,6 +14,7 @@ const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [requestVersion, setRequestVersion] = useState(0);
 
   usePageMetadata({
     title: '프로젝트',
@@ -21,6 +23,8 @@ const Portfolio = () => {
   });
 
   useEffect(() => {
+    setLoading(true);
+    setError('');
     const unsubscribe = onSnapshot(
       query(
         collection(db, 'portfolioProjects'),
@@ -32,17 +36,18 @@ const Portfolio = () => {
           ...item.data(),
         })) as PortfolioProject[];
         setProjects(getCuratedProjects(remoteProjects));
+        setError('');
         setLoading(false);
       },
       (snapshotError) => {
         console.error('포트폴리오 목록 조회 오류:', snapshotError);
         setProjects(getCuratedProjects([]));
-        setError('일부 원격 이미지를 불러오지 못해 텍스트 중심으로 표시합니다.');
+        setError('프로젝트 목록을 불러오지 못했습니다. 연결 상태를 확인한 뒤 다시 시도해 주세요.');
         setLoading(false);
       },
     );
     return unsubscribe;
-  }, []);
+  }, [requestVersion]);
 
   const categories = useMemo(
     () => Array.from(new Set(projects.map((project) => project.category).filter(Boolean))) as string[],
@@ -87,13 +92,20 @@ const Portfolio = () => {
         </div>
 
         {loading && <div className="status-message"><span className="loading-dot" />프로젝트를 불러오는 중입니다.</div>}
-        {error && <p className="inline-notice">{error}</p>}
+        {error && (
+          <div className="inline-notice" role="alert">
+            <p>{error}</p>
+            <button className="button button--primary" onClick={() => setRequestVersion(value => value + 1)}>
+              <RefreshCw size={16} aria-hidden="true" /> 다시 시도
+            </button>
+          </div>
+        )}
         {!loading && (
           <div className="project-grid">
             {filteredProjects.map((project) => <PortfolioCard key={project.id} project={project} />)}
           </div>
         )}
-        {!loading && filteredProjects.length === 0 && <p className="status-message">조건에 맞는 프로젝트가 없습니다.</p>}
+        {!loading && !error && filteredProjects.length === 0 && <p className="status-message">조건에 맞는 프로젝트가 없습니다.</p>}
       </section>
     </div>
   );

@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-project-pages.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "thumbnails": "node scripts/generate-project-thumbnails.mjs",
-    "predeploy": "npm run thumbnails && npm run build",
+    "sync:projects": "node scripts/sync-public-projects.mjs",
+    "predeploy": "npm run sync:projects && npm run thumbnails && npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
