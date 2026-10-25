@@ -12,7 +12,7 @@ interface Props {
   onImageOpen?: OpenProjectImage;
 }
 
-// Shared by the interactive detail page and the build-time HTML renderer.
+// 공개 상세와 빌드 시 정적 HTML이 함께 사용한다. 관리자 미리보기는 PortfolioForm에 별도 구현되어 함께 확인해야 한다.
 export default function ProjectArticle({ project, articleRef, onImageOpen }: Props) {
   const resourceLinks = getProjectResourceLinks(project);
   const galleryImages = (project.galleryImages || []).filter(image => image.url.trim());

@@ -43,7 +43,7 @@ const useAdminData = (): UseAdminDataResult => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  // 최초 데이터와 이후 변경 사항을 같은 구독으로 처리합니다.
+  // onSnapshot으로 최초 조회와 저장 후 목록 갱신을 함께 처리해 별도의 재조회 요청을 두지 않는다.
   useEffect(() => {
     setIsLoading(true);
     setError('');
@@ -53,6 +53,7 @@ const useAdminData = (): UseAdminDataResult => {
     let isBlogReady = false;
     let isPortfolioReady = false;
 
+    // 두 구독이 각각 성공하거나 실패한 뒤 초기 로딩을 끝낸다. 실패를 빈 목록의 정상 조회로 취급하지 않는다.
     const finishInitialLoad = () => {
       if (isActive && isBlogReady && isPortfolioReady) {
         setIsLoading(false);
@@ -100,13 +101,14 @@ const useAdminData = (): UseAdminDataResult => {
     );
 
     return () => {
+      // 화면을 떠난 뒤 상태를 갱신하지 않도록 막고, 두 실시간 구독도 해제한다.
       isActive = false;
       blogUnsubscribe();
       portfolioUnsubscribe();
     };
   }, []);
 
-  // 블로그 포스트 생성
+  // 아래 생성/수정 함수는 오류를 다시 던진다. 폼이 실패를 성공으로 오인해 초기화하거나 닫히지 않게 한다.
   const handleCreateBlogPost = useCallback(async (post: BlogPost, imageFile?: File | null) => {
     setIsLoading(true);
     setError('');

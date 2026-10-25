@@ -39,6 +39,8 @@ const uploadImageAndGetUrl = async (path: string, imageFile: File): Promise<{
   return { downloadURL, storageRef };
 };
 
+// Storage 업로드와 Firestore 저장은 한 트랜잭션이 아니다. 실패 시 참조를 확보한 새 파일만 삭제를 시도한다.
+// 삭제 자체도 실패할 수 있으며, 기존 대표 이미지나 별도로 첨부한 본문 이미지는 여기서 지우지 않는다.
 const cleanupUploadedImage = async (storageRef: StorageReference | null) => {
   if (!storageRef) return;
 
@@ -49,6 +51,7 @@ const cleanupUploadedImage = async (storageRef: StorageReference | null) => {
   }
 };
 
+// Firestore가 거부하는 최상위 undefined만 제외한다. 빈 문자열/빈 배열은 필드를 비우려는 값일 수 있어 유지한다.
 const removeUndefinedFields = <T extends object>(data: T): T => Object.fromEntries(
   Object.entries(data).filter(([, value]) => value !== undefined),
 ) as T;
@@ -148,6 +151,7 @@ const createPortfolioProject = async (projectData: {
   createdAt?: ContentDate;
   updatedAt?: ContentDate;
 }, imageFile?: File) => {
+  // 저장 전에 문서 ID를 확보해 대표 이미지 경로와 문서에 같은 ID를 사용한다. 이 시점에는 아직 문서를 쓰지 않는다.
   const docRef = doc(collection(db, 'portfolioProjects'));
   let uploadedImageRef: StorageReference | null = null;
 
@@ -191,6 +195,7 @@ const updatePortfolioProject = async (
   let uploadedImageRef: StorageReference | null = null;
 
   try {
+    // undefined는 기존 값 유지, deleteField()는 실제 필드 삭제다. 링크 비우기와 주요 프로젝트 해제를 구분해 반영한다.
     const updateData: UpdateData<DocumentData> = {
       ...data,
       ...(data.resourceLinks !== undefined
@@ -201,6 +206,7 @@ const updatePortfolioProject = async (
       updatedAt: new Date().toISOString(),
     };
 
+    // 관리자 폼은 imageUrl을 직접 보내지 않으므로 새 파일이 없는 수정에서는 기존 대표 이미지 URL을 유지한다.
     if (imageFile) {
       const uploadedImage = await uploadImageAndGetUrl(
         `images/portfolio/${projectId}/${Date.now()}_${imageFile.name}`,
@@ -220,6 +226,7 @@ const updatePortfolioProject = async (
 };
 
 const saveFeaturedProjectOrder = async (projectIds: string[]) => {
+  // 여러 문서의 순위가 일부만 저장되지 않도록 하나의 Firestore 배치로 반영한다.
   const batch = writeBatch(db);
   const updatedAt = new Date().toISOString();
 
@@ -235,6 +242,7 @@ const saveFeaturedProjectOrder = async (projectIds: string[]) => {
 
 const deletePortfolioProject = async (projectId: string) => {
   try {
+    // 문서 삭제만 수행한다. 연결된 Storage 파일이나 이미 배포된 정적 HTML까지 삭제하는 동작은 아니다.
     await deleteDoc(doc(db, 'portfolioProjects', projectId));
     return true;
   } catch (error) {

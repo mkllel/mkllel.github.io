@@ -11,5 +11,6 @@
 ## Documentation
 
 - [프로젝트 소개·기술 구성·배포 안내](../README.md)
+- [코드 읽기 가이드: 핵심 파일과 데이터 흐름](./docs/CODE_GUIDE.md)
 - [스크립트 안내](./scripts/README.md)
 - [테스트 안내](./tests/README.md)

@@ -7,6 +7,7 @@ type Props = ImgHTMLAttributes<HTMLImageElement> & { onOpen?: OpenProjectImage }
 
 export default function ProjectImage({ onOpen, alt, src, loading = 'lazy', ...props }: Props) {
   const [failedSource, setFailedSource] = useState<string | undefined>();
+  // 최적화 파일이 아직 없거나 로딩에 실패하면 원본 URL을 사용한다. 확대 보기용 원본 주소는 data 속성에 따로 남긴다.
   const optimized = src && src !== failedSource ? projectDetailImages[src] : undefined;
   const image = (
     <img

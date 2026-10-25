@@ -41,6 +41,7 @@ const PortfolioDetail = () => {
   });
 
   useEffect(() => {
+    // 상세 조회는 구독이 아닌 단건 요청이다. 다른 프로젝트로 이동한 뒤 도착한 이전 응답은 active로 무시한다.
     let active = true;
     setError(null);
     setViewer(null);
@@ -75,6 +76,7 @@ const PortfolioDetail = () => {
         setProject(null);
         const isDenied = typeof fetchError === 'object' && fetchError !== null
           && 'code' in fetchError && fetchError.code === 'permission-denied';
+        // 권한 거절은 비공개 문서의 존재를 드러내지 않고, 통신 실패는 재시도할 수 있도록 별도로 표시한다.
         setError(isDenied ? 'not-found' : 'load-failed');
       } finally {
         if (active) setLoading(false);

@@ -38,7 +38,7 @@ const parseCaseStudy = (description: string, projectTitle: string): {
   if (first?.type === 'heading' && toString(first).trim() === cleanMarkdownText(projectTitle)) {
     content.shift();
   }
-  // Split only at peer headings; nested headings and fenced code remain intact.
+  // 최상위에 해당하는 같은 깊이의 제목만 섹션으로 나눠 하위 제목과 코드 블록 안의 #을 보존한다.
   const sectionDepth = Math.min(...content.filter(node => node.type === 'heading').map(node => node.depth));
   const markdown = (nodes: RootContent[]) => [nodes.map(slice).join('\n\n'), definitions].filter(Boolean).join('\n\n');
   let intro: RootContent[] = [];
@@ -69,8 +69,8 @@ const parseCaseStudy = (description: string, projectTitle: string): {
   });
   flushSection();
 
-  // Remove only a complete, sequential set of authored section numbers.
-  // Dates, version numbers, nested headings and the saved Markdown stay intact.
+  // 화면에서 번호를 붙이므로 1부터 연속된 작성 번호만 표시용 제목에서 제거한다.
+  // 날짜/버전 번호, 하위 제목과 저장된 Markdown 원문은 변경하지 않는다.
   const numberedTitles = sections.map(section => /^(\d{1,2})\s*[.)·]\s+(.+)$/.exec(section.title));
   if (sections.length > 1 && numberedTitles.every((match, index) => match && Number(match[1]) === index + 1)) {
     sections.forEach((section, index) => { section.title = numberedTitles[index]![2]; });

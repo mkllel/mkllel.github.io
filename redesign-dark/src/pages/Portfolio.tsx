@@ -25,6 +25,7 @@ const Portfolio = () => {
   useEffect(() => {
     setLoading(true);
     setError('');
+    // 공개 조회는 쿼리부터 isPrivate=false로 제한한다. 받은 뒤 화면에서만 숨기는 것으로는 읽기 권한을 대신할 수 없다.
     const unsubscribe = onSnapshot(
       query(
         collection(db, 'portfolioProjects'),

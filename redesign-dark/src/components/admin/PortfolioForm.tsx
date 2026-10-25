@@ -265,7 +265,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
     setIsUploadingContentImages(true);
     setError('');
     try {
-      // projectId는 수정 시에는 selectedProject.id, 새 프로젝트 작성 시에는 임시 ID 사용
+      // 본문 이미지는 글 저장보다 먼저 업로드된다. 새 글은 임시 경로를 쓰며, 취소해도 자동 삭제/경로 이동하지 않는다.
       let projectId = selectedProject?.id;
       if (!projectId) {
         projectId = 'temp-' + Date.now();
@@ -344,6 +344,7 @@ const PortfolioForm: React.FC<PortfolioFormProps> = ({
         projectData.id = selectedProject.id;
       }
 
+      // 저장 Promise가 성공해야 목록으로 이동한다. 실패하면 catch에서 안내하고 입력값과 선택 파일을 유지한다.
       await onSubmit(projectData as PortfolioProject, imageFile);
 
       // 성공 시 목록으로 돌아가기

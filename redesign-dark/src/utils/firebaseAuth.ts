@@ -7,6 +7,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { app, db } from './firebase';
 
 const BOOTSTRAP_ADMIN_UID = 'KtZLKuzl56QzPLiFVRVfovWVapz2';
+// 화면마다 같은 UID를 재조회하지 않도록 결과를 모듈에 보관한다. 실제 데이터 권한은 Firebase 규칙이 판단한다.
 const adminCache = new Map<string, boolean>();
 
 const auth = getAuth(app);
@@ -40,6 +41,7 @@ const ensureBootstrapAdminDocument = async (): Promise<void> => {
 };
 
 const isAdmin = async (uid: string): Promise<boolean> => {
+  // 최초 관리자는 admins 문서가 없어도 진입할 수 있어야 하며, 문서 생성 권한은 Firestore 규칙에도 필요하다.
   if (uid === BOOTSTRAP_ADMIN_UID) {
     await ensureBootstrapAdminDocument();
     adminCache.set(uid, true);
